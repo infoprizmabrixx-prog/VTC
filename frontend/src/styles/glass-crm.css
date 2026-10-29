@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* High-contrast text accessibility variables (WCAG AA >= 4.5:1) */
+  --crm-text-primary-dark: #fafaf9;    /* stone-50 on stone-950 (~19.2:1) */
+  --crm-text-secondary-dark: #d6d3d1;  /* stone-300 on stone-950 (~12.4:1) */
+  --crm-text-muted-dark: #a8a29e;      /* stone-400 on stone-950 (~7.3:1) */
+  --crm-text-primary-light: #1c1917;   /* stone-900 on frosted white (~16.8:1) */
+  --crm-text-secondary-light: #44403c; /* stone-700 on frosted white (~9.1:1) */
+  --crm-text-muted-light: #57534e;     /* stone-600 on frosted white (~6.2:1) */
+  --crm-hinge-gap: env(viewport-segment-left 1 0, 24px);
+}
+
+@layer utilities {
+  /* Hinge-aware grid layout tracking */
+  .crm-dual-canvas {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+  }
+
+  /* Portrait phone viewports (< 1024px) stack cleanly into a single pane */
+  @media (max-width: 1023px) {
+    .crm-dual-canvas-responsive {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+    }
+  }
+
+  /* Foldable dual-screen hardware spanning support */
+  @media (horizontal-viewport-segments: 2) {
+    .crm-dual-canvas {
+      grid-template-columns:
+        env(viewport-segment-width 0 0, 1fr)
+        env(viewport-segment-width 1 0, 1fr);
+      column-gap: calc(
+        env(viewport-segment-left 1 0, 24px) - env(viewport-segment-right 0 0, 0px)
+      );
+    }
+  }
+
+  /* Premium Frosted Glass Container Tokens */
+  .glass-panel-light {
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(139, 92, 26, 0.06);
+    color: var(--crm-text-primary-light);
+  }
+
+  .glass-panel-dark {
+    background: rgba(28, 25, 23, 0.6);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    color: var(--crm-text-primary-dark);
+  }
+
+  /* Micro-refraction rim highlights */
+  .glass-edge-accent {
+    border-image: linear-gradient(to bottom right, rgba(255,255,255,0.4), rgba(255,255,255,0.05)) 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

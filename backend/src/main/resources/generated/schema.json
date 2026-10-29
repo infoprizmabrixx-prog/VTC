@@ -1,0 +1,5527 @@
+{
+ "tables": {
+  "meta": {
+   "sql": "CREATE TABLE meta(key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "key",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "value",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "roles": {
+   "sql": "CREATE TABLE roles(\n  id INTEGER PRIMARY KEY,\n  key TEXT UNIQUE NOT NULL,\n  name TEXT NOT NULL,\n  tier TEXT NOT NULL CHECK (tier IN ('admin','manager','staff')),\n  description TEXT NOT NULL DEFAULT '',\n  is_system INTEGER NOT NULL DEFAULT 0,\n  active INTEGER NOT NULL DEFAULT 1,\n  created_at TEXT NOT NULL\n)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "key",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "tier",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "description",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "is_system",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "active",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "1",
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "role_permissions": {
+   "sql": "CREATE TABLE role_permissions(\n  role_id INTEGER NOT NULL REFERENCES roles(id),\n  perm_key TEXT NOT NULL,\n  PRIMARY KEY(role_id, perm_key)\n)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "role_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "perm_key",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 2
+    }
+   ],
+   "fks": [
+    {
+     "col": "role_id",
+     "ref_table": "roles",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "users": {
+   "sql": "CREATE TABLE users(\n  id INTEGER PRIMARY KEY,\n  username TEXT UNIQUE NOT NULL,\n  full_name TEXT NOT NULL,\n  role_id INTEGER NOT NULL REFERENCES roles(id),\n  login_type TEXT NOT NULL CHECK (login_type IN ('password','pin')),\n  secret_hash TEXT NOT NULL,\n  is_owner INTEGER NOT NULL DEFAULT 0,\n  active INTEGER NOT NULL DEFAULT 1,\n  failed_attempts INTEGER NOT NULL DEFAULT 0,\n  locked_until TEXT,\n  must_change_secret INTEGER NOT NULL DEFAULT 0,\n  created_by INTEGER,\n  created_at TEXT NOT NULL\n, reports_to INTEGER)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "username",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "full_name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "role_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "login_type",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "secret_hash",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "is_owner",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "active",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "1",
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "failed_attempts",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "locked_until",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "must_change_secret",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "reports_to",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "role_id",
+     "ref_table": "roles",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "user_grants": {
+   "sql": "CREATE TABLE user_grants(\n  id INTEGER PRIMARY KEY,\n  user_id INTEGER NOT NULL REFERENCES users(id),\n  perm_key TEXT NOT NULL,\n  effect TEXT NOT NULL CHECK (effect IN ('allow','deny')),\n  reason TEXT NOT NULL,\n  expires_at TEXT,\n  granted_by INTEGER NOT NULL REFERENCES users(id),\n  created_at TEXT NOT NULL,\n  revoked_at TEXT,\n  revoked_by INTEGER REFERENCES users(id)\n)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "perm_key",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "effect",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "reason",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "expires_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "granted_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "revoked_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "revoked_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "revoked_by",
+     "ref_table": "users",
+     "ref_col": "id"
+    },
+    {
+     "col": "granted_by",
+     "ref_table": "users",
+     "ref_col": "id"
+    },
+    {
+     "col": "user_id",
+     "ref_table": "users",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": [
+    "CREATE INDEX ix_grants_user ON user_grants(user_id)"
+   ]
+  },
+  "sessions": {
+   "sql": "CREATE TABLE sessions(\n  token_hash TEXT PRIMARY KEY,\n  user_id INTEGER NOT NULL REFERENCES users(id),\n  device_mode TEXT NOT NULL CHECK (device_mode IN ('shared','personal')),\n  created_at TEXT NOT NULL,\n  last_seen TEXT NOT NULL,\n  expires_at TEXT NOT NULL\n, insights_until TEXT, user_agent TEXT NOT NULL DEFAULT '')",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "token_hash",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "device_mode",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "last_seen",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "expires_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "insights_until",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "user_agent",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "user_id",
+     "ref_table": "users",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": [
+    "CREATE INDEX ix_sessions_user ON sessions(user_id)"
+   ]
+  },
+  "settings": {
+   "sql": "CREATE TABLE settings(key TEXT PRIMARY KEY, value TEXT NOT NULL, changed_by INTEGER, changed_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "key",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "value",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "changed_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "changed_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "i18n_overrides": {
+   "sql": "CREATE TABLE i18n_overrides(\n  lang TEXT NOT NULL, key TEXT NOT NULL, text TEXT NOT NULL,\n  changed_by INTEGER, changed_at TEXT, PRIMARY KEY(lang, key)\n)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "lang",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "key",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 2
+    },
+    {
+     "cid": 2,
+     "name": "text",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "changed_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "changed_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "dashboard_prefs": {
+   "sql": "CREATE TABLE dashboard_prefs(\n  user_id INTEGER PRIMARY KEY REFERENCES users(id),\n  widgets TEXT NOT NULL, shortcuts TEXT NOT NULL,\n  welcome TEXT NOT NULL DEFAULT '', lang TEXT NOT NULL DEFAULT 'en',\n  large_text INTEGER NOT NULL DEFAULT 0\n, sizes TEXT NOT NULL DEFAULT '{}', voice_rate REAL NOT NULL DEFAULT 0.95)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "widgets",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "shortcuts",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "welcome",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "lang",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'en'",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "large_text",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "sizes",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'{}'",
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "voice_rate",
+     "type": "REAL",
+     "notnull": true,
+     "default": "0.95",
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "user_id",
+     "ref_table": "users",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "role_dashboard_defaults": {
+   "sql": "CREATE TABLE role_dashboard_defaults(\n  role_id INTEGER PRIMARY KEY REFERENCES roles(id),\n  widgets TEXT NOT NULL, shortcuts TEXT NOT NULL\n)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "role_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "widgets",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "shortcuts",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "role_id",
+     "ref_table": "roles",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "masters": {
+   "sql": "CREATE TABLE masters(id INTEGER PRIMARY KEY, kind TEXT NOT NULL, name TEXT NOT NULL, nominal_kg REAL, state TEXT NOT NULL, creator_id INTEGER NOT NULL, approved_by INTEGER, created_at TEXT NOT NULL, phone TEXT NOT NULL DEFAULT '', address TEXT NOT NULL DEFAULT '', category TEXT NOT NULL DEFAULT '', code TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "kind",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "nominal_kg",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "creator_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "approved_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "phone",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "address",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "category",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "code",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": [
+    "CREATE UNIQUE INDEX ux_bean_code ON masters(code) WHERE kind='product' AND code IS NOT NULL AND code!=''"
+   ]
+  },
+  "receipts": {
+   "sql": "CREATE TABLE receipts(id INTEGER PRIMARY KEY, source TEXT NOT NULL, source_name TEXT NOT NULL, product_id INTEGER NOT NULL REFERENCES masters(id), bags INTEGER NOT NULL, damaged INTEGER NOT NULL, nominal_kg REAL NOT NULL, created_by INTEGER NOT NULL, created_at TEXT NOT NULL, invoice_ref TEXT, invoice_status TEXT NOT NULL DEFAULT 'PENDING', payment_status TEXT NOT NULL DEFAULT 'PENDING', payment_date TEXT, invoice_amount_paise INTEGER, invoice_file_id INTEGER, reversed_at TEXT, partial INTEGER NOT NULL DEFAULT 0, partial_kg REAL, code TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "source",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "source_name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "product_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "bags",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "damaged",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "nominal_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "invoice_ref",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "invoice_status",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'PENDING'",
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "payment_status",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'PENDING'",
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "payment_date",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "invoice_amount_paise",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 14,
+     "name": "invoice_file_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 15,
+     "name": "reversed_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 16,
+     "name": "partial",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 17,
+     "name": "partial_kg",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 18,
+     "name": "code",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "product_id",
+     "ref_table": "masters",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": [
+    "CREATE UNIQUE INDEX ux_receipts_code ON receipts(code)"
+   ]
+  },
+  "lots": {
+   "sql": "CREATE TABLE lots(id INTEGER PRIMARY KEY, product_id INTEGER REFERENCES masters(id), name TEXT NOT NULL, stage TEXT NOT NULL, owner TEXT NOT NULL DEFAULT 'VTC', status TEXT NOT NULL, receipt_id INTEGER REFERENCES receipts(id), roast_id INTEGER, created_at TEXT NOT NULL, location TEXT NOT NULL DEFAULT 'PROD-01', customer_id INTEGER, pack_g REAL, form TEXT, bag_kind TEXT, bags INTEGER, bean_id INTEGER, code TEXT, roasted_on TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "product_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "stage",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "owner",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'VTC'",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "status",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "receipt_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "roast_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "location",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'PROD-01'",
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "customer_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "pack_g",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "form",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "bag_kind",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 14,
+     "name": "bags",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 15,
+     "name": "bean_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 16,
+     "name": "code",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 17,
+     "name": "roasted_on",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "receipt_id",
+     "ref_table": "receipts",
+     "ref_col": "id"
+    },
+    {
+     "col": "product_id",
+     "ref_table": "masters",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": [
+    "CREATE UNIQUE INDEX ux_lots_code ON lots(code)"
+   ]
+  },
+  "movements": {
+   "sql": "CREATE TABLE movements(id INTEGER PRIMARY KEY, lot_id INTEGER NOT NULL REFERENCES lots(id), delta_kg REAL NOT NULL, action TEXT NOT NULL, source_id INTEGER, actor_id INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "lot_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "delta_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "action",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "source_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "actor_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "lot_id",
+     "ref_table": "lots",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": [
+    "CREATE INDEX ix_movements_lot ON movements(lot_id)"
+   ]
+  },
+  "roast_batches": {
+   "sql": "CREATE TABLE roast_batches(id INTEGER PRIMARY KEY, output_lot_id INTEGER, input_kg REAL NOT NULL, output_kg REAL NOT NULL, loss_kg REAL NOT NULL, duration_min INTEGER NOT NULL, profile TEXT, notes TEXT, abnormal INTEGER NOT NULL, qc_status TEXT NOT NULL, created_by INTEGER NOT NULL, created_at TEXT NOT NULL, profile_id INTEGER, code TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "output_lot_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "input_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "output_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "loss_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "duration_min",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "profile",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "notes",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "abnormal",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "qc_status",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "profile_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "code",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": [
+    "CREATE UNIQUE INDEX ux_roast_code ON roast_batches(code)"
+   ]
+  },
+  "roast_inputs": {
+   "sql": "CREATE TABLE roast_inputs(roast_id INTEGER NOT NULL REFERENCES roast_batches(id), lot_id INTEGER NOT NULL REFERENCES lots(id), kg REAL NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "roast_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 1,
+     "name": "lot_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "lot_id",
+     "ref_table": "lots",
+     "ref_col": "id"
+    },
+    {
+     "col": "roast_id",
+     "ref_table": "roast_batches",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "qc_events": {
+   "sql": "CREATE TABLE qc_events(id INTEGER PRIMARY KEY, roast_id INTEGER NOT NULL REFERENCES roast_batches(id), decision TEXT NOT NULL, note TEXT NOT NULL, user_id INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "roast_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "decision",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "roast_id",
+     "ref_table": "roast_batches",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "tasks": {
+   "sql": "CREATE TABLE tasks(id INTEGER PRIMARY KEY, title TEXT NOT NULL, assigned_to INTEGER REFERENCES users(id), target REAL, progress REAL NOT NULL DEFAULT 0, status TEXT NOT NULL DEFAULT 'OPEN', due TEXT, created_by INTEGER NOT NULL, created_at TEXT NOT NULL, kind TEXT NOT NULL DEFAULT 'GENERAL', ref_id INTEGER, submitted_at TEXT, submit_note TEXT NOT NULL DEFAULT '', reviewed_by INTEGER, reviewed_at TEXT, review_note TEXT NOT NULL DEFAULT '')",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "title",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "assigned_to",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "target",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "progress",
+     "type": "REAL",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "status",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'OPEN'",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "due",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "kind",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'GENERAL'",
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "ref_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "submitted_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "submit_note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "reviewed_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 14,
+     "name": "reviewed_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 15,
+     "name": "review_note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "assigned_to",
+     "ref_table": "users",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "pack_jobs": {
+   "sql": "CREATE TABLE pack_jobs(id INTEGER PRIMARY KEY, product_name TEXT NOT NULL, demand_type TEXT NOT NULL, packs_target INTEGER NOT NULL, pack_g REAL NOT NULL, packs_done INTEGER NOT NULL DEFAULT 0, state TEXT NOT NULL DEFAULT 'DRAFT', created_by INTEGER NOT NULL, created_at TEXT NOT NULL, source_lot_id INTEGER, input_kg REAL, rejected_packs INTEGER NOT NULL DEFAULT 0, output_lot_id INTEGER, label_ref TEXT NOT NULL DEFAULT '', order_id INTEGER)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "product_name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "demand_type",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "packs_target",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "pack_g",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "packs_done",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'DRAFT'",
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "source_lot_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "input_kg",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "rejected_packs",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "output_lot_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "label_ref",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 14,
+     "name": "order_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "orders": {
+   "sql": "CREATE TABLE orders(id INTEGER PRIMARY KEY, customer_id INTEGER NOT NULL REFERENCES masters(id), item TEXT NOT NULL, quantity_kg REAL NOT NULL, credit_requested INTEGER NOT NULL, state TEXT NOT NULL DEFAULT 'DRAFT', created_by INTEGER NOT NULL, created_at TEXT NOT NULL, form TEXT NOT NULL DEFAULT 'ROASTED', price_per_kg_paise INTEGER, credit_decided_by INTEGER, credit_note TEXT NOT NULL DEFAULT '', dispatched_kg REAL NOT NULL DEFAULT 0, invoice_id INTEGER, notes TEXT NOT NULL DEFAULT '', product_id INTEGER, gst_rate_bp INTEGER, advance_paise INTEGER NOT NULL DEFAULT 0, advance_ref TEXT NOT NULL DEFAULT '')",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "customer_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "item",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "quantity_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "credit_requested",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'DRAFT'",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "form",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'ROASTED'",
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "price_per_kg_paise",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "credit_decided_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "credit_note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "dispatched_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "invoice_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 14,
+     "name": "notes",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 15,
+     "name": "product_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 16,
+     "name": "gst_rate_bp",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 17,
+     "name": "advance_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 18,
+     "name": "advance_ref",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "customer_id",
+     "ref_table": "masters",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "config": {
+   "sql": "CREATE TABLE config(key TEXT PRIMARY KEY, value TEXT NOT NULL, changed_by INTEGER, changed_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "key",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "value",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "changed_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "changed_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "audit": {
+   "sql": "CREATE TABLE audit(\n  id INTEGER PRIMARY KEY,\n  user_id INTEGER REFERENCES users(id),\n  category TEXT NOT NULL DEFAULT 'operations',\n  action TEXT NOT NULL, subject TEXT NOT NULL, info TEXT NOT NULL DEFAULT '',\n  created_at TEXT NOT NULL\n)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "category",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'operations'",
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "action",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "subject",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "info",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "user_id",
+     "ref_table": "users",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": [
+    "CREATE INDEX ix_audit_cat ON audit(category, id)"
+   ]
+  },
+  "idem": {
+   "sql": "CREATE TABLE idem(user_id INTEGER NOT NULL, operation TEXT NOT NULL, idem_key TEXT NOT NULL, result TEXT NOT NULL, PRIMARY KEY(user_id, operation, idem_key))",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "operation",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 2
+    },
+    {
+     "cid": 2,
+     "name": "idem_key",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 3
+    },
+    {
+     "cid": 3,
+     "name": "result",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "reservations": {
+   "sql": "CREATE TABLE reservations(id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, lot_id INTEGER NOT NULL REFERENCES lots(id), kg REAL NOT NULL, state TEXT NOT NULL DEFAULT 'ACTIVE', created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "order_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "lot_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'ACTIVE'",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "lot_id",
+     "ref_table": "lots",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": [
+    "CREATE INDEX ix_res_lot ON reservations(lot_id, state)"
+   ]
+  },
+  "transfers": {
+   "sql": "CREATE TABLE transfers(id INTEGER PRIMARY KEY, from_loc TEXT NOT NULL, to_loc TEXT NOT NULL, source_lot_id INTEGER NOT NULL, transit_lot_id INTEGER, dest_lot_id INTEGER, kg_sent REAL NOT NULL, kg_received REAL, state TEXT NOT NULL, note TEXT NOT NULL DEFAULT '', sent_by INTEGER NOT NULL, received_by INTEGER, created_at TEXT NOT NULL, received_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "from_loc",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "to_loc",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "source_lot_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "transit_lot_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "dest_lot_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "kg_sent",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "kg_received",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "sent_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "received_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "received_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "cycle_counts": {
+   "sql": "CREATE TABLE cycle_counts(id INTEGER PRIMARY KEY, lot_id INTEGER NOT NULL, book_kg REAL NOT NULL, counted_kg REAL NOT NULL, variance_kg REAL NOT NULL, note TEXT NOT NULL DEFAULT '', state TEXT NOT NULL, counted_by INTEGER NOT NULL, decided_by INTEGER, created_at TEXT NOT NULL, decided_at TEXT, kind TEXT NOT NULL DEFAULT 'COUNT')",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "lot_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "book_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "counted_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "variance_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "counted_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "decided_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "decided_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "kind",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'COUNT'",
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "teams": {
+   "sql": "CREATE TABLE teams(id INTEGER PRIMARY KEY, key TEXT UNIQUE NOT NULL, name TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "key",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "user_teams": {
+   "sql": "CREATE TABLE user_teams(user_id INTEGER NOT NULL REFERENCES users(id), team_id INTEGER NOT NULL REFERENCES teams(id), PRIMARY KEY(user_id, team_id))",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "team_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 2
+    }
+   ],
+   "fks": [
+    {
+     "col": "team_id",
+     "ref_table": "teams",
+     "ref_col": "id"
+    },
+    {
+     "col": "user_id",
+     "ref_table": "users",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "conversations": {
+   "sql": "CREATE TABLE conversations(id INTEGER PRIMARY KEY, kind TEXT NOT NULL, title TEXT NOT NULL DEFAULT '', team_id INTEGER, record_type TEXT, record_id INTEGER, created_by INTEGER, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "kind",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "title",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "team_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "record_type",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "record_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "conversation_members": {
+   "sql": "CREATE TABLE conversation_members(conversation_id INTEGER NOT NULL REFERENCES conversations(id), user_id INTEGER NOT NULL REFERENCES users(id), last_read_id INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(conversation_id, user_id))",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "conversation_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 2
+    },
+    {
+     "cid": 2,
+     "name": "last_read_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "user_id",
+     "ref_table": "users",
+     "ref_col": "id"
+    },
+    {
+     "col": "conversation_id",
+     "ref_table": "conversations",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "messages": {
+   "sql": "CREATE TABLE messages(id INTEGER PRIMARY KEY, conversation_id INTEGER NOT NULL REFERENCES conversations(id), author_id INTEGER REFERENCES users(id), body TEXT NOT NULL DEFAULT '', voice_file_id INTEGER, audience TEXT, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "conversation_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "author_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "body",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "voice_file_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "audience",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "author_id",
+     "ref_table": "users",
+     "ref_col": "id"
+    },
+    {
+     "col": "conversation_id",
+     "ref_table": "conversations",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": [
+    "CREATE INDEX ix_msg_conv ON messages(conversation_id, id)"
+   ]
+  },
+  "announcement_reads": {
+   "sql": "CREATE TABLE announcement_reads(message_id INTEGER NOT NULL, user_id INTEGER NOT NULL, read_at TEXT NOT NULL, PRIMARY KEY(message_id, user_id))",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "message_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 2
+    },
+    {
+     "cid": 2,
+     "name": "read_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "files": {
+   "sql": "CREATE TABLE files(id INTEGER PRIMARY KEY, kind TEXT NOT NULL, mime TEXT NOT NULL, bytes INTEGER NOT NULL, sha256 TEXT NOT NULL, path TEXT NOT NULL, created_by INTEGER NOT NULL, created_at TEXT NOT NULL, expires_at TEXT, deleted_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "kind",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "mime",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "bytes",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "sha256",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "path",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "expires_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "deleted_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "alerts": {
+   "sql": "CREATE TABLE alerts(id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), severity TEXT NOT NULL, title TEXT NOT NULL, body TEXT NOT NULL DEFAULT '', view TEXT, record_type TEXT, record_id INTEGER, dedupe_key TEXT, created_at TEXT NOT NULL, visible_at TEXT NOT NULL, read_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "severity",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "title",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "body",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "view",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "record_type",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "record_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "dedupe_key",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "visible_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "read_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "user_id",
+     "ref_table": "users",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": [
+    "CREATE INDEX ix_alerts_user ON alerts(user_id, read_at)"
+   ]
+  },
+  "counter_items": {
+   "sql": "CREATE TABLE counter_items(id INTEGER PRIMARY KEY, name TEXT NOT NULL, kind TEXT NOT NULL, coffee_pct REAL NOT NULL DEFAULT 0, chicory_product_id INTEGER, stock_product_id INTEGER, price_per_kg_paise INTEGER NOT NULL, gst_rate_bp INTEGER, hsn TEXT NOT NULL DEFAULT '', active INTEGER NOT NULL DEFAULT 1, version INTEGER NOT NULL DEFAULT 1, changed_by INTEGER, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "kind",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "coffee_pct",
+     "type": "REAL",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "chicory_product_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "stock_product_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "price_per_kg_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "gst_rate_bp",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "hsn",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "active",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "1",
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "version",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "1",
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "changed_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "counter_sales": {
+   "sql": "CREATE TABLE counter_sales(id INTEGER PRIMARY KEY, bill_no TEXT UNIQUE NOT NULL, customer_name TEXT NOT NULL DEFAULT '', customer_phone TEXT NOT NULL DEFAULT '', subtotal_paise INTEGER NOT NULL, discount_paise INTEGER NOT NULL DEFAULT 0, discount_reason TEXT NOT NULL DEFAULT '', gst_paise INTEGER NOT NULL DEFAULT 0, total_paise INTEGER NOT NULL, status TEXT NOT NULL, reprints INTEGER NOT NULL DEFAULT 0, created_by INTEGER NOT NULL, created_at TEXT NOT NULL, customer_id INTEGER)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "bill_no",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "customer_name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "customer_phone",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "subtotal_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "discount_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "discount_reason",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "gst_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "total_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "status",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "reprints",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "customer_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "counter_lines": {
+   "sql": "CREATE TABLE counter_lines(id INTEGER PRIMARY KEY, sale_id INTEGER NOT NULL REFERENCES counter_sales(id), item_id INTEGER NOT NULL, item_name TEXT NOT NULL, weight_kg REAL NOT NULL, rate_paise INTEGER NOT NULL, amount_paise INTEGER NOT NULL, gst_rate_bp INTEGER, coffee_pct REAL, override_reason TEXT NOT NULL DEFAULT '')",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "sale_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "item_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "item_name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "weight_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "rate_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "amount_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "gst_rate_bp",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "coffee_pct",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "override_reason",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "sale_id",
+     "ref_table": "counter_sales",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "counter_payments": {
+   "sql": "CREATE TABLE counter_payments(id INTEGER PRIMARY KEY, sale_id INTEGER NOT NULL REFERENCES counter_sales(id), method TEXT NOT NULL, amount_paise INTEGER NOT NULL, reference TEXT NOT NULL DEFAULT '', created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "sale_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "method",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "amount_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "reference",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "sale_id",
+     "ref_table": "counter_sales",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "counter_refunds": {
+   "sql": "CREATE TABLE counter_refunds(id INTEGER PRIMARY KEY, sale_id INTEGER NOT NULL REFERENCES counter_sales(id), amount_paise INTEGER NOT NULL, method TEXT NOT NULL, reason TEXT NOT NULL, state TEXT NOT NULL, requested_by INTEGER NOT NULL, decided_by INTEGER, created_at TEXT NOT NULL, decided_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "sale_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "amount_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "method",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "reason",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "requested_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "decided_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "decided_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "sale_id",
+     "ref_table": "counter_sales",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "cash_closes": {
+   "sql": "CREATE TABLE cash_closes(id INTEGER PRIMARY KEY, shift_date TEXT NOT NULL, opening_paise INTEGER NOT NULL, cash_sales_paise INTEGER NOT NULL, cash_refunds_paise INTEGER NOT NULL, expected_paise INTEGER NOT NULL, counted_paise INTEGER NOT NULL, difference_paise INTEGER NOT NULL, note TEXT NOT NULL DEFAULT '', state TEXT NOT NULL, submitted_by INTEGER NOT NULL, decided_by INTEGER, created_at TEXT NOT NULL, decided_at TEXT, bills INTEGER, total_paise INTEGER, register TEXT, reopened_by INTEGER, reopened_at TEXT, reopen_reason TEXT NOT NULL DEFAULT '')",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "shift_date",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "opening_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "cash_sales_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "cash_refunds_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "expected_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "counted_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "difference_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "submitted_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "decided_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "decided_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 14,
+     "name": "bills",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 15,
+     "name": "total_paise",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 16,
+     "name": "register",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 17,
+     "name": "reopened_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 18,
+     "name": "reopened_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 19,
+     "name": "reopen_reason",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "recipes": {
+   "sql": "CREATE TABLE recipes(id INTEGER PRIMARY KEY, name TEXT NOT NULL, confidential INTEGER NOT NULL DEFAULT 0, stage TEXT NOT NULL, active INTEGER NOT NULL DEFAULT 1, created_by INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "confidential",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "stage",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "active",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "1",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "recipe_versions": {
+   "sql": "CREATE TABLE recipe_versions(id INTEGER PRIMARY KEY, recipe_id INTEGER NOT NULL REFERENCES recipes(id), version INTEGER NOT NULL, components TEXT NOT NULL, notes TEXT NOT NULL DEFAULT '', created_by INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "recipe_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "version",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "components",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "notes",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "recipe_id",
+     "ref_table": "recipes",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "blend_jobs": {
+   "sql": "CREATE TABLE blend_jobs(id INTEGER PRIMARY KEY, recipe_version_id INTEGER NOT NULL, stage TEXT NOT NULL, input_kg REAL NOT NULL, output_kg REAL NOT NULL, loss_kg REAL NOT NULL, output_lot_id INTEGER, notes TEXT NOT NULL DEFAULT '', created_by INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "recipe_version_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "stage",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "input_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "output_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "loss_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "output_lot_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "notes",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "blend_inputs": {
+   "sql": "CREATE TABLE blend_inputs(job_id INTEGER NOT NULL, lot_id INTEGER NOT NULL, kg REAL NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "job_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 1,
+     "name": "lot_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "grind_jobs": {
+   "sql": "CREATE TABLE grind_jobs(id INTEGER PRIMARY KEY, input_lot_id INTEGER NOT NULL, input_kg REAL NOT NULL, output_kg REAL NOT NULL, grind TEXT NOT NULL, output_lot_id INTEGER, created_by INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "input_lot_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "input_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "output_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "grind",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "output_lot_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "outside_jobs": {
+   "sql": "CREATE TABLE outside_jobs(id INTEGER PRIMARY KEY, customer_id INTEGER NOT NULL, received_kg REAL NOT NULL, raw_lot_id INTEGER NOT NULL, input_kg REAL, output_kg REAL, loss_kg REAL, roasted_lot_id INTEGER, charge_basis TEXT NOT NULL, rate_paise INTEGER NOT NULL, charge_paise INTEGER, returned_kg REAL NOT NULL DEFAULT 0, return_note TEXT NOT NULL DEFAULT '', payment_status TEXT NOT NULL DEFAULT 'PENDING', state TEXT NOT NULL, created_by INTEGER NOT NULL, created_at TEXT NOT NULL, bean_type TEXT NOT NULL DEFAULT '')",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "customer_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "received_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "raw_lot_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "input_kg",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "output_kg",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "loss_kg",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "roasted_lot_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "charge_basis",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "rate_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "charge_paise",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "returned_kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "return_note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "payment_status",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'PENDING'",
+     "pk": 0
+    },
+    {
+     "cid": 14,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 15,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 16,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 17,
+     "name": "bean_type",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "customer_terms": {
+   "sql": "CREATE TABLE customer_terms(customer_id INTEGER PRIMARY KEY, credit_limit_paise INTEGER NOT NULL, due_days INTEGER NOT NULL, set_by INTEGER NOT NULL, set_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "customer_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "credit_limit_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "due_days",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "set_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "set_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "dispatches": {
+   "sql": "CREATE TABLE dispatches(id INTEGER PRIMARY KEY, order_id INTEGER NOT NULL, mode TEXT NOT NULL, booking_ref TEXT NOT NULL DEFAULT '', handover_to TEXT NOT NULL, evidence TEXT NOT NULL DEFAULT '', kg REAL NOT NULL, handed_by INTEGER NOT NULL, created_at TEXT NOT NULL, delivered_kg REAL, pod_note TEXT, delivered_at TEXT, confirmed_by INTEGER)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "order_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "mode",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "booking_ref",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "handover_to",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "evidence",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "handed_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "delivered_kg",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "pod_note",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "delivered_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "confirmed_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "invoices": {
+   "sql": "CREATE TABLE invoices(id INTEGER PRIMARY KEY, number TEXT UNIQUE NOT NULL, order_id INTEGER NOT NULL, customer_id INTEGER NOT NULL, taxable_paise INTEGER NOT NULL, gst_paise INTEGER NOT NULL, total_paise INTEGER NOT NULL, due_date TEXT NOT NULL, status TEXT NOT NULL, created_by INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "number",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "order_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "customer_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "taxable_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "gst_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "total_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "due_date",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "status",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "collections": {
+   "sql": "CREATE TABLE collections(id INTEGER PRIMARY KEY, invoice_id INTEGER NOT NULL, amount_paise INTEGER NOT NULL, method TEXT NOT NULL, reference TEXT NOT NULL DEFAULT '', state TEXT NOT NULL, recorded_by INTEGER NOT NULL, verified_by INTEGER, created_at TEXT NOT NULL, verified_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "invoice_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "amount_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "method",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "reference",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "recorded_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "verified_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "verified_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "supplier_payments": {
+   "sql": "CREATE TABLE supplier_payments(id INTEGER PRIMARY KEY, receipt_id INTEGER NOT NULL, amount_paise INTEGER NOT NULL, reference TEXT NOT NULL DEFAULT '', paid_on TEXT NOT NULL, state TEXT NOT NULL, recorded_by INTEGER NOT NULL, approved_by INTEGER, created_at TEXT NOT NULL, decided_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "receipt_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "amount_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "reference",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "paid_on",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "recorded_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "approved_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "decided_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "tally_exports": {
+   "sql": "CREATE TABLE tally_exports(id INTEGER PRIMARY KEY, batch_no TEXT UNIQUE NOT NULL, period_from TEXT NOT NULL, period_to TEXT NOT NULL, voucher_count INTEGER NOT NULL, control_total_paise INTEGER NOT NULL, checksum TEXT NOT NULL, content TEXT NOT NULL, state TEXT NOT NULL, result_note TEXT NOT NULL DEFAULT '', created_by INTEGER NOT NULL, created_at TEXT NOT NULL, decided_by INTEGER, decided_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "batch_no",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "period_from",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "period_to",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "voucher_count",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "control_total_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "checksum",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "content",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "result_note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "decided_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "decided_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "tally_export_lines": {
+   "sql": "CREATE TABLE tally_export_lines(export_id INTEGER NOT NULL, source_type TEXT NOT NULL, source_id INTEGER NOT NULL, PRIMARY KEY(export_id, source_type, source_id))",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "export_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "source_type",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 2
+    },
+    {
+     "cid": 2,
+     "name": "source_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 3
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "roast_profiles": {
+   "sql": "CREATE TABLE roast_profiles(id INTEGER PRIMARY KEY, name TEXT NOT NULL, notes TEXT NOT NULL DEFAULT '', active INTEGER NOT NULL DEFAULT 1, created_by INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "notes",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "active",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "1",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "counter_customers": {
+   "sql": "CREATE TABLE counter_customers(id INTEGER PRIMARY KEY, phone TEXT UNIQUE NOT NULL, name TEXT NOT NULL DEFAULT '', visits INTEGER NOT NULL DEFAULT 0, first_seen TEXT NOT NULL, last_seen TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "phone",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "visits",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "first_seen",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "last_seen",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "counter_collections": {
+   "sql": "CREATE TABLE counter_collections(id INTEGER PRIMARY KEY, day TEXT NOT NULL, method TEXT NOT NULL, amount_paise INTEGER NOT NULL, note TEXT NOT NULL DEFAULT '', created_by INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "day",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "method",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "amount_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "secrets": {
+   "sql": "CREATE TABLE secrets(key TEXT PRIMARY KEY, value TEXT NOT NULL, changed_by INTEGER, changed_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "key",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "value",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "changed_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "changed_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "roast_meter": {
+   "sql": "CREATE TABLE roast_meter(month TEXT PRIMARY KEY, start_reading INTEGER, end_reading INTEGER, updated_by INTEGER, updated_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "month",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "start_reading",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "end_reading",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "updated_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "updated_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "gas_cylinders": {
+   "sql": "CREATE TABLE gas_cylinders(id INTEGER PRIMARY KEY, fitted_on TEXT NOT NULL, kg REAL NOT NULL, note TEXT NOT NULL DEFAULT '', created_by INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "fitted_on",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "maintenance": {
+   "sql": "CREATE TABLE maintenance(id INTEGER PRIMARY KEY, title TEXT NOT NULL, area TEXT NOT NULL, details TEXT NOT NULL DEFAULT '', urgency TEXT NOT NULL, status TEXT NOT NULL DEFAULT 'OPEN', raised_by INTEGER NOT NULL, assigned_to INTEGER, resolution TEXT NOT NULL DEFAULT '', resolved_by INTEGER, created_at TEXT NOT NULL, updated_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "title",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "area",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "details",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "urgency",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "status",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'OPEN'",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "raised_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "assigned_to",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "resolution",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "resolved_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "updated_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "stock_cards": {
+   "sql": "CREATE TABLE stock_cards(product_id INTEGER PRIMARY KEY, label TEXT NOT NULL DEFAULT '', color TEXT NOT NULL DEFAULT '', sort INTEGER NOT NULL DEFAULT 0, hidden INTEGER NOT NULL DEFAULT 0, pinned INTEGER NOT NULL DEFAULT 0, low_kg REAL, updated_by INTEGER, updated_at TEXT, low_alerted INTEGER NOT NULL DEFAULT 0)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "product_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "label",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "color",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "sort",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "hidden",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "pinned",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "low_kg",
+     "type": "REAL",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "updated_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "updated_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "low_alerted",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "stock_dirty": {
+   "sql": "CREATE TABLE stock_dirty(id INTEGER PRIMARY KEY CHECK(id=1), dirty INTEGER NOT NULL DEFAULT 0)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "dirty",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": "0",
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "staff_profiles": {
+   "sql": "CREATE TABLE staff_profiles(user_id INTEGER PRIMARY KEY REFERENCES users(id), designation TEXT NOT NULL DEFAULT '', phone TEXT NOT NULL DEFAULT '', alt_phone TEXT NOT NULL DEFAULT '', email TEXT NOT NULL DEFAULT '', address TEXT NOT NULL DEFAULT '', dob TEXT, joined_on TEXT, emergency_name TEXT NOT NULL DEFAULT '', emergency_phone TEXT NOT NULL DEFAULT '', aadhaar_last4 TEXT NOT NULL DEFAULT '', pan_last4 TEXT NOT NULL DEFAULT '', bank_name TEXT NOT NULL DEFAULT '', bank_last4 TEXT NOT NULL DEFAULT '', ifsc TEXT NOT NULL DEFAULT '', notes TEXT NOT NULL DEFAULT '', updated_by INTEGER, updated_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "designation",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "phone",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "alt_phone",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "email",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "address",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "dob",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "joined_on",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "emergency_name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "emergency_phone",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "aadhaar_last4",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "pan_last4",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 12,
+     "name": "bank_name",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 13,
+     "name": "bank_last4",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 14,
+     "name": "ifsc",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 15,
+     "name": "notes",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 16,
+     "name": "updated_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 17,
+     "name": "updated_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "user_id",
+     "ref_table": "users",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "golive": {
+   "sql": "CREATE TABLE golive(id INTEGER PRIMARY KEY CHECK (id=1), state TEXT NOT NULL DEFAULT 'SETUP', cash_paise INTEGER, confirmed_by INTEGER, confirmed_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'SETUP'",
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "cash_paise",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "confirmed_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "confirmed_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "opening_stock": {
+   "sql": "CREATE TABLE opening_stock(id INTEGER PRIMARY KEY, product_id INTEGER NOT NULL REFERENCES masters(id), form TEXT NOT NULL, bag_kind TEXT, bags INTEGER, kg REAL NOT NULL, location TEXT NOT NULL, roasted_on TEXT, note TEXT NOT NULL DEFAULT '', lot_id INTEGER, created_by INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "product_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "form",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "bag_kind",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "bags",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "kg",
+     "type": "REAL",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "location",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "roasted_on",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "lot_id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 10,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 11,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "product_id",
+     "ref_table": "masters",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "opening_dues": {
+   "sql": "CREATE TABLE opening_dues(id INTEGER PRIMARY KEY, side TEXT NOT NULL CHECK (side IN ('CLIENT','SUPPLIER','STAFF')), party_id INTEGER NOT NULL, amount_paise INTEGER NOT NULL, since TEXT, due_date TEXT, note TEXT NOT NULL DEFAULT '', state TEXT NOT NULL DEFAULT 'DRAFT', created_by INTEGER NOT NULL, created_at TEXT NOT NULL)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "side",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "party_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "amount_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "since",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "due_date",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "note",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "'DRAFT'",
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [],
+   "indexes": []
+  },
+  "opening_due_payments": {
+   "sql": "CREATE TABLE opening_due_payments(id INTEGER PRIMARY KEY, due_id INTEGER NOT NULL REFERENCES opening_dues(id), amount_paise INTEGER NOT NULL, method TEXT NOT NULL, reference TEXT NOT NULL DEFAULT '', state TEXT NOT NULL, recorded_by INTEGER NOT NULL, verified_by INTEGER, created_at TEXT NOT NULL, verified_at TEXT)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "due_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "amount_paise",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "method",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "reference",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "state",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "recorded_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "verified_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 9,
+     "name": "verified_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "due_id",
+     "ref_table": "opening_dues",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  },
+  "staff_documents": {
+   "sql": "CREATE TABLE staff_documents(id INTEGER PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id), kind TEXT NOT NULL, label TEXT NOT NULL DEFAULT '', file_id INTEGER NOT NULL REFERENCES files(id), uploaded_by INTEGER NOT NULL, created_at TEXT NOT NULL, removed_at TEXT, removed_by INTEGER)",
+   "columns": [
+    {
+     "cid": 0,
+     "name": "id",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 1
+    },
+    {
+     "cid": 1,
+     "name": "user_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 2,
+     "name": "kind",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 3,
+     "name": "label",
+     "type": "TEXT",
+     "notnull": true,
+     "default": "''",
+     "pk": 0
+    },
+    {
+     "cid": 4,
+     "name": "file_id",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 5,
+     "name": "uploaded_by",
+     "type": "INTEGER",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 6,
+     "name": "created_at",
+     "type": "TEXT",
+     "notnull": true,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 7,
+     "name": "removed_at",
+     "type": "TEXT",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    },
+    {
+     "cid": 8,
+     "name": "removed_by",
+     "type": "INTEGER",
+     "notnull": false,
+     "default": null,
+     "pk": 0
+    }
+   ],
+   "fks": [
+    {
+     "col": "file_id",
+     "ref_table": "files",
+     "ref_col": "id"
+    },
+    {
+     "col": "user_id",
+     "ref_table": "users",
+     "ref_col": "id"
+    }
+   ],
+   "indexes": []
+  }
+ },
+ "triggers": [
+  {
+   "name": "movements_mark_stock",
+   "sql": "CREATE TRIGGER movements_mark_stock AFTER INSERT ON movements BEGIN UPDATE stock_dirty SET dirty=1 WHERE id=1; END"
+  }
+ ],
+ "schema_version": 3
+}

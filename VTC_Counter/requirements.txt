@@ -1,0 +1,5 @@
+fastapi>=0.110,<1
+uvicorn>=0.28,<1
+reportlab>=4,<6
+pillow>=10,<13
+pywin32>=306; sys_platform == "win32"

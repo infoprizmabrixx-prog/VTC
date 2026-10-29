@@ -1,0 +1,1317 @@
+{
+ "api.js": {
+  "lines": 35,
+  "header": "Talking to the server. Every call goes through here so errors, sign-out and the anti-forgery header are handled in one place.",
+  "exports": [
+   "setSignedOutHandler",
+   "ApiError",
+   "api",
+   "newKey"
+  ],
+  "api_calls": [],
+  "api_paths_mentioned": [
+   "/api/v1",
+   "/login"
+  ],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [],
+  "actions": [],
+  "buttons": []
+ },
+ "app.js": {
+  "lines": 175,
+  "header": "Start-up, navigation and one shared event handler for the whole app.",
+  "exports": [],
+  "api_calls": [
+   "GET /i18n",
+   "POST /logout",
+   "GET /me"
+  ],
+  "api_paths_mentioned": [
+   "/i18n",
+   "/logout",
+   "/me"
+  ],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [],
+  "actions": [],
+  "buttons": []
+ },
+ "arrange.js": {
+  "lines": 305,
+  "header": "v1.5 (owner request 27 Oct 2026): arrange the home screen in place. Press and hold any card (or drag the strip under it while arranging) to lift it; the other cards slide aside and it snaps into the grid where you let go. ‹ › move a card without dragging, S / M / L makes it small, wide or a full row, ✕ removes it. Changes save by themselves.",
+  "exports": [
+   "sizeOf",
+   "widget",
+   "arrangeBar",
+   "customiseLabel",
+   "toggleArrange",
+   "initArrange",
+   "arrangeClick"
+  ],
+  "api_calls": [
+   "PUT /me/preferences"
+  ],
+  "api_paths_mentioned": [
+   "/me/preferences"
+  ],
+  "dialogs": [
+   "Add a card",
+   "Shortcuts & title"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "action",
+   "shortcut",
+   "size",
+   "title",
+   "w",
+   "wtool"
+  ],
+  "actions": [],
+  "buttons": [
+   "Add card",
+   "Done",
+   "Shortcuts"
+  ]
+ },
+ "fx.js": {
+  "lines": 104,
+  "header": "Motion layer (v1.1). Uses Motion's vanilla animate() bundled locally in vendor/ so it works on the office Wi-Fi without internet. Rules followed: show loaders only after 300 ms, animate transform/opacity only, exits faster than entrances, and nothing moves when the device asks for reduced motion.",
+  "exports": [
+   "startLoader",
+   "stopLoader",
+   "enterPage",
+   "bootLoader",
+   "enterDialog",
+   "busy"
+  ],
+  "api_calls": [],
+  "api_paths_mentioned": [],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [],
+  "actions": [],
+  "buttons": []
+ },
+ "help.js": {
+  "lines": 173,
+  "header": "ⓘ explanations and 🔊 read-aloud (v1.2). Buttons are attached automatically to page headings, panel headings and form labels that have an entry in helptext.js, so screens need no changes. Audio uses the device's own voice (speechSynthesis).",
+  "exports": [
+   "attachHelp",
+   "canSpeak",
+   "SAMPLE",
+   "voicesReady",
+   "voiceFor",
+   "noVoice",
+   "speakText",
+   "voiceBanner"
+  ],
+  "api_calls": [],
+  "api_paths_mentioned": [],
+  "dialogs": [
+   "No voice in this browser"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "help",
+   "hl",
+   "say"
+  ],
+  "actions": [],
+  "buttons": [
+   "Copy",
+   "How to listen",
+   "Listen"
+  ]
+ },
+ "i18n.js": {
+  "lines": 278,
+  "header": "Built-in wording in English, Telugu and Hindi. The admin can replace any of these from Admin Control → Settings → Wording (stored on the server), which is how staff-validated Telugu/Hindi vocabulary (DPR O-27) gets in.",
+  "exports": [
+   "BUILT_IN",
+   "LANG_NAMES",
+   "setOverrides",
+   "setLang",
+   "lang",
+   "tl",
+   "t",
+   "errorText",
+   "WORDING_KEYS"
+  ],
+  "api_calls": [],
+  "api_paths_mentioned": [],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [],
+  "actions": [],
+  "buttons": []
+ },
+ "labels.js": {
+  "lines": 103,
+  "header": "v1.4: QR lot labels printed on the 80 mm receipt printer (one label per page, so the printer cuts between them). The QR holds the lot code; bag labels add \"/bag number\".",
+  "exports": [
+   "fmtDay",
+   "printLabels",
+   "offerLabels",
+   "offerBagLabels",
+   "savedBanner"
+  ],
+  "api_calls": [
+   "GET /lots/find?id=${lot}",
+   "GET /lots/find?id=${x.id}"
+  ],
+  "api_paths_mentioned": [
+   "/lots/find?id=${lot}",
+   "/lots/find?id=${x.id}"
+  ],
+  "dialogs": [
+   "${receipt.code} saved — print bag labels?"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "label"
+  ],
+  "actions": [],
+  "buttons": []
+ },
+ "login.js": {
+  "lines": 128,
+  "header": "Sign-in screens: tap-your-name + PIN for staff tablets, password for others, and the forced \"set your own password\" screen.",
+  "exports": [
+   "showLogin",
+   "showChangeSecret"
+  ],
+  "api_calls": [
+   "POST /login",
+   "POST /login/pin",
+   "GET /login/pin-people",
+   "POST /me/secret"
+  ],
+  "api_paths_mentioned": [
+   "/login",
+   "/login/pin",
+   "/login/pin-people",
+   "/me/secret"
+  ],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [
+   "key",
+   "mode",
+   "pick"
+  ],
+  "actions": [],
+  "buttons": [
+   "Password",
+   "Save and continue",
+   "Staff · PIN"
+  ]
+ },
+ "scan.js": {
+  "lines": 116,
+  "header": "v1.4: scan a QR lot label and act on it. Three ways in, whatever the device: · live camera (only on HTTPS or on the office PC itself — browsers allow cameras on secure pages only) · photo mode: the phone's camera app takes a picture of the label and the portal reads it · a handheld scanner or typing: the code goes into the box (or anywhere on the page, see app.js)",
+  "exports": [
+   "canScan",
+   "openScanner",
+   "openLot",
+   "wedge"
+  ],
+  "api_calls": [
+   "GET /lots/find?code=${encodeURIComponent(code)}"
+  ],
+  "api_paths_mentioned": [],
+  "dialogs": [
+   "Scan a label"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "act"
+  ],
+  "actions": [],
+  "buttons": []
+ },
+ "shell.js": {
+  "lines": 89,
+  "header": "The frame around every screen: side navigation, top bar, idle sign-out.",
+  "exports": [
+   "MODULES",
+   "SECTION",
+   "renderShell",
+   "startIdleWatch",
+   "stopIdleWatch"
+  ],
+  "api_calls": [
+   "PUT /me/preferences"
+  ],
+  "api_paths_mentioned": [
+   "/me/preferences"
+  ],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [
+   "action",
+   "go",
+   "pend"
+  ],
+  "actions": [
+   "account",
+   "bell",
+   "logout",
+   "menu",
+   "scan"
+  ],
+  "buttons": []
+ },
+ "state.js": {
+  "lines": 20,
+  "header": "Shared state for the signed-in session. Screens read from here; app.js owns navigation and fills in `go` / `refreshMe` at start-up.",
+  "exports": [
+   "S",
+   "can",
+   "tier",
+   "nav"
+  ],
+  "api_calls": [],
+  "api_paths_mentioned": [],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [],
+  "actions": [],
+  "buttons": []
+ },
+ "ui.js": {
+  "lines": 112,
+  "header": "Small building blocks for screens. Everything user-supplied goes through h().",
+  "exports": [
+   "h",
+   "num",
+   "when",
+   "initials",
+   "toast",
+   "fail",
+   "tag",
+   "chip",
+   "pageHead",
+   "table",
+   "field",
+   "select",
+   "check",
+   "formData",
+   "dialog",
+   "confirmBox",
+   "labelTables",
+   "goto"
+  ],
+  "api_calls": [],
+  "api_paths_mentioned": [],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [
+   "goto"
+  ],
+  "actions": [],
+  "buttons": []
+ },
+ "views/admin.js": {
+  "lines": 585,
+  "header": "Admin Control: People · Roles & permissions · Settings · Audit log. Only reachable with system.* permissions (Admin-level only); the server re-checks every action and enforces the guard rails.",
+  "exports": [
+   "admin",
+   "adminClick",
+   "adminChange",
+   "adminKey"
+  ],
+  "api_calls": [
+   "PUT /admin/dashboard-defaults/${sub().dashRole}",
+   "DELETE /admin/grants/${ds.endgrant}",
+   "PUT /admin/i18n",
+   "POST /admin/roles",
+   "PUT /admin/roles/${role.id}",
+   "PUT /admin/settings",
+   "POST /admin/teams",
+   "POST /admin/users",
+   "POST /admin/users/${S.sub.person}/grants",
+   "GET /admin/users/${S.sub.person}/preview",
+   "PUT /admin/users/${form.dataset.person}/teams",
+   "PUT /admin/users/${p.id}",
+   "POST /admin/users/${p.id}/secret",
+   "PUT /qc/config"
+  ],
+  "api_paths_mentioned": [
+   "/admin/catalog",
+   "/admin/grants/${ds.endgrant}",
+   "/admin/i18n",
+   "/admin/roles",
+   "/admin/roles/${role.id}",
+   "/admin/settings",
+   "/admin/teams",
+   "/admin/users",
+   "/admin/users/${form.dataset.person}/teams",
+   "/admin/users/${p.id}",
+   "/admin/users/${p.id}/secret",
+   "/admin/users/${p.id}/teams",
+   "/admin/users/${s.person}/access",
+   "/admin/users/${s.person}/teams",
+   "/qc/config",
+   "/team",
+   "/team/${s.person}/profile",
+   "/team/${s.staff}/profile",
+   "/teams"
+  ],
+  "dialogs": [
+   "Add a person",
+   "Change ${p.full_name}'s role",
+   "New role",
+   "New team group",
+   "Rename",
+   "Rename role",
+   "Reset ${isPin ? ",
+   "Role description",
+   "What ${a.user.full_name} sees"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "action",
+   "all",
+   "auditcat",
+   "endgrant",
+   "grant",
+   "perm",
+   "person",
+   "role",
+   "settings",
+   "shortcut",
+   "tab",
+   "team",
+   "tier",
+   "widget",
+   "word"
+  ],
+  "actions": [
+   "addPerson",
+   "backPeople",
+   "changeRole",
+   "clearQC",
+   "describeRole",
+   "newRole",
+   "newTeam",
+   "preview",
+   "rename",
+   "renameRole",
+   "resetSecret",
+   "saveRole",
+   "toggleActive",
+   "toggleRole",
+   "undoRole"
+  ],
+  "buttons": [
+   "All",
+   "Change role",
+   "Edit",
+   "End now",
+   "Give",
+   "Manage →",
+   "None",
+   "Remove",
+   "Remove range",
+   "Rename",
+   "Review & save",
+   "Save",
+   "Save & apply to everyone in role",
+   "Save QC range",
+   "Save branding",
+   "Save business values",
+   "Save default",
+   "Save teams",
+   "Undo"
+  ]
+ },
+ "views/catalogue.js": {
+  "lines": 138,
+  "header": "Admin Control → Clients & suppliers · Beans & products · Roast profiles · Prices (v1.1). One place for everything the business adds or prices. Managers may suggest drafts; only admin-level people (masters.approve) activate or change records.",
+  "exports": [
+   "CATEGORY",
+   "CATALOGUE_TABS",
+   "cataloguePaths",
+   "catalogueRender",
+   "catalogueClick",
+   "customRatesSubmit"
+  ],
+  "api_calls": [
+   "PUT /admin/settings",
+   "PUT /counter/items/${id}",
+   "POST /masters",
+   "POST /masters/${ds.mapprove}/approve",
+   "PUT /masters/${id}",
+   "PUT /masters/${x.id}",
+   "PUT /roast-profiles/${id}"
+  ],
+  "api_paths_mentioned": [
+   "/admin/settings",
+   "/counter/items/${id}",
+   "/counter/setup",
+   "/masters",
+   "/masters/${ds.mapprove}/approve",
+   "/masters/${id}",
+   "/masters/${x.id}",
+   "/masters?kind=${kind}",
+   "/masters?kind=${k}",
+   "/masters?kind=customer",
+   "/masters?kind=product",
+   "/masters?kind=supplier",
+   "/roast-profiles",
+   "/roast-profiles/${id}",
+   "/roast-profiles/${p.id}"
+  ],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [
+   "action",
+   "madd",
+   "mapprove",
+   "medit",
+   "mtoggle",
+   "pedit",
+   "ptoggle",
+   "settings"
+  ],
+  "actions": [
+   "addProfile",
+   "newItem"
+  ],
+  "buttons": [
+   "Approve",
+   "Edit",
+   "Save rates"
+  ]
+ },
+ "views/comms.js": {
+  "lines": 238,
+  "header": "Messages: inbox, threads, announcements with read receipts, voice notes, discussion on work records, the alerts bell. (DPR Addendum A)",
+  "exports": [
+   "comms",
+   "afterRender",
+   "openRecordThread",
+   "discussBtn",
+   "bellDialog",
+   "refreshBadge",
+   "startPolling",
+   "stopPolling",
+   "commsClick",
+   "commsSubmit"
+  ],
+  "api_calls": [
+   "GET /alerts",
+   "POST /alerts/read",
+   "GET /comms/badge",
+   "GET /comms/contacts",
+   "GET /comms/conversations/${cid}",
+   "POST /comms/conversations/${form.dataset.compose}/messages",
+   "POST /comms/direct",
+   "GET /comms/record/${type}/${id}",
+   "POST /comms/voice"
+  ],
+  "api_paths_mentioned": [
+   "/alerts",
+   "/alerts/read",
+   "/api/v1/comms/files/${m.voice_file_id}",
+   "/comms/badge",
+   "/comms/contacts",
+   "/comms/conversations/${cid}",
+   "/comms/conversations/${form.dataset.compose}/messages",
+   "/comms/conversations/${s.conv}",
+   "/comms/direct",
+   "/comms/inbox",
+   "/comms/oversight",
+   "/comms/record/${type}/${id}",
+   "/comms/voice"
+  ],
+  "dialogs": [
+   "New direct chat",
+   "🔔 Alerts"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "action",
+   "alertgo",
+   "alertid",
+   "compose",
+   "conv",
+   "discuss",
+   "go",
+   "mic",
+   "openrecord"
+  ],
+  "actions": [
+   "closeConv",
+   "newChat",
+   "oversight"
+  ],
+  "buttons": [
+   "Close",
+   "Oversight",
+   "Send"
+  ]
+ },
+ "views/counter.js": {
+  "lines": 439,
+  "header": "Counter Sales (DPR §9): fast paid-in-full sales, 80 mm receipts, refunds, cash close, the admin price list and receiving stock from production.",
+  "exports": [
+   "counter",
+   "printReceipt",
+   "pricesTable",
+   "itemDialog",
+   "counterClick",
+   "receiveTransfer",
+   "counterInput",
+   "counterSubmit"
+  ],
+  "api_calls": [
+   "POST /counter/cash-close",
+   "POST /counter/cash-close/${ds.reopen}/reopen",
+   "POST /counter/cash-close/${id}/decide",
+   "GET /counter/cash-close/${id}/register",
+   "POST /counter/refunds/${id}/decide",
+   "POST /counter/sales",
+   "POST /counter/sales/${b.id}/reprint",
+   "GET /counter/sales/${ds.bill}",
+   "POST /counter/sales/${id}/refunds",
+   "POST /transfers/${id}/receive"
+  ],
+  "api_paths_mentioned": [
+   "/counter/cash-close",
+   "/counter/cash-close/${ds.reopen}/reopen",
+   "/counter/cash-close/${id}/decide",
+   "/counter/cash-close/${id}/register",
+   "/counter/items",
+   "/counter/items/${item.id}",
+   "/counter/refunds/${id}/decide",
+   "/counter/sales",
+   "/counter/sales/${b.id}/reprint",
+   "/counter/sales/${ds.bill}",
+   "/counter/sales/${id}/refunds",
+   "/counter/setup",
+   "/transfers/${id}/receive"
+  ],
+  "dialogs": [
+   "Ask for a refund",
+   "Bill ${b.bill_no}",
+   "Bill ${b.bill_no} saved",
+   "Collect ${rupee(total)}",
+   "Day register · ${x.close.shift_date}",
+   "Discount",
+   "Others — custom coffee : chicory",
+   "Receive ${code || ",
+   "Reopen the counter for today?"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "action",
+   "additem",
+   "askrefund",
+   "bill",
+   "cart",
+   "cform",
+   "closedecide",
+   "copies",
+   "ctab",
+   "edititem",
+   "g",
+   "pct",
+   "receive",
+   "refund",
+   "register",
+   "reopen",
+   "reprint",
+   "rmline",
+   "toggleitem"
+  ],
+  "actions": [
+   "clearCart",
+   "customBlend",
+   "discount",
+   "pay"
+  ],
+  "buttons": [
+   "Accept",
+   "Approve",
+   "Clear",
+   "Close today's bills",
+   "Close today\\'s bills →",
+   "Discount",
+   "Edit",
+   "Refund",
+   "Register",
+   "Reject",
+   "Reopen counter",
+   "See today's register →",
+   "Send bill on WhatsApp",
+   "View / print day register",
+   "View / reprint",
+   "View day register"
+  ]
+ },
+ "views/countercx.js": {
+  "lines": 106,
+  "header": "Counter v1.2: returning-customer card, admin customer list, and the owner's PIN-locked \"Cash today\" view with forecast and collections.",
+  "exports": [
+   "maybeLookup",
+   "clearCustomer",
+   "customerCard",
+   "customersTab",
+   "cashTab",
+   "openCash",
+   "cxClick",
+   "cxSubmit",
+   "cxCan"
+  ],
+  "api_calls": [
+   "POST /counter/collections",
+   "GET /counter/customers/lookup?phone=${d}",
+   "GET /counter/insights${day ? ",
+   "POST /counter/insights/lock",
+   "PUT /counter/insights/pin",
+   "POST /counter/insights/unlock"
+  ],
+  "api_paths_mentioned": [
+   "/counter/collections",
+   "/counter/customers/lookup?phone=${d}",
+   "/counter/insights/lock",
+   "/counter/insights/pin",
+   "/counter/insights/unlock"
+  ],
+  "dialogs": [
+   "Cash-view PIN"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "action",
+   "cform"
+  ],
+  "actions": [
+   "lockCash",
+   "sameAgain",
+   "setPin"
+  ],
+  "buttons": [
+   "Add",
+   "Lock now",
+   "Same again",
+   "Set or change the PIN",
+   "Unlock"
+  ]
+ },
+ "views/golive.js": {
+  "lines": 132,
+  "header": "v1.6 (owner request 27 Oct 2026): Admin Control → Go-live setup. Enter what exists today (clients, suppliers, counter customers, beans, opening stock, cash, old dues) from the Excel template or by hand; the owner checks it and presses \"We're live\", which locks the opening figures.",
+  "exports": [
+   "golivePaths",
+   "goliveTab",
+   "goliveClick",
+   "goliveSubmit",
+   "goliveChange"
+  ],
+  "api_calls": [
+   "DELETE /golive/${what}/${id}",
+   "POST /golive/confirm",
+   "POST /golive/dues",
+   "POST /golive/import",
+   "POST /golive/stock"
+  ],
+  "api_paths_mentioned": [
+   "/api/v1/golive/template",
+   "/golive",
+   "/golive/${what}/${id}",
+   "/golive/confirm",
+   "/golive/dues",
+   "/golive/import",
+   "/golive/stock",
+   "/masters?kind=customer",
+   "/masters?kind=product",
+   "/masters?kind=supplier",
+   "/team"
+  ],
+  "dialogs": [
+   "Add an old due",
+   "Add opening stock",
+   "Checked ${file.name}"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "gl",
+   "gldel"
+  ],
+  "actions": [],
+  "buttons": [
+   "Add a due",
+   "Add a line",
+   "Download template",
+   "We're live"
+  ]
+ },
+ "views/maintenance.js": {
+  "lines": 60,
+  "header": "Maintenance tickets (v1.2): anyone with maintenance.raise reports a problem; maintenance.manage holders (manager, admin, owner) take it on and resolve it.",
+  "exports": [
+   "maintenance",
+   "maintenanceClick"
+  ],
+  "api_calls": [
+   "POST /maintenance",
+   "PUT /maintenance/${t.id}",
+   "GET /tasks/options"
+  ],
+  "api_paths_mentioned": [
+   "/maintenance",
+   "/maintenance/${t.id}",
+   "/tasks/options"
+  ],
+  "dialogs": [
+   "Raise a maintenance ticket",
+   "Ticket #${t.id}: ${t.title}"
+  ],
+  "page_heads": [
+   "Work / Maintenance"
+  ],
+  "data_attrs": [
+   "action",
+   "mtab",
+   "mupdate"
+  ],
+  "actions": [
+   "newTicket"
+  ],
+  "buttons": [
+   "Raise a ticket"
+  ]
+ },
+ "views/ops.js": {
+  "lines": 497,
+  "header": "Operations screens (ported from pilot v0.1). Buttons and fields appear only when the person holds the matching permission; the server checks again.",
+  "exports": [
+   "VIEWS",
+   "sendToCounter",
+   "countLot",
+   "handleClick",
+   "handleSubmit"
+  ],
+  "api_calls": [
+   "POST /counts/${id}/decide",
+   "POST /inward",
+   "POST /inward/${ds.reverse}/reverse",
+   "POST /lots/${ds.verify}/verify",
+   "POST /lots/${id}/adjust",
+   "POST /lots/${id}/count",
+   "POST /qc/${id}/decision",
+   "POST /roasts",
+   "POST /roasts/cylinders",
+   "PUT /roasts/meter",
+   "POST /tasks",
+   "POST /tasks/${ds.tsubmit}/submit",
+   "PUT /tasks/${id}",
+   "POST /tasks/${id}/review",
+   "PUT /tasks/${task.id}",
+   "GET /tasks/options",
+   "POST /transfers"
+  ],
+  "api_paths_mentioned": [
+   "/counts",
+   "/counts/${id}/decide",
+   "/inventory",
+   "/inward",
+   "/inward/${ds.reverse}/reverse",
+   "/lots/${ds.verify}/verify",
+   "/lots/${id}/adjust",
+   "/lots/${id}/count",
+   "/masters?kind=product",
+   "/qc",
+   "/qc/${id}/decision",
+   "/roast-profiles",
+   "/roasts",
+   "/roasts/cylinders",
+   "/roasts/meter",
+   "/roasts/month-record?month=${x.month}",
+   "/roasts?day=${x.day}",
+   "/roasts?month=${x.month}",
+   "/stock-cards",
+   "/summary",
+   "/tasks",
+   "/tasks/${ds.tsubmit}/submit",
+   "/tasks/${id}",
+   "/tasks/${id}/review",
+   "/tasks/${task.id}",
+   "/tasks/options",
+   "/transfers"
+  ],
+  "dialogs": [
+   "${decision === ",
+   "${r.code} saved",
+   "Assign work",
+   "Batch ${r.code} saved",
+   "Correct lot #${id}",
+   "Count ${code || ",
+   "Mark completed: ${task?.title || ",
+   "Reverse receipt #${ds.reverse}",
+   "Send ${code || ",
+   "Sent to the counter",
+   "Verify quarantined lot #${ds.verify}"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "action",
+   "adjust",
+   "calday",
+   "calmonth",
+   "count",
+   "countdecide",
+   "form",
+   "go",
+   "label",
+   "qc",
+   "receive",
+   "reverse",
+   "rtab",
+   "sendctr",
+   "task",
+   "tfilter",
+   "treview",
+   "tstuck",
+   "tsubmit",
+   "verify"
+  ],
+  "actions": [
+   "customise",
+   "newTask"
+  ],
+  "buttons": [
+   "Add cylinder",
+   "Apply",
+   "Approve",
+   "Correct",
+   "Count",
+   "Day &amp; calendar",
+   "Label",
+   "Monthly record",
+   "Record finished batch",
+   "Reject",
+   "Release",
+   "Reverse",
+   "Save readings",
+   "See stock →",
+   "Send back",
+   "Send to counter",
+   "Update",
+   "Update progress",
+   "Verify kg"
+  ]
+ },
+ "views/pending.js": {
+  "lines": 48,
+  "header": "\"Pending here\" panel at the top of each section + the per-section menu counts (v1.2). Data: GET /pending → { section: { count, tasks[], waiting[] } } for this person.",
+  "exports": [
+   "loadPending",
+   "paintBadges",
+   "pendingPanel",
+   "pendingTask"
+  ],
+  "api_calls": [
+   "GET /pending"
+  ],
+  "api_paths_mentioned": [
+   "/pending"
+  ],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [
+   "help",
+   "treview",
+   "tsubmit"
+  ],
+  "actions": [],
+  "buttons": [
+   "Approve",
+   "Send back"
+  ]
+ },
+ "views/production.js": {
+  "lines": 221,
+  "header": "Blending & grinding, outside (customer-owned) roasting, packing into finished goods. (DPR §7, §8)",
+  "exports": [
+   "blending",
+   "outside",
+   "packing",
+   "productionClick"
+  ],
+  "api_calls": [
+   "POST /blends",
+   "POST /grinds",
+   "POST /outside/jobs",
+   "POST /outside/jobs/${ds.opaid}/payment",
+   "POST /outside/jobs/${id}/return",
+   "POST /outside/jobs/${id}/roast",
+   "POST /packing",
+   "POST /packing/${ds.packqa}/release",
+   "POST /packing/${job.id}/run",
+   "POST /recipes",
+   "PUT /recipes/${id}",
+   "PUT /recipes/${r.id}"
+  ],
+  "api_paths_mentioned": [
+   "/blends",
+   "/grinds",
+   "/inventory",
+   "/outside/jobs",
+   "/outside/jobs/${ds.opaid}/payment",
+   "/outside/jobs/${id}/return",
+   "/outside/jobs/${id}/roast",
+   "/packing",
+   "/packing/${ds.packqa}/release",
+   "/packing/${job.id}/run",
+   "/recipes",
+   "/recipes/${id}",
+   "/recipes/${r.id}"
+  ],
+  "dialogs": [
+   "${r.packs} packs into ${r.code}",
+   "Blend ${res.code} saved",
+   "Blend: ${r.name} v${r.version}",
+   "Ground coffee ${r.code} saved",
+   "Hand back to customer · job #${id}",
+   "Packing ticket #${job.id} · ${job.product_name}",
+   "QA release of packed goods",
+   "Receive customer's coffee",
+   "Record grinding",
+   "Roast job #${id}",
+   "Which recipe?"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "action",
+   "editrecipe",
+   "form",
+   "opaid",
+   "oreturn",
+   "oroast",
+   "packqa",
+   "packrun",
+   "ptab",
+   "recipeactive"
+  ],
+  "actions": [
+   "newBlend",
+   "newGrind",
+   "newOutside",
+   "newRecipe"
+  ],
+  "buttons": [
+   "Create ticket",
+   "Hand back",
+   "Mark paid",
+   "New version",
+   "QA release",
+   "Record packing",
+   "Roast"
+  ]
+ },
+ "views/profile.js": {
+  "lines": 138,
+  "header": "v1.5 (owner request 27 Oct 2026): \"My profile\", opened from the round initials button. Four parts: my contact & emergency, voice & display, security & devices, my team & my work. Everyone sees only their own page. ID and bank numbers are never shown here.",
+  "exports": [
+   "profile",
+   "PROFILE_FORMS",
+   "profileClick"
+  ],
+  "api_calls": [
+   "PUT /me/preferences",
+   "PUT /me/profile",
+   "POST /me/secret",
+   "POST /me/sessions/revoke"
+  ],
+  "api_paths_mentioned": [
+   "/me/preferences",
+   "/me/profile",
+   "/me/secret",
+   "/me/sessions/revoke"
+  ],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [
+   "form",
+   "plang",
+   "rate",
+   "revoke",
+   "vstat",
+   "vtest"
+  ],
+  "actions": [],
+  "buttons": [
+   "How to listen",
+   "Save my details",
+   "Sign out",
+   "Sign out all others",
+   "Test"
+  ]
+ },
+ "views/sales.js": {
+  "lines": 406,
+  "header": "Outgoing Sales, customer credit, Dispatch & delivery, Finance (receivables, supplier payables, Tally export), Exception centre, Reports. (DPR §10–§12)",
+  "exports": [
+   "orders",
+   "dispatch",
+   "finance",
+   "exceptions",
+   "reports",
+   "salesClick",
+   "salesSubmit"
+  ],
+  "api_calls": [
+   "POST /collections/${id}/verify",
+   "PUT /customers/${c.id}/credit",
+   "POST /dispatches/${id}/deliver",
+   "GET /invoices/${id}",
+   "POST /invoices/${id}/collections",
+   "POST /inward/${ds.invfile}/invoice-file",
+   "PUT /inward/${r.id}/finance",
+   "POST /opening-due-payments/${id}/verify",
+   "POST /opening-dues/${id}/payments",
+   "POST /orders",
+   "POST /orders/${ds.oadvance}/advance",
+   "POST /orders/${ds.ocancel}/cancel",
+   "POST /orders/${ds.oconfirm}/confirm",
+   "POST /orders/${ds.ocredit}/credit",
+   "PUT /orders/${ds.oprice}/price",
+   "POST /orders/${ds.oreserve}/reserve",
+   "GET /orders/${ds.slip}/slip",
+   "POST /orders/${id}/dispatch",
+   "POST /receipts/${ds.suppay}/payments",
+   "POST /supplier-payments/${id}/decide",
+   "POST /tally/exports",
+   "GET /tally/exports/${ds.tallyview}",
+   "POST /tally/exports/${id}/result"
+  ],
+  "api_paths_mentioned": [
+   "/api/v1/inward/${r.id}/invoice-file",
+   "/collections/${id}/verify",
+   "/customers/${c.id}/credit",
+   "/customers/credit",
+   "/dispatches/${id}/deliver",
+   "/exceptions",
+   "/invoices/${id}",
+   "/invoices/${id}/collections",
+   "/inward/${ds.invfile}/invoice-file",
+   "/inward/${r.id}/finance",
+   "/kg",
+   "/masters?kind=customer",
+   "/masters?kind=product",
+   "/opening-due-payments/${id}/verify",
+   "/opening-dues",
+   "/opening-dues/${id}/payments",
+   "/orders",
+   "/orders/${ds.oadvance}/advance",
+   "/orders/${ds.ocancel}/cancel",
+   "/orders/${ds.oconfirm}/confirm",
+   "/orders/${ds.ocredit}/credit",
+   "/orders/${ds.oprice}/price",
+   "/orders/${ds.oreserve}/reserve",
+   "/orders/${ds.slip}/slip",
+   "/orders/${id}/dispatch",
+   "/payables",
+   "/receipts/${ds.suppay}/payments",
+   "/receivables",
+   "/reports?from=${s.from}&to=${s.to}",
+   "/supplier-payments/${id}/decide",
+   "/tally/exports",
+   "/tally/exports/${ds.tallyview}",
+   "/tally/exports/${id}/result"
+  ],
+  "dialogs": [
+   "${e.batch_no} — CSV for Tally",
+   "Cancel order #${ds.ocancel}",
+   "Confirm delivery · dispatch #${id}",
+   "Credit decision · order #${ds.ocredit}",
+   "Credit terms · ${c.name}",
+   "Hand over order #${id}",
+   "Invoice ${i.number}",
+   "Match supplier invoice · receipt #${r.id}",
+   "New outgoing order",
+   "Payment before dispatch · order #${ds.oadvance}",
+   "Payment · ${x.party}",
+   "Pick slip · order #${s.order.id}",
+   "Price for order #${ds.oprice}",
+   "Record customer payment",
+   "Supplier payment · receipt #${ds.suppay}"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "action",
+   "collect",
+   "decidepay",
+   "deliver",
+   "dispatch",
+   "duepay",
+   "dueremind",
+   "dueverify",
+   "fform",
+   "ftab",
+   "go",
+   "invfile",
+   "invoice",
+   "match",
+   "oadvance",
+   "ocancel",
+   "oconfirm",
+   "ocredit",
+   "oprice",
+   "oreserve",
+   "ride",
+   "slip",
+   "stab",
+   "suppay",
+   "tallyres",
+   "tallyview",
+   "terms",
+   "verifycol",
+   "waorder",
+   "waremind"
+  ],
+  "actions": [
+   "newOrder"
+  ],
+  "buttons": [
+   "Approve",
+   "Attach file",
+   "Cancel",
+   "Confirm",
+   "Confirm delivery",
+   "Copy",
+   "Credit decision",
+   "Download .csv",
+   "File",
+   "Hand over",
+   "Make export file",
+   "Match invoice",
+   "Not received",
+   "Open Outgoing Sales →",
+   "Open Rapido",
+   "Open Uber",
+   "Pick slip",
+   "Record payment",
+   "Reject",
+   "Remind",
+   "Reserve stock",
+   "Set terms",
+   "Show",
+   "Tally accepted",
+   "Tally rejected",
+   "Verified",
+   "Verified in bank",
+   "View",
+   "WhatsApp"
+  ]
+ },
+ "views/stockcards.js": {
+  "lines": 94,
+  "header": "v1.3 stock cards: one card per bean/product instead of grand totals. Owner/admin (inventory.cards) can rename, colour, hide, pin and reorder cards.",
+  "exports": [
+   "cardId",
+   "cardStock",
+   "cardsSection",
+   "cardsClick"
+  ],
+  "api_calls": [
+   "PUT /stock-cards/${pid}",
+   "POST /stock-cards/order"
+  ],
+  "api_paths_mentioned": [
+   "/inventory",
+   "/stock-cards",
+   "/stock-cards/${pid}",
+   "/stock-cards/order"
+  ],
+  "dialogs": [
+   "Add a stock card",
+   "Card: ${c.name}"
+  ],
+  "page_heads": [],
+  "data_attrs": [
+   "invproduct",
+   "sc"
+  ],
+  "actions": [],
+  "buttons": [
+   "Add card"
+  ]
+ },
+ "views/team.js": {
+  "lines": 162,
+  "header": "Team & Hierarchy. v1.3: who reports to whom and, for owner/admin, each person's details and documents (ID and bank numbers kept as the last 4 only). v1.5 (owner request 27 Oct 2026): the hierarchy is a top-down tree chart, and staff details also live in Admin Control (staffPage/staffClick).",
+  "exports": [
+   "team",
+   "mayOpen",
+   "staffTable",
+   "staffBody",
+   "staffPage",
+   "staffClick",
+   "teamClick"
+  ],
+  "api_calls": [
+   "POST /team/${ds.docadd}/documents",
+   "PUT /team/${p.id}/reports-to",
+   "PUT /team/${uid}/profile",
+   "DELETE /team/documents/${ds.docdel}"
+  ],
+  "api_paths_mentioned": [
+   "/api/v1/team/documents/${x.id}",
+   "/team",
+   "/team/${ds.docadd}/documents",
+   "/team/${p.id}/reports-to",
+   "/team/${uid}/profile",
+   "/team/documents/${ds.docdel}"
+  ],
+  "dialogs": [
+   "${p.full_name} reports to…",
+   "Edit details",
+   "Upload a document"
+  ],
+  "page_heads": [
+   "Work / Team & Hierarchy",
+   "Work / Team & Hierarchy"
+  ],
+  "data_attrs": [
+   "boss",
+   "docadd",
+   "docdel",
+   "profedit",
+   "staff",
+   "tzoom"
+  ],
+  "actions": [],
+  "buttons": [
+   "Details &amp; documents",
+   "Edit details",
+   "Fit",
+   "Upload"
+  ]
+ },
+ "whatsapp.js": {
+  "lines": 53,
+  "header": "v1.4: WhatsApp messages to customers through the free wa.me link — no paid API. The link opens WhatsApp on this phone/tablet with the message typed in; staff press Send, so it goes from whichever WhatsApp account is signed in on that device. The opening and closing lines are editable in Admin Control → Settings → Wording (wa… keys).",
+  "exports": [
+   "waNumber",
+   "openWhatsApp",
+   "waBill",
+   "waOrder",
+   "waReminder"
+  ],
+  "api_calls": [],
+  "api_paths_mentioned": [],
+  "dialogs": [],
+  "page_heads": [],
+  "data_attrs": [],
+  "actions": [],
+  "buttons": []
+ }
+}

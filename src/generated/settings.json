@@ -1,0 +1,131 @@
+{
+ "DEFAULT_SETTINGS": {
+  "company_name": "Vasavi Trading Company",
+  "short_name": "VASAVI",
+  "tagline": "TRADING COMPANY",
+  "accent": "roast",
+  "languages_enabled": [
+   "en",
+   "te",
+   "hi"
+  ],
+  "default_language": "en",
+  "idle_shared_min": 15,
+  "idle_personal_min": 480,
+  "location_label": "PROD-01",
+  "quiet_start_hour": 21,
+  "quiet_end_hour": 7,
+  "staff_can_message_admins": false,
+  "voice_retention_days": 180,
+  "company_address": "",
+  "company_gstin": "",
+  "tax_setup_approved": false,
+  "bill_prefix": "CTR",
+  "invoice_prefix": "INV",
+  "counter_opening_float_paise": null,
+  "discount_cap_pct": null,
+  "refund_manager_cap_paise": null,
+  "correction_manager_cap_kg": null,
+  "low_stock_alert_kg": null,
+  "roast_rest_days": 13,
+  "custom_coffee_rate_paise": null,
+  "custom_chicory_rate_paise": null,
+  "custom_chicory_product_id": null
+ },
+ "BUSINESS_SETTINGS": {
+  "company_address": [
+   "text",
+   0,
+   200
+  ],
+  "company_gstin": [
+   "text",
+   0,
+   20
+  ],
+  "tax_setup_approved": [
+   "bool",
+   null,
+   null
+  ],
+  "bill_prefix": [
+   "text",
+   1,
+   8
+  ],
+  "invoice_prefix": [
+   "text",
+   1,
+   8
+  ],
+  "counter_opening_float_paise": [
+   "money",
+   0,
+   10000000
+  ],
+  "discount_cap_pct": [
+   "number",
+   0,
+   50
+  ],
+  "refund_manager_cap_paise": [
+   "money",
+   0,
+   100000000
+  ],
+  "correction_manager_cap_kg": [
+   "number",
+   0,
+   10000
+  ],
+  "low_stock_alert_kg": [
+   "number",
+   0,
+   100000
+  ],
+  "roast_rest_days": [
+   "int",
+   0,
+   60
+  ],
+  "quiet_start_hour": [
+   "int",
+   0,
+   23
+  ],
+  "quiet_end_hour": [
+   "int",
+   0,
+   23
+  ],
+  "staff_can_message_admins": [
+   "bool",
+   null,
+   null
+  ],
+  "voice_retention_days": [
+   "int",
+   7,
+   3650
+  ],
+  "custom_coffee_rate_paise": [
+   "money",
+   1,
+   100000000
+  ],
+  "custom_chicory_rate_paise": [
+   "money",
+   1,
+   100000000
+  ],
+  "custom_chicory_product_id": [
+   "int",
+   1,
+   1000000000
+  ]
+ },
+ "SESSION_COOKIE": "vtc_session",
+ "SESSION_MAX_HOURS": 12,
+ "LOGIN_MAX_FAILURES": 5,
+ "LOGIN_LOCK_MINUTES": 10
+}

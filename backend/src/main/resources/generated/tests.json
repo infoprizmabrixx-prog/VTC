@@ -1,0 +1,750 @@
+{
+ "pytest": [
+  {
+   "file": "test_comms.py",
+   "module_doc": "Messages (DPR Addendum A): who can talk to whom, who sees what, alerts.",
+   "name": "test_announcement_with_read_receipts_and_audience",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_announcement_with_read_receipts_and_audience(people):\n    o, m, r = people[\"owner\"], people[\"manager\"], people[\"roaster\"]\n    ann = conv_id(o, \"announcement\")\n    ok(r.post(f\"/api/v1/comms/conversations/{ann}/messages\", json={\"body\": \"staff cannot announce\"}), 403)\n    ok(o.post(f\"/api/v1/comms/conversations/{ann}/messages\", json={\"body\": \"Stock count on Saturday 8 am\", \"audience\": \"all\"}))\n    teams = ok(o.get(\"/api/v1/teams\"))\n    packing = next(t[\"id\"] for t in teams if t[\"key\"] == \"packing\")\n    ok(m.post(f\"/api/v1/comms/conversations/{ann}/messages\", json={\"body\": \"Packers: new pouches arrived\",\n                                                                 \"audience\": f\"team:{packing}\"}))\n    assert ok(r.get(\"/api/v1/comms/badge\"))[\"messages\"] == 1          # roaster is not in Packing\n    msgs = ok(r.get(f\"/api/v1/comms/conversations/{ann}\"))[\"messages\"]\n    assert [x[\"body\"] for x in msgs] == [\"Stock count on Saturday 8 am\"]\n    assert ok(r.get(\"/api/v1/comms/badge\"))[\"messages\"] == 0\n    first = next(x for x in ok(o.get(f\"/api/v1/comms/conversations/{ann}\"))[\"messages\"] if x[\"author_id\"] == uid_of(o, \"Owner\"))\n    assert \"Demo Roaster\" in [s[\"name\"] for s in first[\"receipts\"][\"seen\"]]\n    assert \"Demo Packer\" in first[\"receipts\"][\"not_seen\"]"
+  },
+  {
+   "file": "test_comms.py",
+   "module_doc": "Messages (DPR Addendum A): who can talk to whom, who sees what, alerts.",
+   "name": "test_team_group_is_members_only",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_team_group_is_members_only(people):\n    r, m = people[\"roaster\"], people[\"manager\"]\n    roastery = conv_id(r, \"group\", \"Roastery\")\n    assert not any(c[\"title\"] == \"Packing\" for c in ok(r.get(\"/api/v1/comms/inbox\"))[\"conversations\"])\n    packing = conv_id(m, \"group\", \"Packing\")\n    ok(r.get(f\"/api/v1/comms/conversations/{packing}\"), 403)\n    ok(r.post(f\"/api/v1/comms/conversations/{roastery}/messages\", json={\"body\": \"Drum is warm, starting batch 1\"}))\n    assert ok(m.get(\"/api/v1/comms/badge\"))[\"messages\"] >= 1"
+  },
+  {
+   "file": "test_comms.py",
+   "module_doc": "Messages (DPR Addendum A): who can talk to whom, who sees what, alerts.",
+   "name": "test_staff_reach_manager_not_owner_unless_allowed",
+   "doc": "",
+   "asserts": 4,
+   "source": "def test_staff_reach_manager_not_owner_unless_allowed(people):\n    r, o = people[\"roaster\"], people[\"owner\"]\n    names = [x[\"full_name\"] for x in ok(r.get(\"/api/v1/comms/contacts\"))]\n    assert names == [\"Demo Manager\"]\n    e = ok(r.post(\"/api/v1/comms/direct\", json={\"user_id\": uid_of(o, \"Owner\")}), 403)\n    assert e[\"error\"] == \"CANNOT_MESSAGE_THIS_PERSON\"\n    ok(o.put(\"/api/v1/admin/settings\", json={\"staff_can_message_admins\": True}))\n    assert \"Owner (Demo)\" in [x[\"full_name\"] for x in ok(r.get(\"/api/v1/comms/contacts\"))]\n    cid = ok(r.post(\"/api/v1/comms/direct\", json={\"user_id\": uid_of(o, \"Owner\")}))[\"id\"]\n    assert ok(r.post(\"/api/v1/comms/direct\", json={\"user_id\": uid_of(o, \"Owner\")}))[\"id\"] == cid"
+  },
+  {
+   "file": "test_comms.py",
+   "module_doc": "Messages (DPR Addendum A): who can talk to whom, who sees what, alerts.",
+   "name": "test_direct_chat_private_but_oversight_is_audited",
+   "doc": "",
+   "asserts": 3,
+   "source": "def test_direct_chat_private_but_oversight_is_audited(people):\n    r, m, a, o = people[\"roaster\"], people[\"manager\"], people[\"admin\"], people[\"owner\"]\n    cid = ok(r.post(\"/api/v1/comms/direct\", json={\"user_id\": uid_of(o, \"Demo Manager\")}))[\"id\"]\n    ok(r.post(f\"/api/v1/comms/conversations/{cid}/messages\", json={\"body\": \"Can I leave early today?\"}))\n    ok(people[\"roaster\"].get(f\"/api/v1/comms/conversations/{cid}\"))\n    # admin with oversight can read, and it is logged\n    over = ok(o.get(\"/api/v1/comms/oversight\"))\n    assert any(x[\"id\"] == cid for x in over)\n    data = ok(a.get(f\"/api/v1/comms/conversations/{cid}\"))\n    assert data[\"oversight\"] and not data[\"may_post\"]\n    assert any(x[\"action\"] == \"OVERSIGHT_READ\" for x in ok(o.get(\"/api/v1/admin/audit?category=access\")))\n    # a manager without oversight cannot read someone else's direct chat\n    other = ok(o.post(\"/api/v1/comms/direct\", json={\"user_id\": uid_of(o, \"Office Admin\")}))[\"id\"]\n    ok(m.get(f\"/api/v1/comms/conversations/{other}\"), 403)"
+  },
+  {
+   "file": "test_comms.py",
+   "module_doc": "Messages (DPR Addendum A): who can talk to whom, who sees what, alerts.",
+   "name": "test_record_thread_follows_record_access",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_record_thread_follows_record_access(people):\n    r, m, o = people[\"roaster\"], people[\"manager\"], people[\"owner\"]\n    pid = ok(o.post(\"/api/v1/masters\", json={\"kind\": \"product\", \"name\": \"Thread Robusta\", \"nominal_kg\": 50}))[\"id\"]\n    ok(r.post(\"/api/v1/inward\", json={\"source\": \"OTHER\", \"source_name\": \"Test\", \"product_id\": pid, \"bags\": 2, \"damaged\": 0},\n              headers={\"X-Idempotency-Key\": str(uuid.uuid4())}))\n    lot = next(x for x in ok(r.get(\"/api/v1/inventory\")) if x[\"status\"] == \"RELEASED\")\n    roast = ok(r.post(\"/api/v1/roasts\", json={\"inputs\": [{\"lot_id\": lot[\"id\"], \"kg\": 20}], \"output_kg\": 17, \"duration_min\": 15},\n                      headers={\"X-Idempotency-Key\": str(uuid.uuid4())}))\n    tid = ok(m.get(f\"/api/v1/comms/record/roast/{roast['id']}\"))[\"id\"]\n    ok(m.post(f\"/api/v1/comms/conversations/{tid}/messages\", json={\"body\": \"Why 15% loss? Check the probe.\"}))\n    # the roaster created the batch, so follows the thread automatically\n    inbox = ok(r.get(\"/api/v1/comms/inbox\"))\n    thread = next(c for c in inbox[\"conversations\"] if c[\"id\"] == tid)\n    assert thread[\"unread\"] == 1 and thread[\"title\"] == f\"Roast batch #{roast['id']}\"\n    # remove the roaster's stock access: lot threads close to them too\n    ok(r.get(f\"/api/v1/comms/record/lot/{lot['id']}\"))\n    ok(o.post(f\"/api/v1/admin/users/{uid_of(o, 'Roaster')}/grants\", json={\"perm_key\": \"inventory.view\", \"effect\": \"deny\",\n                                                                        \"reason\": \"testing thread access\"}))\n    ok(r.get(f\"/api/v1/comms/record/lot/{lot['id']}\"), 403)"
+  },
+  {
+   "file": "test_comms.py",
+   "module_doc": "Messages (DPR Addendum A): who can talk to whom, who sees what, alerts.",
+   "name": "test_alerts_go_to_people_who_can_act",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_alerts_go_to_people_who_can_act(people):\n    r, o, m = people[\"roaster\"], people[\"owner\"], people[\"manager\"]\n    pid = ok(o.post(\"/api/v1/masters\", json={\"kind\": \"product\", \"name\": \"Alert Robusta\", \"nominal_kg\": 50}))[\"id\"]\n    ok(r.post(\"/api/v1/inward\", json={\"source\": \"OTHER\", \"source_name\": \"Test\", \"product_id\": pid, \"bags\": 3, \"damaged\": 1},\n              headers={\"X-Idempotency-Key\": str(uuid.uuid4())}))\n    titles = [a[\"title\"] for a in ok(o.get(\"/api/v1/alerts\"))]\n    assert any(\"damaged bag\" in t for t in titles)\n    assert not any(\"damaged bag\" in a[\"title\"] for a in ok(m.get(\"/api/v1/alerts\")))  # manager can't verify\n    rid = uid_of(o, \"Roaster\")\n    ok(m.post(\"/api/v1/tasks\", json={\"title\": \"Roast 2 batches\", \"assigned_to\": rid}))\n    # v1.2: everyday work shows in its own section (and the menu count), not in the bell\n    assert not any(a[\"title\"].startswith(\"New work\") for a in ok(r.get(\"/api/v1/alerts\")))\n    assert any(t[\"title\"] == \"Roast 2 batches\" for t in ok(r.get(\"/api/v1/pending\"))[\"tasks\"][\"tasks\"])\n    ok(r.post(\"/api/v1/alerts/read\", json={\"ids\": \"all\"}))\n    assert ok(r.get(\"/api/v1/comms/badge\"))[\"alerts\"] == 0"
+  },
+  {
+   "file": "test_comms.py",
+   "module_doc": "Messages (DPR Addendum A): who can talk to whom, who sees what, alerts.",
+   "name": "test_quiet_hours_hold_normal_alerts",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_quiet_hours_hold_normal_alerts(portal, people):\n    o, m = people[\"owner\"], people[\"manager\"]\n    # make every hour quiet: 0 → 23 (start > end wraps; start==end disables)\n    ok(o.put(\"/api/v1/admin/settings\", json={\"quiet_start_hour\": 0, \"quiet_end_hour\": 23}))\n    con = sqlite3.connect(portal.config.DB_PATH)\n    hour = con.execute(\"SELECT strftime('%H','now','+330 minutes')\").fetchone()[0]\n    con.close()\n    ok(m.post(\"/api/v1/tasks\", json={\"title\": \"Night job\", \"assigned_to\": uid_of(o, \"Roaster\")}))\n    titles = [a[\"title\"] for a in ok(people[\"roaster\"].get(\"/api/v1/alerts\"))]\n    if int(hour) < 23:  # inside the quiet window\n        assert \"New work: Night job\" not in titles"
+  },
+  {
+   "file": "test_comms.py",
+   "module_doc": "Messages (DPR Addendum A): who can talk to whom, who sees what, alerts.",
+   "name": "test_voice_note_upload_and_access",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_voice_note_upload_and_access(people):\n    r, m, o = people[\"roaster\"], people[\"manager\"], people[\"owner\"]\n    data = base64.b64encode(b\"OggS\" + bytes(400)).decode()\n    ok(r.post(\"/api/v1/comms/voice\", json={\"mime\": \"image/png\", \"data\": data}), 400)\n    fid = ok(r.post(\"/api/v1/comms/voice\", json={\"mime\": \"audio/ogg\", \"data\": data}))[\"id\"]\n    roastery = conv_id(r, \"group\", \"Roastery\")\n    ok(r.post(f\"/api/v1/comms/conversations/{roastery}/messages\", json={\"voice_file_id\": fid}))\n    assert m.get(f\"/api/v1/comms/files/{fid}\").status_code == 200        # manager is in Roastery\n    packer_cli = people[\"admin\"]                                          # office admin, not in Roastery, but oversight\n    assert packer_cli.get(f\"/api/v1/comms/files/{fid}\").status_code == 200\n    # someone else's voice id can't be attached\n    ok(m.post(f\"/api/v1/comms/conversations/{roastery}/messages\", json={\"voice_file_id\": fid}), 400)"
+  },
+  {
+   "file": "test_comms.py",
+   "module_doc": "Messages (DPR Addendum A): who can talk to whom, who sees what, alerts.",
+   "name": "test_admin_manages_team_membership",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_admin_manages_team_membership(people):\n    o = people[\"owner\"]\n    rid = uid_of(o, \"Roaster\")\n    packing = next(t[\"id\"] for t in ok(o.get(\"/api/v1/teams\")) if t[\"key\"] == \"packing\")\n    ok(o.put(f\"/api/v1/admin/users/{rid}/teams\", json={\"team_ids\": [packing]}))\n    titles = [c[\"title\"] for c in ok(people[\"roaster\"].get(\"/api/v1/comms/inbox\"))[\"conversations\"]]\n    assert \"Packing\" in titles and \"Roastery\" not in titles\n    ok(people[\"manager\"].put(f\"/api/v1/admin/users/{rid}/teams\", json={\"team_ids\": []}), 403)"
+  },
+  {
+   "file": "test_counter.py",
+   "module_doc": "Counter Sales (DPR §9) and transfers to the counter.",
+   "name": "test_transfer_shortage_is_recorded_not_hidden",
+   "doc": "",
+   "asserts": 4,
+   "source": "def test_transfer_shortage_is_recorded_not_hidden(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    pid = ok(o.post(\"/api/v1/masters\", json={\"kind\": \"product\", \"name\": \"Tea dust\", \"nominal_kg\": 20}))[\"id\"]\n    ok(r.post(\"/api/v1/inward\", json={\"source\": \"OTHER\", \"source_name\": \"Supplier\", \"product_id\": pid, \"bags\": 1, \"damaged\": 0}, headers=key()))\n    lot = next(x for x in ok(r.get(\"/api/v1/inventory\")) if x[\"product_id\"] == pid)\n    tid = ok(r.post(\"/api/v1/transfers\", json={\"lot_id\": lot[\"id\"], \"kg\": 8}, headers=key()))[\"id\"]\n    ok(r.post(f\"/api/v1/transfers/{tid}/receive\", json={\"kg_received\": 8}), 400)   # sender can't confirm own transfer\n    ok(m.post(f\"/api/v1/transfers/{tid}/receive\", json={\"kg_received\": 9}), 400)   # can't receive more than sent\n    res = ok(m.post(f\"/api/v1/transfers/{tid}/receive\", json={\"kg_received\": 7.5}))\n    assert res[\"state\"] == \"SHORTAGE\" and res[\"shortage_kg\"] == 0.5\n    inv = ok(o.get(\"/api/v1/inventory\"))\n    assert next(x for x in inv if x[\"id\"] == lot[\"id\"])[\"kg\"] == 12\n    assert sum(x[\"kg\"] for x in inv if x[\"product_id\"] == pid and x[\"location\"] == \"CTR-01\") == 7.5\n    assert any(\"short\" in a[\"title\"] for a in ok(o.get(\"/api/v1/alerts\")))"
+  },
+  {
+   "file": "test_counter.py",
+   "module_doc": "Counter Sales (DPR §9) and transfers to the counter.",
+   "name": "test_sale_deducts_coffee_and_chicory_and_blocks_oversell",
+   "doc": "",
+   "asserts": 6,
+   "source": "def test_sale_deducts_coffee_and_chicory_and_blocks_oversell(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    item, chic = setup_counter(o, r, m)\n    k = key()\n    sale = {\"lines\": [{\"item_id\": item, \"weight_kg\": 1}], \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 80000}]}\n    bill = ok(r.post(\"/api/v1/counter/sales\", json=sale, headers=k))\n    assert bill[\"bill_no\"].startswith(\"CTR-\") and bill[\"total_paise\"] == 80000\n    assert ok(r.post(\"/api/v1/counter/sales\", json=sale, headers=k))[\"id\"] == bill[\"id\"]   # retry = same bill\n    inv = ok(o.get(\"/api/v1/inventory\"))\n    ctr = [x for x in inv if x[\"location\"] == \"CTR-01\"]\n    assert round(sum(x[\"kg\"] for x in ctr if x[\"stage\"] == \"ROASTED\"), 3) == 9.3     # 10 − 0.7\n    assert round(sum(x[\"kg\"] for x in ctr if x[\"product_id\"] == chic), 3) == 4.7    # 5 − 0.3\n    # pay less than total → refused\n    ok(r.post(\"/api/v1/counter/sales\", json={\"lines\": [{\"item_id\": item, \"weight_kg\": 0.5}],\n                                             \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 30000}]}, headers=key()), 400)\n    # more chicory than the counter holds → refused, nothing posted\n    e = ok(r.post(\"/api/v1/counter/sales\", json={\"lines\": [{\"item_id\": item, \"weight_kg\": 20}],\n                                                 \"payments\": [{\"method\": \"UPI\", \"amount_paise\": 1600000}]}, headers=key()), 400)\n    assert e[\"error\"] == \"NOT_ENOUGH_AT_COUNTER\"\n    assert ok(r.get(\"/api/v1/counter/sales\"))[\"totals\"][\"bills\"] == 1\n    # split payment\n    ok(r.post(\"/api/v1/counter/sales\", json={\"lines\": [{\"item_id\": item, \"weight_kg\": 0.25}],\n                                             \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 10000},\n                                                          {\"method\": \"UPI\", \"amount_paise\": 10000, \"reference\": \"UPI-123\"}]}, headers=key()))"
+  },
+  {
+   "file": "test_counter.py",
+   "module_doc": "Counter Sales (DPR §9) and transfers to the counter.",
+   "name": "test_discount_needs_right_cap_and_reason",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_discount_needs_right_cap_and_reason(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    item, _ = setup_counter(o, r, m)\n    sale = {\"lines\": [{\"item_id\": item, \"weight_kg\": 1}], \"discount_paise\": 4000, \"discount_reason\": \"Regular customer\",\n            \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 76000}]}\n    ok(r.post(\"/api/v1/counter/sales\", json=sale, headers=key()), 403)                       # staff lack discount right\n    assert ok(o.post(\"/api/v1/counter/sales\", json=sale, headers=key()), 400)[\"error\"] == \"DISCOUNTS_NOT_SET_UP\"\n    ok(o.put(\"/api/v1/admin/settings\", json={\"discount_cap_pct\": 5}))\n    ok(o.post(\"/api/v1/counter/sales\", json=sale, headers=key()))\n    sale[\"discount_paise\"], sale[\"payments\"][0][\"amount_paise\"] = 8000, 72000                  # 10% > 5% cap\n    assert ok(o.post(\"/api/v1/counter/sales\", json=sale, headers=key()), 400)[\"error\"] == \"DISCOUNT_ABOVE_CAP\""
+  },
+  {
+   "file": "test_counter.py",
+   "module_doc": "Counter Sales (DPR §9) and transfers to the counter.",
+   "name": "test_refund_maker_checker_and_manager_limit",
+   "doc": "",
+   "asserts": 3,
+   "source": "def test_refund_maker_checker_and_manager_limit(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    item, _ = setup_counter(o, r, m)\n    bill = ok(r.post(\"/api/v1/counter/sales\", json={\"lines\": [{\"item_id\": item, \"weight_kg\": 1}],\n                                                    \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 80000}]}, headers=key()))\n    rid = ok(r.post(f\"/api/v1/counter/sales/{bill['id']}/refunds\", json={\"amount_paise\": 20000, \"reason\": \"Wrong grind given\"}))[\"id\"]\n    ok(r.post(f\"/api/v1/counter/sales/{bill['id']}/refunds\", json={\"amount_paise\": 70000, \"reason\": \"Too much\"}), 400)\n    # give the manager refund rights; no limit set yet → cannot approve\n    ok(o.post(f\"/api/v1/admin/users/{uid_of(o, 'Demo Manager')}/grants\", json={\"perm_key\": \"counter.refund\", \"effect\": \"allow\",\n                                                                              \"reason\": \"Handles counter refunds\"}))\n    assert ok(m.post(f\"/api/v1/counter/refunds/{rid}/decide\", json={\"approve\": True}), 403)[\"error\"] == \"ABOVE_YOUR_APPROVAL_LIMIT\"\n    ok(o.put(\"/api/v1/admin/settings\", json={\"refund_manager_cap_paise\": 50000}))\n    ok(m.post(f\"/api/v1/counter/refunds/{rid}/decide\", json={\"approve\": True}))\n    assert ok(o.get(f\"/api/v1/counter/sales/{bill['id']}\"))[\"status\"] == \"PART_REFUNDED\"\n    # owner can't approve a refund the owner asked for\n    rid2 = ok(o.post(f\"/api/v1/counter/sales/{bill['id']}/refunds\", json={\"amount_paise\": 1000, \"reason\": \"Owner test\"}))[\"id\"]\n    assert ok(o.post(f\"/api/v1/counter/refunds/{rid2}/decide\", json={\"approve\": True}), 403)[\"error\"] == \"CANNOT_APPROVE_OWN_REQUEST\""
+  },
+  {
+   "file": "test_counter.py",
+   "module_doc": "Counter Sales (DPR §9) and transfers to the counter.",
+   "name": "test_cash_close_variance_needs_second_person",
+   "doc": "",
+   "asserts": 3,
+   "source": "def test_cash_close_variance_needs_second_person(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    item, _ = setup_counter(o, r, m)\n    ok(r.post(\"/api/v1/counter/sales\", json={\"lines\": [{\"item_id\": item, \"weight_kg\": 1}],\n                                             \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 80000}]}, headers=key()))\n    assert ok(r.post(\"/api/v1/counter/cash-close\", json={\"counted_paise\": 80000}), 400)[\"error\"] == \"OPENING_CASH_NOT_SET\"\n    ok(o.put(\"/api/v1/admin/settings\", json={\"counter_opening_float_paise\": 200000}))\n    assert ok(r.get(\"/api/v1/counter/cash-close\"))[\"today\"][\"expected_paise\"] == 280000\n    ok(r.post(\"/api/v1/counter/cash-close\", json={\"counted_paise\": 279000}), 400)            # must explain a difference\n    k = ok(r.post(\"/api/v1/counter/cash-close\", json={\"counted_paise\": 279000, \"note\": \"₹10 coin short\"}))\n    assert k[\"state\"] == \"VARIANCE_REVIEW\" and k[\"difference_paise\"] == -1000\n    ok(r.post(\"/api/v1/counter/cash-close\", json={\"counted_paise\": 280000}), 400)            # one close per day\n    ok(o.post(f\"/api/v1/counter/cash-close/{k['id']}/decide\", json={\"approve\": True, \"note\": \"Accepted, coin found later\"}))"
+  },
+  {
+   "file": "test_counter.py",
+   "module_doc": "Counter Sales (DPR §9) and transfers to the counter.",
+   "name": "test_price_list_is_admin_only_and_versioned",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_price_list_is_admin_only_and_versioned(people):\n    o, m = people[\"owner\"], people[\"manager\"]\n    pid = ok(o.post(\"/api/v1/masters\", json={\"kind\": \"product\", \"name\": \"Assam CTC\", \"nominal_kg\": 25}))[\"id\"]\n    ok(m.post(\"/api/v1/counter/items\", json={\"name\": \"Tea\", \"kind\": \"product\", \"stock_product_id\": pid, \"price_per_kg_paise\": 50000}), 403)\n    ok(o.post(\"/api/v1/counter/items\", json={\"name\": \"Tea\", \"kind\": \"product\", \"price_per_kg_paise\": 50000}), 400)  # needs stock mapping\n    iid = ok(o.post(\"/api/v1/counter/items\", json={\"name\": \"Tea\", \"kind\": \"product\", \"stock_product_id\": pid, \"price_per_kg_paise\": 50000}))[\"id\"]\n    ok(o.put(f\"/api/v1/counter/items/{iid}\", json={\"price_per_kg_paise\": 52000}))\n    item = next(i for i in ok(o.get(\"/api/v1/counter/setup\"))[\"items\"] if i[\"id\"] == iid)\n    assert item[\"version\"] == 2 and item[\"price_per_kg_paise\"] == 52000"
+  },
+  {
+   "file": "test_operations.py",
+   "module_doc": "Business rules ported from pilot v0.1 (O-02, O-05, O-13, idempotency).",
+   "name": "test_dashboard_is_personal_and_permission_filtered",
+   "doc": "",
+   "asserts": 4,
+   "source": "def test_dashboard_is_personal_and_permission_filtered(people):\n    r, o = people[\"roaster\"], people[\"owner\"]\n    me = ok(r.get(\"/api/v1/me\"))\n    assert \"pending_invoices\" not in [w[\"id\"] for w in me[\"available_widgets\"]]\n    ok(r.put(\"/api/v1/me/preferences\", json={\"widgets\": [\"my_tasks\", \"quick_actions\"], \"shortcuts\": [\"roasting\"],\n                                             \"welcome\": \"My station\", \"lang\": \"te\", \"large_text\": True}))\n    assert ok(r.get(\"/api/v1/me\"))[\"prefs\"][\"welcome\"] == \"My station\"\n    assert ok(o.get(\"/api/v1/me\"))[\"prefs\"][\"welcome\"] != \"My station\"\n    ok(r.put(\"/api/v1/me/preferences\", json={\"widgets\": [\"pending_invoices\"], \"shortcuts\": []}), 400)\n    ok(r.get(\"/api/v1/payables\"), 403)\n    assert \"pending_invoices\" not in ok(r.get(\"/api/v1/summary\"))"
+  },
+  {
+   "file": "test_operations.py",
+   "module_doc": "Business rules ported from pilot v0.1 (O-02, O-05, O-13, idempotency).",
+   "name": "test_receipt_quarantine_roasting_qc_and_idempotency",
+   "doc": "",
+   "asserts": 6,
+   "source": "def test_receipt_quarantine_roasting_qc_and_idempotency(people):\n    r, o = people[\"roaster\"], people[\"owner\"]\n    pid = product(o, \"Real Test Robusta\", 50)\n    k = key()\n    body = {\"source\": \"AUCTION\", \"source_name\": \"Test auction\", \"product_id\": pid, \"bags\": 3, \"damaged\": 1}\n    res = ok(r.post(\"/api/v1/inward\", json=body, headers=k))\n    assert res[\"nominal_kg\"] == 150 and res[\"allocatable_kg\"] == 100 and res[\"quarantine_kg\"] == 50\n    assert ok(r.post(\"/api/v1/inward\", json=body, headers=k))[\"id\"] == res[\"id\"]\n    assert len(ok(r.get(\"/api/v1/inward\"))) == 1\n    inv = ok(r.get(\"/api/v1/inventory\"))\n    sound = next(x for x in inv if x[\"status\"] == \"RELEASED\")\n    damaged = next(x for x in inv if x[\"status\"] == \"QUARANTINE\")\n    assert sound[\"kg\"] == 100 and damaged[\"kg\"] == 50\n    b = {\"inputs\": [{\"lot_id\": damaged[\"id\"], \"kg\": 10}], \"output_kg\": 9, \"duration_min\": 13}\n    ok(r.post(\"/api/v1/roasts\", json=b, headers=key()), 400)\n    b[\"inputs\"][0][\"lot_id\"] = sound[\"id\"]\n    rr = ok(r.post(\"/api/v1/roasts\", json=b, headers=key()))\n    assert rr[\"qc_status\"] == \"QC_HOLD\" and rr[\"loss_pct\"] == 10\n    ok(r.post(f\"/api/v1/qc/{rr['id']}/decision\", json={\"decision\": \"RELEASED\", \"note\": \"Approved batch\"}), 403)\n    ok(people[\"manager\"].post(f\"/api/v1/qc/{rr['id']}/decision\",\n                              json={\"decision\": \"RELEASED\", \"note\": \"Approved batch\"}), 403)\n    ok(o.post(f\"/api/v1/qc/{rr['id']}/decision\", json={\"decision\": \"RELEASED\", \"note\": \"Approved batch\"}))\n    ok(o.post(f\"/api/v1/qc/{rr['id']}/decision\", json={\"decision\": \"RELEASED\", \"note\": \"Approved batch\"}), 400)\n    assert any(x[\"status\"] == \"RELEASED\" and x[\"stage\"] == \"ROASTED\" for x in ok(o.get(\"/api/v1/inventory\")))"
+  },
+  {
+   "file": "test_operations.py",
+   "module_doc": "Business rules ported from pilot v0.1 (O-02, O-05, O-13, idempotency).",
+   "name": "test_manager_master_draft_needs_admin_approval",
+   "doc": "",
+   "asserts": 3,
+   "source": "def test_manager_master_draft_needs_admin_approval(people):\n    r, m, o = people[\"roaster\"], people[\"manager\"], people[\"owner\"]\n    d = ok(m.post(\"/api/v1/masters\", json={\"kind\": \"product\", \"name\": \"Test Arabica\", \"nominal_kg\": 25}))\n    assert d[\"state\"] == \"DRAFT\"\n    assert not any(x[\"id\"] == d[\"id\"] for x in ok(r.get(\"/api/v1/masters?kind=product\")))\n    ok(m.post(f\"/api/v1/masters/{d['id']}/approve\"), 403)\n    ok(o.post(f\"/api/v1/masters/{d['id']}/approve\"))\n    assert any(x[\"id\"] == d[\"id\"] for x in ok(r.get(\"/api/v1/masters?kind=product\")))"
+  },
+  {
+   "file": "test_operations.py",
+   "module_doc": "Business rules ported from pilot v0.1 (O-02, O-05, O-13, idempotency).",
+   "name": "test_finance_split_permissions",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_finance_split_permissions(people):\n    r, o, a = people[\"roaster\"], people[\"owner\"], people[\"admin\"]\n    pid = product(o, \"Test chicory\", 20)\n    rec = ok(r.post(\"/api/v1/inward\", json={\"source\": \"OTHER\", \"source_name\": \"Supplier test\", \"product_id\": pid,\n                                            \"bags\": 2, \"damaged\": 0}, headers=key()))\n    ok(o.put(f\"/api/v1/inward/{rec['id']}/finance\", json={\"payment_status\": \"PAID\"}), 400)       # payments go through approval\n    ok(o.put(f\"/api/v1/inward/{rec['id']}/finance\", json={\"invoice_ref\": \"INV-9\", \"invoice_status\": \"MATCHED\", \"invoice_amount_paise\": 500000}))\n    pay = ok(o.post(f\"/api/v1/receipts/{rec['id']}/payments\", json={\"amount_paise\": 500000, \"paid_on\": \"2026-10-20\", \"reference\": \"NEFT-1\"}))[\"id\"]\n    ok(o.post(f\"/api/v1/supplier-payments/{pay}/decide\", json={\"approve\": True}), 403)          # not your own\n    ok(a.post(f\"/api/v1/supplier-payments/{pay}/decide\", json={\"approve\": True}))\n    row = next(x for x in ok(o.get(\"/api/v1/payables\"))[\"receipts\"] if x[\"id\"] == rec[\"id\"])\n    assert row[\"payment_status\"] == \"PAID\" and row[\"paid_paise\"] == 500000\n    raw = ok(r.get(\"/api/v1/inward\"))[0]\n    assert \"invoice_ref\" not in raw and \"payment_date\" not in raw and \"invoice_amount_paise\" not in raw"
+  },
+  {
+   "file": "test_operations.py",
+   "module_doc": "Business rules ported from pilot v0.1 (O-02, O-05, O-13, idempotency).",
+   "name": "test_qc_range_is_not_assumed",
+   "doc": "",
+   "asserts": 4,
+   "source": "def test_qc_range_is_not_assumed(people):\n    r, o = people[\"roaster\"], people[\"owner\"]\n    pid = product(o, \"Test peaberry\", 30)\n    ok(r.post(\"/api/v1/inward\", json={\"source\": \"OTHER\", \"source_name\": \"Test supplier\", \"product_id\": pid,\n                                      \"bags\": 3, \"damaged\": 0}, headers=key()))\n    lot = next(x for x in ok(r.get(\"/api/v1/inventory\")) if x[\"status\"] == \"RELEASED\")\n    b = {\"inputs\": [{\"lot_id\": lot[\"id\"], \"kg\": 10}], \"output_kg\": 8.5, \"duration_min\": 20}\n    assert ok(r.post(\"/api/v1/roasts\", json=b, headers=key()))[\"qc_status\"] == \"QC_HOLD\"\n    ok(o.put(\"/api/v1/qc/config\", json={\"min_pct\": 10, \"max_pct\": 20, \"checks_approved\": False}))\n    assert ok(r.post(\"/api/v1/roasts\", json=b, headers=key()))[\"qc_status\"] == \"QC_HOLD\"\n    ok(o.put(\"/api/v1/qc/config\", json={\"min_pct\": 10, \"max_pct\": 20, \"checks_approved\": True}))\n    assert ok(r.post(\"/api/v1/roasts\", json=b, headers=key()))[\"qc_status\"] == \"RELEASED\"\n    b[\"abnormal\"] = True\n    assert ok(r.post(\"/api/v1/roasts\", json=b, headers=key()))[\"qc_status\"] == \"QC_HOLD\""
+  },
+  {
+   "file": "test_operations.py",
+   "module_doc": "Business rules ported from pilot v0.1 (O-02, O-05, O-13, idempotency).",
+   "name": "test_quarantined_bags_need_authorised_verification",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_quarantined_bags_need_authorised_verification(people):\n    r, o = people[\"roaster\"], people[\"owner\"]\n    pid = product(o, \"Test chicory 2\", 20)\n    ok(r.post(\"/api/v1/inward\", json={\"source\": \"OTHER\", \"source_name\": \"Test supplier\", \"product_id\": pid,\n                                      \"bags\": 2, \"damaged\": 1}, headers=key()))\n    lot = next(x for x in ok(o.get(\"/api/v1/inventory\")) if x[\"status\"] == \"QUARANTINE\")\n    ok(r.post(f\"/api/v1/lots/{lot['id']}/verify\", json={\"verified_kg\": 14, \"reason\": \"Physically verified\"}), 403)\n    ok(o.post(f\"/api/v1/lots/{lot['id']}/verify\", json={\"verified_kg\": 14, \"reason\": \"Physically verified usable\"}))\n    row = next(x for x in ok(o.get(\"/api/v1/inventory\")) if x[\"id\"] == lot[\"id\"])\n    assert row[\"status\"] == \"RELEASED\" and row[\"kg\"] == 14\n    ok(o.post(f\"/api/v1/lots/{lot['id']}/verify\", json={\"verified_kg\": 14, \"reason\": \"Repeat attempted\"}), 400)"
+  },
+  {
+   "file": "test_operations.py",
+   "module_doc": "Business rules ported from pilot v0.1 (O-02, O-05, O-13, idempotency).",
+   "name": "test_orders_follow_permissions",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_orders_follow_permissions(people):\n    r, o = people[\"roaster\"], people[\"owner\"]\n    cid = ok(o.post(\"/api/v1/masters\", json={\"kind\": \"customer\", \"name\": \"Test Cafe\"}))[\"id\"]\n    oid = ok(r.post(\"/api/v1/orders\", json={\"customer_id\": cid, \"item\": \"Roasted beans\", \"quantity_kg\": 5, \"credit_requested\": True}))[\"id\"]\n    ok(r.post(\"/api/v1/orders\", json={\"customer_id\": cid, \"item\": \"Beans\", \"quantity_kg\": 5, \"price_per_kg_paise\": 50000}), 403)  # staff can't price\n    assert ok(r.post(f\"/api/v1/orders/{oid}/confirm\"), 400)[\"error\"] == \"PRICE_NOT_SET\"\n    order = next(x for x in ok(r.get(\"/api/v1/orders\")) if x[\"id\"] == oid)\n    assert order[\"state\"] == \"DRAFT\" and \"price_per_kg_paise\" not in order"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_deny_by_default_for_admin_control",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_deny_by_default_for_admin_control(people):\n    for who in (\"manager\", \"roaster\"):\n        ok(people[who].get(\"/api/v1/admin/users\"), 403)\n        ok(people[who].get(\"/api/v1/admin/roles\"), 403)\n        ok(people[who].get(\"/api/v1/admin/audit\"), 403)\n    me = ok(people[\"roaster\"].get(\"/api/v1/me\"))\n    assert \"admin\" not in me[\"modules\"] and \"finance\" not in me[\"modules\"]\n    assert me[\"user\"][\"tier\"] == \"staff\""
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_role_change_applies_on_next_click",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_role_change_applies_on_next_click(people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    ok(r.get(\"/api/v1/roasts\"))\n    staff = next(x for x in ok(o.get(\"/api/v1/admin/roles\")) if x[\"key\"] == \"staff\")\n    new = [p for p in staff[\"permissions\"] if p not in (\"roast.view\", \"roast.execute\")]\n    ok(o.put(f\"/api/v1/admin/roles/{staff['id']}\", json={\"permissions\": new}))\n    ok(r.get(\"/api/v1/roasts\"), 403)\n    assert \"roasting\" not in ok(r.get(\"/api/v1/me\"))[\"modules\"]"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_personal_grant_with_expiry_and_deny",
+   "doc": "",
+   "asserts": 3,
+   "source": "def test_personal_grant_with_expiry_and_deny(portal, people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    rid = uid_of(o, \"Roaster\")\n    ok(r.get(\"/api/v1/qc\"), 403)\n    g = ok(o.post(f\"/api/v1/admin/users/{rid}/grants\", json={\n        \"perm_key\": \"qc.view\", \"effect\": \"allow\", \"reason\": \"Covering for manager\",\n        \"expires_at\": \"2099-01-01T00:00:00+05:30\"}))\n    ok(r.get(\"/api/v1/qc\"))\n    # simulate the end date passing\n    con = sqlite3.connect(portal.config.DB_PATH)\n    con.execute(\"UPDATE user_grants SET expires_at='2000-01-01T00:00:00+00:00' WHERE id=?\", (g[\"id\"],))\n    con.commit(); con.close()\n    ok(r.get(\"/api/v1/qc\"), 403)\n    # deny removes something the role gives\n    ok(r.get(\"/api/v1/inventory\"))\n    ok(o.post(f\"/api/v1/admin/users/{rid}/grants\", json={\n        \"perm_key\": \"inventory.view\", \"effect\": \"deny\", \"reason\": \"Not needed at this station\"}))\n    assert \"inventory.view\" not in ok(r.get(\"/api/v1/me\"))[\"perms\"]\n    access = ok(o.get(f\"/api/v1/admin/users/{rid}/access\"))\n    assert access[\"why\"][\"inventory.view\"] == \"deny\"\n    assert any(x[\"state\"] == \"expired\" for x in access[\"grants\"])"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_admin_only_permissions_never_reach_staff_or_manager",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_admin_only_permissions_never_reach_staff_or_manager(people):\n    o = people[\"owner\"]\n    rid = uid_of(o, \"Roaster\")\n    e = ok(o.post(f\"/api/v1/admin/users/{rid}/grants\", json={\n        \"perm_key\": \"system.grants\", \"effect\": \"allow\", \"reason\": \"testing ceiling\"}), 400)\n    assert e[\"error\"] == \"ADMIN_ONLY_PERMISSION\"\n    mgr = role_id(o, \"manager\")\n    roles = ok(o.get(\"/api/v1/admin/roles\"))\n    current = next(x for x in roles if x[\"id\"] == mgr)[\"permissions\"]\n    ok(o.put(f\"/api/v1/admin/roles/{mgr}\", json={\"permissions\": current + [\"masters.approve\"]}), 400)\n    ok(people[\"manager\"].post(\"/api/v1/masters/1/approve\"), 403)"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_owner_is_protected_and_admins_equal_owner",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_owner_is_protected_and_admins_equal_owner(people):\n    o, a = people[\"owner\"], people[\"admin\"]\n    owner_id = uid_of(o, \"Owner\")\n    admin_id = uid_of(o, \"Office Admin\")\n    assert ok(a.put(f\"/api/v1/admin/users/{owner_id}\", json={\"active\": False}), 403)[\"error\"] == \"OWNER_IS_PROTECTED\"\n    assert ok(o.put(f\"/api/v1/admin/users/{owner_id}\", json={\"active\": False}), 403)[\"error\"] == \"CANNOT_CHANGE_OWN_ACCESS\"\n    ok(a.put(f\"/api/v1/admin/users/{admin_id}\", json={\"full_name\": \"Renamed\"}), 403)   # own account\n    ok(o.put(f\"/api/v1/admin/users/{admin_id}\", json={\"full_name\": \"Office Admin Two\"}))\n    # v1.3: an admin has the owner's power over everyone except the owner\n    mgr_id = uid_of(o, \"Demo Manager\")\n    ok(a.put(f\"/api/v1/admin/users/{mgr_id}\", json={\"role_id\": role_id(o, \"admin\")}))\n    rid = ok(a.post(\"/api/v1/admin/roles\", json={\"name\": \"Co-owner\", \"tier\": \"admin\"}))[\"id\"]\n    # any role can be renamed by owner or admin; the Admin role's access stays locked\n    ok(a.put(f\"/api/v1/admin/roles/{role_id(o, 'staff')}\", json={\"name\": \"Floor Team\"}))\n    ok(o.put(f\"/api/v1/admin/roles/{role_id(o, 'admin')}\", json={\"name\": \"Director\"}))\n    assert ok(a.put(f\"/api/v1/admin/roles/{rid}\", json={\"name\": \"Floor Team\"}), 400)[\"error\"] == \"ROLE_NAME_TAKEN\"\n    assert \"Floor Team\" in [r[\"name\"] for r in ok(o.get(\"/api/v1/admin/roles\"))]\n    assert ok(o.put(f\"/api/v1/admin/roles/{role_id(o, 'admin')}\", json={\"permissions\": []}), 403)[\"error\"] == \"ADMIN_ROLE_IS_LOCKED\""
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_nobody_changes_own_access",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_nobody_changes_own_access(people):\n    a = people[\"admin\"]\n    me = ok(a.get(\"/api/v1/me\"))[\"user\"][\"id\"]\n    e = ok(a.post(f\"/api/v1/admin/users/{me}/grants\", json={\n        \"perm_key\": \"finance.view\", \"effect\": \"deny\", \"reason\": \"self change\"}), 403)\n    assert e[\"error\"] == \"CANNOT_CHANGE_OWN_ACCESS\""
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_cannot_hand_out_access_you_do_not_have",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_cannot_hand_out_access_you_do_not_have(portal, people):\n    o = people[\"owner\"]\n    rid = ok(o.post(\"/api/v1/admin/roles\", json={\"name\": \"Office Clerk\", \"tier\": \"admin\"}))[\"id\"]\n    ok(o.put(f\"/api/v1/admin/roles/{rid}\", json={\"permissions\": [\"dashboard.my_view\", \"system.grants\", \"system.users\"]}))\n    ok(o.post(\"/api/v1/admin/users\", json={\"full_name\": \"Clerk Demo\", \"username\": \"clerk\", \"role_id\": rid,\n                                           \"login_type\": \"password\", \"secret\": \"Clerk-Pass-2026\"}))\n    clerk = Client(portal.app)\n    ok(clerk.post(\"/api/v1/login\", json={\"username\": \"clerk\", \"password\": \"Clerk-Pass-2026\"}))\n    ok(clerk.get(\"/api/v1/admin/users\"), 403)  # must change password first\n    ok(clerk.post(\"/api/v1/me/secret\", json={\"current\": \"Clerk-Pass-2026\", \"new\": \"Clerk-Changed-2026\"}))\n    roaster = uid_of(clerk, \"Roaster\")\n    e = ok(clerk.post(f\"/api/v1/admin/users/{roaster}/grants\", json={\n        \"perm_key\": \"finance.view\", \"effect\": \"allow\", \"reason\": \"should fail\"}), 403)\n    assert e[\"error\"] == \"CANNOT_GIVE_ACCESS_YOU_DO_NOT_HAVE\"\n    # but may remove access\n    ok(clerk.post(f\"/api/v1/admin/users/{roaster}/grants\", json={\n        \"perm_key\": \"inventory.view\", \"effect\": \"deny\", \"reason\": \"allowed to restrict\"}))"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_deactivation_signs_person_out_everywhere",
+   "doc": "",
+   "asserts": 0,
+   "source": "def test_deactivation_signs_person_out_everywhere(people):\n    o, m = people[\"owner\"], people[\"manager\"]\n    ok(m.get(\"/api/v1/me\"))\n    ok(o.put(f\"/api/v1/admin/users/{uid_of(o, 'Demo Manager')}\", json={\"active\": False}))\n    ok(m.get(\"/api/v1/me\"), 401)"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_sensitive_fields_hidden_until_granted",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_sensitive_fields_hidden_until_granted(people):\n    o, m, r = people[\"owner\"], people[\"manager\"], people[\"roaster\"]\n    pid = ok(o.post(\"/api/v1/masters\", json={\"kind\": \"product\", \"name\": \"Test Robusta\", \"nominal_kg\": 50}))[\"id\"]\n    rec = ok(r.post(\"/api/v1/inward\", json={\"source\": \"OTHER\", \"source_name\": \"Test supplier\", \"product_id\": pid,\n                                            \"bags\": 2, \"damaged\": 0}, headers={\"X-Idempotency-Key\": \"k\" * 12}))\n    ok(o.put(f\"/api/v1/inward/{rec['id']}/finance\", json={\"invoice_ref\": \"INV-SECRET\", \"invoice_status\": \"MATCHED\"}))\n    row = ok(m.get(\"/api/v1/inward\"))[0]\n    assert \"invoice_ref\" not in row and \"payment_status\" not in row\n    ok(o.post(f\"/api/v1/admin/users/{uid_of(o, 'Demo Manager')}/grants\", json={\n        \"perm_key\": \"invoice.metadata\", \"effect\": \"allow\", \"reason\": \"Helps with invoice follow-up\"}))\n    row = ok(m.get(\"/api/v1/inward\"))[0]\n    assert row[\"invoice_ref\"] == \"INV-SECRET\" and \"payment_status\" not in row\n    # seeing is not doing: still cannot update\n    ok(m.put(f\"/api/v1/inward/{rec['id']}/finance\", json={\"invoice_status\": \"EXCEPTION\"}), 403)"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_pin_lockout_and_pin_only_for_staff",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_pin_lockout_and_pin_only_for_staff(portal, people):\n    o = people[\"owner\"]\n    c = Client(portal.app)\n    rid = next(p[\"id\"] for p in ok(c.get(\"/api/v1/login/pin-people\")) if \"Packer\" in p[\"full_name\"])\n    for _ in range(5):\n        ok(c.post(\"/api/v1/login/pin\", json={\"user_id\": rid, \"pin\": \"9999\"}), 401)\n    ok(c.post(\"/api/v1/login/pin\", json={\"user_id\": rid, \"pin\": \"1470\"}), 423)\n    ok(o.post(f\"/api/v1/admin/users/{rid}/secret\", json={\"secret\": \"3691\"}))  # admin reset unlocks\n    ok(c.post(\"/api/v1/login/pin\", json={\"user_id\": rid, \"pin\": \"3691\"}))\n    e = ok(o.post(\"/api/v1/admin/users\", json={\"full_name\": \"PIN Manager\", \"username\": \"pinmgr\",\n                                               \"role_id\": role_id(o, \"manager\"), \"login_type\": \"pin\",\n                                               \"secret\": \"4826\"}), 400)\n    assert e[\"error\"] == \"PIN_ONLY_FOR_STAFF_LEVEL\"\n    ok(o.post(f\"/api/v1/admin/users/{rid}/secret\", json={\"secret\": \"1111\"}), 400)"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_idle_signout_follows_admin_setting",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_idle_signout_follows_admin_setting(portal, people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    ok(o.put(\"/api/v1/admin/settings\", json={\"idle_shared_min\": 2}))\n    con = sqlite3.connect(portal.config.DB_PATH)\n    con.execute(\"UPDATE sessions SET last_seen='2000-01-01T00:00:00+00:00' WHERE device_mode='shared'\")\n    con.commit(); con.close()\n    assert ok(r.get(\"/api/v1/me\"), 401)[\"error\"] == \"SESSION_IDLE\"\n    ok(o.get(\"/api/v1/me\"))"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_forged_cross_site_request_is_blocked",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_forged_cross_site_request_is_blocked(portal, people):\n    raw = people[\"owner\"]\n    r = super(Client, raw).request(\"POST\", \"/api/v1/masters\", json={\"kind\": \"supplier\", \"name\": \"Forged\"})\n    assert r.status_code == 403"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_preview_is_read_only_and_audited",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_preview_is_read_only_and_audited(people):\n    o = people[\"owner\"]\n    rid = uid_of(o, \"Roaster\")\n    p = ok(o.get(f\"/api/v1/admin/users/{rid}/preview\"))\n    assert \"roasting\" in p[\"modules\"] and \"finance\" not in p[\"modules\"]\n    assert any(x[\"action\"] == \"PREVIEW_AS\" for x in ok(o.get(\"/api/v1/admin/audit?category=access\")))"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_custom_role_and_pushed_dashboard",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_custom_role_and_pushed_dashboard(portal, people):\n    o = people[\"owner\"]\n    rid = ok(o.post(\"/api/v1/admin/roles\", json={\"name\": \"Packer\", \"tier\": \"staff\",\n                                                  \"copy_from\": role_id(o, \"staff\")}))[\"id\"]\n    roles = ok(o.get(\"/api/v1/admin/roles\"))\n    packer_role = next(x for x in roles if x[\"id\"] == rid)\n    assert \"roast.execute\" in packer_role[\"permissions\"]\n    keep = [p for p in packer_role[\"permissions\"] if not p.startswith(\"roast.\")]\n    ok(o.put(f\"/api/v1/admin/roles/{rid}\", json={\"permissions\": keep}))\n    ok(o.put(f\"/api/v1/admin/users/{uid_of(o, 'Demo Packer')}\", json={\"role_id\": rid}))\n    ok(o.put(f\"/api/v1/admin/dashboard-defaults/{rid}\", json={\"widgets\": [\"my_tasks\", \"packing\"],\n                                                               \"shortcuts\": [\"packing\"], \"apply_now\": True}))\n    packer = login(portal, \"packer\")\n    me = ok(packer.get(\"/api/v1/me\"))\n    assert \"roasting\" not in me[\"modules\"] and me[\"prefs\"][\"widgets\"] == [\"my_tasks\", \"packing\"]\n    # a role with people cannot be disabled\n    ok(o.put(f\"/api/v1/admin/roles/{rid}\", json={\"active\": False}), 400)"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_manager_assigns_work_but_cannot_change_access",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_manager_assigns_work_but_cannot_change_access(people):\n    m, r = people[\"manager\"], people[\"roaster\"]\n    rid = next(p[\"id\"] for p in ok(m.get(\"/api/v1/people\")) if \"Roaster\" in p[\"full_name\"])\n    tid = ok(m.post(\"/api/v1/tasks\", json={\"title\": \"Roast 3 batches of Test Robusta\", \"assigned_to\": rid,\n                                           \"target\": 3}))[\"id\"]\n    assert any(t[\"id\"] == tid for t in ok(r.get(\"/api/v1/tasks\")))\n    ok(r.put(f\"/api/v1/tasks/{tid}\", json={\"progress\": 3}))\n    ok(m.post(f\"/api/v1/admin/users/{rid}/grants\", json={\"perm_key\": \"qc.view\", \"effect\": \"allow\",\n                                                         \"reason\": \"manager tries\"}), 403)\n    ok(r.post(\"/api/v1/tasks\", json={\"title\": \"Staff cannot assign\"}), 403)"
+  },
+  {
+   "file": "test_permissions.py",
+   "module_doc": "Admin A–Z control: the guard rails that must never break.",
+   "name": "test_settings_and_wording",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_settings_and_wording(people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    ok(o.put(\"/api/v1/admin/settings\", json={\"languages_enabled\": [\"te\"]}), 400)\n    ok(o.put(\"/api/v1/admin/settings\", json={\"languages_enabled\": [\"en\", \"te\"], \"default_language\": \"te\",\n                                             \"company_name\": \"Vasavi Trading Co.\"}))\n    ok(o.put(\"/api/v1/admin/i18n\", json={\"lang\": \"te\", \"key\": \"roasting\", \"text\": \"వేయించడం\"}))\n    assert ok(r.get(\"/api/v1/i18n\"))[\"te\"][\"roasting\"] == \"వేయించడం\"\n    me = ok(r.get(\"/api/v1/me\"))\n    assert me[\"settings\"][\"languages_enabled\"] == [\"en\", \"te\"]\n    ok(r.put(\"/api/v1/me/preferences\", json={\"widgets\": [], \"shortcuts\": [], \"lang\": \"hi\"}), 400)"
+  },
+  {
+   "file": "test_production.py",
+   "module_doc": "Blending, grinding, outside roasting, packing (DPR §7, §8).",
+   "name": "test_confidential_recipe_view_run_edit_are_separate",
+   "doc": "",
+   "asserts": 4,
+   "source": "def test_confidential_recipe_view_run_edit_are_separate(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    a, _ = roasted_stock(o, r, \"Arabica\")\n    b, _ = roasted_stock(o, r, \"Robusta\")\n    ok(m.post(\"/api/v1/recipes\", json={\"name\": \"House\", \"stage\": \"ROASTED\", \"components\": [{\"name\": \"A\", \"pct\": 50}, {\"name\": \"B\", \"pct\": 50}]}), 403)\n    ok(o.post(\"/api/v1/recipes\", json={\"name\": \"Bad\", \"stage\": \"ROASTED\", \"components\": [{\"name\": \"A\", \"pct\": 60}, {\"name\": \"B\", \"pct\": 30}]}), 400)\n    rid = ok(o.post(\"/api/v1/recipes\", json={\"name\": \"Signature blend\", \"stage\": \"ROASTED\", \"confidential\": True,\n                                             \"components\": [{\"name\": \"Arabica roasted\", \"pct\": 70}, {\"name\": \"Robusta roasted\", \"pct\": 30}]}))[\"id\"]\n    seen = next(x for x in ok(r.get(\"/api/v1/recipes\")) if x[\"id\"] == rid)\n    assert not seen[\"formula_visible\"] and seen[\"components\"][0][\"pct\"] is None and not seen[\"may_run\"]\n    body = {\"recipe_id\": rid, \"inputs\": [{\"component\": 0, \"lot_id\": a[\"id\"], \"kg\": 7}, {\"component\": 1, \"lot_id\": b[\"id\"], \"kg\": 3}], \"output_kg\": 10}\n    ok(r.post(\"/api/v1/blends\", json=body, headers=key()), 403)\n    ok(o.post(f\"/api/v1/admin/users/{uid_of(o, 'Roaster')}/grants\", json={\"perm_key\": \"recipe.execute_secret\", \"effect\": \"allow\", \"reason\": \"Trusted operator\"}))\n    res = ok(r.post(\"/api/v1/blends\", json=body, headers=key()))\n    assert res[\"actual_pct\"] is None            # may run, still may not read the formula\n    out = next(x for x in ok(o.get(\"/api/v1/inventory\")) if x[\"id\"] == res[\"output_lot_id\"])\n    assert out[\"stage\"] == \"BLENDED\" and out[\"kg\"] == 10\n    ok(o.put(f\"/api/v1/recipes/{rid}\", json={\"components\": [{\"name\": \"Arabica roasted\", \"pct\": 60}, {\"name\": \"Robusta roasted\", \"pct\": 40}]}))\n    assert next(x for x in ok(o.get(\"/api/v1/recipes\")) if x[\"id\"] == rid)[\"version\"] == 2"
+  },
+  {
+   "file": "test_production.py",
+   "module_doc": "Blending, grinding, outside roasting, packing (DPR §7, §8).",
+   "name": "test_grind_creates_ground_lot_with_loss",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_grind_creates_ground_lot_with_loss(people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    lot, _ = roasted_stock(o, r)\n    res = ok(r.post(\"/api/v1/grinds\", json={\"lot_id\": lot[\"id\"], \"input_kg\": 5, \"output_kg\": 4.9, \"grind\": \"Medium (filter)\"}, headers=key()))\n    assert res[\"loss_kg\"] == 0.1\n    ok(r.post(\"/api/v1/grinds\", json={\"lot_id\": lot[\"id\"], \"input_kg\": 1, \"output_kg\": 2, \"grind\": \"Fine\"}, headers=key()), 400)"
+  },
+  {
+   "file": "test_production.py",
+   "module_doc": "Blending, grinding, outside roasting, packing (DPR §7, §8).",
+   "name": "test_customer_coffee_never_mixes_with_company_stock",
+   "doc": "",
+   "asserts": 3,
+   "source": "def test_customer_coffee_never_mixes_with_company_stock(people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    cid = ok(o.post(\"/api/v1/masters\", json={\"kind\": \"customer\", \"name\": \"Sample Café\"}))[\"id\"]\n    jid = ok(r.post(\"/api/v1/outside/jobs\", json={\"customer_id\": cid, \"received_kg\": 20, \"charge_basis\": \"INPUT_KG\", \"rate_paise\": 4000, \"bean_type\": \"Robusta Cherry\"}))[\"id\"]\n    lot = next(x for x in ok(o.get(\"/api/v1/inventory\")) if x[\"owner\"] == f\"CUST:{cid}\")\n    # company roasting can't touch it\n    ok(r.post(\"/api/v1/roasts\", json={\"inputs\": [{\"lot_id\": lot[\"id\"], \"kg\": 5}], \"output_kg\": 4, \"duration_min\": 10}, headers=key()), 400)\n    res = ok(r.post(f\"/api/v1/outside/jobs/{jid}/roast\", json={\"input_kg\": 20, \"output_kg\": 16.8}))\n    assert res[\"charge_paise\"] == 80000\n    ok(r.post(f\"/api/v1/outside/jobs/{jid}/return\", json={\"kg\": 17, \"note\": \"Owner collected\"}), 400)     # more than exists\n    ok(r.post(f\"/api/v1/outside/jobs/{jid}/return\", json={\"kg\": 16.8, \"note\": \"Café driver Ravi collected, bike\"}))\n    job = ok(o.get(\"/api/v1/outside/jobs\"))[\"jobs\"][0]\n    assert job[\"state\"] == \"RETURNED\" and job[\"returned_kg\"] == 16.8\n    assert \"charge_paise\" not in ok(r.get(\"/api/v1/outside/jobs\"))[\"jobs\"][0]"
+  },
+  {
+   "file": "test_production.py",
+   "module_doc": "Blending, grinding, outside roasting, packing (DPR §7, §8).",
+   "name": "test_packing_posts_finished_goods_on_qa_hold",
+   "doc": "",
+   "asserts": 3,
+   "source": "def test_packing_posts_finished_goods_on_qa_hold(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    lot, _ = roasted_stock(o, r)\n    pid = ok(m.post(\"/api/v1/packing\", json={\"product_name\": \"Filter blend\", \"demand_type\": \"STOCK\", \"packs_target\": 20, \"pack_g\": 500}))[\"id\"]\n    ok(r.post(f\"/api/v1/packing/{pid}/run\", json={\"source_lot_id\": lot[\"id\"], \"input_kg\": 5, \"good_packs\": 12, \"rejected_packs\": 0}, headers=key()), 400)  # 6 kg > 5 kg used\n    res = ok(r.post(f\"/api/v1/packing/{pid}/run\", json={\"source_lot_id\": lot[\"id\"], \"input_kg\": 6.2, \"good_packs\": 12, \"rejected_packs\": 1}, headers=key()))\n    assert res[\"state\"] == \"IN_PROGRESS\" and res[\"loss_kg\"] == 0.2\n    packed = next(x for x in ok(o.get(\"/api/v1/inventory\")) if x[\"stage\"] == \"PACKED\")\n    assert packed[\"status\"] == \"QC_HOLD\" and packed[\"units\"] == 12\n    ok(r.post(f\"/api/v1/packing/{pid}/run\", json={\"source_lot_id\": lot[\"id\"], \"input_kg\": 4.1, \"good_packs\": 8, \"rejected_packs\": 0}, headers=key()))\n    ok(r.post(f\"/api/v1/packing/{pid}/release\", json={\"note\": \"Seal and weight checked\"}), 403)\n    ok(o.post(f\"/api/v1/packing/{pid}/release\", json={\"note\": \"Seal and weight checked\"}))\n    packed = next(x for x in ok(o.get(\"/api/v1/inventory\")) if x[\"stage\"] == \"PACKED\")\n    assert packed[\"status\"] == \"RELEASED\" and packed[\"units\"] == 20\n    ok(r.post(f\"/api/v1/packing/{pid}/run\", json={\"source_lot_id\": lot[\"id\"], \"input_kg\": 1, \"good_packs\": 1, \"rejected_packs\": 0}, headers=key()), 400)"
+  },
+  {
+   "file": "test_sales_finance.py",
+   "module_doc": "Outgoing sales → credit → reservation → dispatch → invoice → collection, plus\nstock counts, exceptions, Tally export (DPR §10–§12).",
+   "name": "test_credit_order_full_life",
+   "doc": "",
+   "asserts": 10,
+   "source": "def test_credit_order_full_life(people):\n    o, r, m, a = people[\"owner\"], people[\"roaster\"], people[\"manager\"], people[\"admin\"]\n    lot, _ = roasted_stock(o, r, kg=30)                          # 25.2 kg roasted\n    cid = customer(o)\n    oid = ok(m.post(\"/api/v1/orders\", json={\"customer_id\": cid, \"item\": \"Roasted Robusta\", \"quantity_kg\": 10, \"form\": \"ROASTED\", \"credit_requested\": True}))[\"id\"]\n    ok(o.put(f\"/api/v1/orders/{oid}/price\", json={\"price_per_kg_paise\": 50000, \"gst_rate_bp\": 500}))\n    res = ok(m.post(f\"/api/v1/orders/{oid}/confirm\"))\n    assert res[\"state\"] == \"CREDIT_REVIEW\" and \"No approved credit terms\" in res[\"note\"]\n    ok(o.put(f\"/api/v1/customers/{cid}/credit\", json={\"credit_limit_paise\": 1_000_000, \"due_days\": 15}))\n    ok(m.post(f\"/api/v1/orders/{oid}/credit\", json={\"approve\": True, \"note\": \"manager self-approve\"}), 403)   # needs the right\n    ok(o.post(f\"/api/v1/orders/{oid}/credit\", json={\"approve\": True, \"note\": \"Good payment history\"}))\n    order = next(x for x in ok(o.get(\"/api/v1/orders\")) if x[\"id\"] == oid)\n    assert order[\"state\"] == \"RESERVED\" and order[\"reserved_kg\"] == 10\n    # reserved stock can't be used by roasting/grinding/packing\n    inv = next(x for x in ok(o.get(\"/api/v1/inventory\")) if x[\"id\"] == lot[\"id\"])\n    assert inv[\"available_kg\"] == round(inv[\"kg\"] - 10, 3)\n    ok(r.post(\"/api/v1/grinds\", json={\"lot_id\": lot[\"id\"], \"input_kg\": inv[\"kg\"], \"output_kg\": 1, \"grind\": \"Fine\"}, headers=key()), 400)\n    # dispatch via an app needs a real booking reference\n    body = {\"kg\": 6, \"mode\": \"RAPIDO\", \"handover_to\": \"Rapido rider Suresh\"}\n    ok(r.post(f\"/api/v1/orders/{oid}/dispatch\", json=body, headers=key()), 400)\n    body[\"booking_ref\"] = \"RPD-77812\"\n    d1 = ok(r.post(f\"/api/v1/orders/{oid}/dispatch\", json=body, headers=key()))\n    assert d1[\"invoice\"].startswith(\"INV-\") and d1[\"state\"] == \"RESERVED\"              # partial\n    d2 = ok(r.post(f\"/api/v1/orders/{oid}/dispatch\", json={\"kg\": 4, \"mode\": \"CUSTOMER_PICKUP\", \"handover_to\": \"Café owner\"}, headers=key()))\n    assert d2[\"state\"] == \"DISPATCHED\"\n    disp = next(x for x in ok(o.get(\"/api/v1/orders\")) if x[\"id\"] == oid)[\"dispatches\"]\n    ok(r.post(f\"/api/v1/dispatches/{disp[0]['id']}/deliver\", json={\"delivered_kg\": 6, \"pod_note\": \"Signed by café\"}))\n    ok(r.post(f\"/api/v1/dispatches/{disp[1]['id']}/deliver\", json={\"delivered_kg\": 3.5, \"pod_note\": \"One bag torn\"}))\n    assert next(x for x in ok(o.get(\"/api/v1/orders\")) if x[\"id\"] == oid)[\"state\"] == \"DELIVERED\"\n    assert any(e[\"category\"] == \"UNDELIVERED\" for e in ok(o.get(\"/api/v1/exceptions\")))\n    # receivables + maker/checker collection\n    rec = ok(o.get(\"/api/v1/receivables\"))\n    inv1 = min((i for i in rec[\"invoices\"] if i[\"order_id\"] == oid), key=lambda i: i[\"id\"])\n    assert inv1[\"total_paise\"] == 315000                                                  # 6 kg × ₹500 + 5% GST\n    ok(m.post(f\"/api/v1/invoices/{inv1['id']}/collections\", json={\"amount_paise\": 315000, \"method\": \"UPI\", \"reference\": \"UPI-55\"}))\n    kid = ok(o.get(\"/api/v1/receivables\"))[\"pending\"][0][\"id\"]\n    ok(m.post(f\"/api/v1/collections/{kid}/verify\", json={\"approve\": True}), 403)\n    ok(o.post(f\"/api/v1/collections/{kid}/verify\", json={\"approve\": True}))\n    assert next(i for i in ok(o.get(\"/api/v1/receivables\"))[\"invoices\"] if i[\"id\"] == inv1[\"id\"])[\"status\"] == \"PAID\"\n    # slip has no prices; staff can't open the tax invoice\n    slip = ok(r.get(f\"/api/v1/orders/{oid}/slip\"))\n    assert \"price_per_kg_paise\" not in slip[\"order\"]\n    ok(r.get(f\"/api/v1/invoices/{inv1['id']}\"), 403)"
+  },
+  {
+   "file": "test_sales_finance.py",
+   "module_doc": "Outgoing sales → credit → reservation → dispatch → invoice → collection, plus\nstock counts, exceptions, Tally export (DPR §10–§12).",
+   "name": "test_cash_order_needs_payment_before_dispatch_and_no_double_reservation",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_cash_order_needs_payment_before_dispatch_and_no_double_reservation(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    roasted_stock(o, r, kg=12)                                                            # 10.08 kg\n    cid = customer(o, \"Dealer\")\n    o1 = ok(o.post(\"/api/v1/orders\", json={\"customer_id\": cid, \"item\": \"Beans\", \"quantity_kg\": 8, \"form\": \"ROASTED\", \"price_per_kg_paise\": 40000}))[\"id\"]\n    o2 = ok(o.post(\"/api/v1/orders\", json={\"customer_id\": cid, \"item\": \"Beans\", \"quantity_kg\": 8, \"form\": \"ROASTED\", \"price_per_kg_paise\": 40000}))[\"id\"]\n    assert ok(o.post(f\"/api/v1/orders/{o1}/confirm\"))[\"state\"] == \"RESERVED\"\n    assert ok(o.post(f\"/api/v1/orders/{o2}/confirm\"))[\"state\"] == \"CONFIRMED\"             # only 2.08 kg left: not reserved\n    assert any(e[\"category\"] == \"STOCK_SHORTAGE\" for e in ok(o.get(\"/api/v1/exceptions\")))\n    e = ok(r.post(f\"/api/v1/orders/{o1}/dispatch\", json={\"kg\": 8, \"mode\": \"VTC_DELIVERY\", \"handover_to\": \"Driver\"}, headers=key()), 400)\n    assert e[\"error\"] == \"DISPATCH_BLOCKED_PAYMENT\"\n    ok(o.post(f\"/api/v1/orders/{o1}/advance\", json={\"amount_paise\": 320000, \"reference\": \"NEFT-991\"}))\n    ok(r.post(f\"/api/v1/orders/{o1}/dispatch\", json={\"kg\": 8, \"mode\": \"VTC_DELIVERY\", \"handover_to\": \"Driver\"}, headers=key()))\n    inv = next(i for i in ok(o.get(\"/api/v1/receivables\"))[\"invoices\"] if i[\"order_id\"] == o1)\n    assert inv[\"status\"] == \"PAID\"                                                        # advance applied\n    ok(o.post(f\"/api/v1/orders/{o2}/cancel\", json={\"reason\": \"Customer changed mind\"}))"
+  },
+  {
+   "file": "test_sales_finance.py",
+   "module_doc": "Outgoing sales → credit → reservation → dispatch → invoice → collection, plus\nstock counts, exceptions, Tally export (DPR §10–§12).",
+   "name": "test_count_difference_needs_second_person_and_limit",
+   "doc": "",
+   "asserts": 3,
+   "source": "def test_count_difference_needs_second_person_and_limit(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    lot, raw = roasted_stock(o, r)\n    k = ok(r.post(f\"/api/v1/lots/{raw['id']}/count\", json={\"counted_kg\": 69.5, \"note\": \"Weighed all bags\"}))\n    assert k[\"state\"] == \"PENDING\" and k[\"variance_kg\"] == -0.5\n    ok(o.post(f\"/api/v1/admin/users/{uid_of(o, 'Demo Manager')}/grants\", json={\"perm_key\": \"stock.cycle_approve\", \"effect\": \"allow\", \"reason\": \"Shift supervisor\"}))\n    assert ok(m.post(f\"/api/v1/counts/{k['id']}/decide\", json={\"approve\": True, \"note\": \"Checked again\"}), 403)[\"error\"] == \"ABOVE_YOUR_APPROVAL_LIMIT\"\n    ok(o.put(\"/api/v1/admin/settings\", json={\"correction_manager_cap_kg\": 1}))\n    ok(m.post(f\"/api/v1/counts/{k['id']}/decide\", json={\"approve\": True, \"note\": \"Checked again\"}))\n    assert next(x for x in ok(o.get(\"/api/v1/inventory\")) if x[\"id\"] == raw[\"id\"])[\"kg\"] == 69.5"
+  },
+  {
+   "file": "test_sales_finance.py",
+   "module_doc": "Outgoing sales → credit → reservation → dispatch → invoice → collection, plus\nstock counts, exceptions, Tally export (DPR §10–§12).",
+   "name": "test_receipt_reversal_only_when_unused",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_receipt_reversal_only_when_unused(people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    pid = ok(o.post(\"/api/v1/masters\", json={\"kind\": \"product\", \"name\": \"Mistake\", \"nominal_kg\": 10}))[\"id\"]\n    rec = ok(r.post(\"/api/v1/inward\", json={\"source\": \"OTHER\", \"source_name\": \"Supplier\", \"product_id\": pid, \"bags\": 3, \"damaged\": 0}, headers=key()))\n    ok(r.post(f\"/api/v1/inward/{rec['id']}/reverse\", json={\"reason\": \"Wrong product chosen\"}), 403)\n    ok(o.post(f\"/api/v1/inward/{rec['id']}/reverse\", json={\"reason\": \"Wrong product chosen\"}))\n    assert not any(x[\"product_id\"] == pid for x in ok(o.get(\"/api/v1/inventory\")))\n    lot, raw = roasted_stock(o, r, \"Used\")\n    ok(o.post(f\"/api/v1/inward/{raw['receipt_id']}/reverse\", json={\"reason\": \"Too late\"}), 400)"
+  },
+  {
+   "file": "test_sales_finance.py",
+   "module_doc": "Outgoing sales → credit → reservation → dispatch → invoice → collection, plus\nstock counts, exceptions, Tally export (DPR §10–§12).",
+   "name": "test_tally_export_never_repeats_accepted_vouchers",
+   "doc": "",
+   "asserts": 3,
+   "source": "def test_tally_export_never_repeats_accepted_vouchers(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    item_owner = people[\"owner\"]\n    from test_counter import setup_counter\n    item, _ = setup_counter(o, r, m)\n    ok(r.post(\"/api/v1/counter/sales\", json={\"lines\": [{\"item_id\": item, \"weight_kg\": 1}], \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 80000}]}, headers=key()))\n    ok(m.get(\"/api/v1/tally/exports\"), 403)\n    from datetime import datetime, timedelta, timezone\n    today = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).strftime(\"%Y-%m-%d\")\n    e = ok(o.post(\"/api/v1/tally/exports\", json={\"from\": today, \"to\": today}))\n    assert e[\"vouchers\"] == 1 and \"CONTROL_TOTAL\" in e[\"content\"] and len(e[\"checksum\"]) == 64\n    assert ok(o.post(\"/api/v1/tally/exports\", json={\"from\": today, \"to\": today}), 400)[\"error\"] == \"NOTHING_NEW_TO_EXPORT\"\n    ok(o.post(f\"/api/v1/tally/exports/{e['id']}/result\", json={\"accepted\": False, \"note\": \"Ledger name mismatch\"}))\n    e2 = ok(o.post(\"/api/v1/tally/exports\", json={\"from\": today, \"to\": today}))           # rejected → can export again\n    ok(o.post(f\"/api/v1/tally/exports/{e2['id']}/result\", json={\"accepted\": True, \"note\": \"Imported fine\"}))\n    assert ok(o.post(\"/api/v1/tally/exports\", json={\"from\": today, \"to\": today}), 400)[\"error\"] == \"NOTHING_NEW_TO_EXPORT\""
+  },
+  {
+   "file": "test_sales_finance.py",
+   "module_doc": "Outgoing sales → credit → reservation → dispatch → invoice → collection, plus\nstock counts, exceptions, Tally export (DPR §10–§12).",
+   "name": "test_reports_split_operational_and_commercial",
+   "doc": "",
+   "asserts": 3,
+   "source": "def test_reports_split_operational_and_commercial(people):\n    o, m, r = people[\"owner\"], people[\"manager\"], people[\"roaster\"]\n    rep = ok(m.get(\"/api/v1/reports\"))\n    assert \"roasting\" in rep and \"counter\" not in rep\n    assert \"counter\" in ok(o.get(\"/api/v1/reports\"))\n    ok(r.get(\"/api/v1/reports\"), 403)\n    assert \"phone\" not in ok(r.get(\"/api/v1/masters?kind=customer\"))[0] if ok(r.get(\"/api/v1/masters?kind=customer\")) else True"
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_partial_bags_use_weighed_kg_and_get_their_own_lot",
+   "doc": "",
+   "asserts": 4,
+   "source": "def test_partial_bags_use_weighed_kg_and_get_their_own_lot(people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    pid, res = raw_stock(o, r, bags=10, damaged=1, partial=2, partial_kg=61.5)\n    assert res[\"nominal_kg\"] == 8 * 50 + 61.5\n    assert res[\"allocatable_kg\"] == 7 * 50 + 61.5 and res[\"quarantine_kg\"] == 50\n    lots = {x[\"bag_kind\"]: x for x in ok(r.get(f\"{A}/inventory\")) if x[\"product_id\"] == pid}\n    assert lots[\"SOUND\"][\"kg\"] == 350 and lots[\"DAMAGED\"][\"status\"] == \"QUARANTINE\" and lots[\"PARTIAL\"][\"kg\"] == 61.5\n    bad = r.post(f\"{A}/inward\", json={\"source\": \"OTHER\", \"source_name\": \"Supplier\", \"product_id\": pid, \"bags\": 3, \"damaged\": 0,\n                                      \"partial\": 1, \"partial_kg\": 50}, headers=key())\n    assert bad.json()[\"error\"] == \"PARTIAL_KG_MUST_BE_LESS_THAN_FULL_BAGS\""
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_roast_two_lots_max_and_profile_from_owner_list",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_roast_two_lots_max_and_profile_from_owner_list(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    pid, _ = raw_stock(o, r, bags=4, partial=1, partial_kg=20)\n    lots = [x[\"id\"] for x in ok(r.get(f\"{A}/inventory\")) if x[\"product_id\"] == pid]\n    three = r.post(f\"{A}/roasts\", json={\"inputs\": [{\"lot_id\": lots[0], \"kg\": 1}, {\"lot_id\": lots[1], \"kg\": 1}, {\"lot_id\": 999, \"kg\": 1}],\n                                        \"output_kg\": 2, \"duration_min\": 10}, headers=key())\n    assert three.json()[\"error\"] == \"ROAST_NEEDS_1_OR_2_INPUTS\"\n    assert m.post(f\"{A}/roast-profiles\", json={\"name\": \"City+\"}).status_code == 403   # owner/admin list\n    prof = ok(o.post(f\"{A}/roast-profiles\", json={\"name\": \"City+\", \"notes\": \"205C\"}))[\"id\"]\n    body = {\"inputs\": [{\"lot_id\": lots[0], \"kg\": 10}, {\"lot_id\": lots[1], \"kg\": 5}], \"output_kg\": 12.6, \"duration_min\": 16}\n    assert r.post(f\"{A}/roasts\", json=body, headers=key()).json()[\"error\"] == \"CHOOSE_A_ROAST_PROFILE\"\n    ok(r.post(f\"{A}/roasts\", json={**body, \"profile_id\": prof}, headers=key()))\n    day = ok(r.get(f\"{A}/roasts\"))\n    assert day[0][\"profile\"] == \"City+\" and day[0][\"roaster\"] == \"Demo Roaster\" and \"+\" in day[0][\"inputs\"]\n    cal = ok(r.get(f\"{A}/roasts?month=\" + day[0][\"created_at\"][:7]))\n    assert sum(x[\"batches\"] for x in cal[\"days\"].values()) == 1"
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_linked_task_counts_itself_and_needs_assigner_approval",
+   "doc": "",
+   "asserts": 7,
+   "source": "def test_linked_task_counts_itself_and_needs_assigner_approval(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    roaster = uid_of(o, \"Roaster\")\n    pid, _ = raw_stock(o, r, bags=4)\n    lot = next(x[\"id\"] for x in ok(r.get(f\"{A}/inventory\")) if x[\"product_id\"] == pid)\n    tid = ok(m.post(f\"{A}/tasks\", json={\"kind\": \"ROAST\", \"assigned_to\": roaster, \"target\": 2}))[\"id\"]\n    for _ in range(2):\n        ok(r.post(f\"{A}/roasts\", json={\"inputs\": [{\"lot_id\": lot, \"kg\": 10}], \"output_kg\": 8.5, \"duration_min\": 15}, headers=key()))\n    t = next(x for x in ok(r.get(f\"{A}/tasks\")) if x[\"id\"] == tid)\n    assert t[\"progress\"] == 2 and t[\"title\"] == \"Roast 2 batches\"\n    assert m.post(f\"{A}/tasks/{tid}/submit\", json={}).status_code == 403          # only the doer completes\n    ok(r.post(f\"{A}/tasks/{tid}/submit\", json={}))\n    assert o.post(f\"{A}/tasks/{tid}/review\", json={\"approve\": True}).status_code == 403   # not the assigner\n    assert r.post(f\"{A}/tasks/{tid}/review\", json={\"approve\": True}).status_code == 403   # never your own\n    assert m.post(f\"{A}/tasks/{tid}/review\", json={\"approve\": False}).json()[\"error\"] == \"REASON_REQUIRED\"\n    ok(m.post(f\"{A}/tasks/{tid}/review\", json={\"approve\": False, \"note\": \"Weigh output again\"}))\n    assert next(x for x in ok(r.get(f\"{A}/tasks\")) if x[\"id\"] == tid)[\"status\"] == \"IN_PROGRESS\"\n    ok(r.post(f\"{A}/tasks/{tid}/submit\", json={}))\n    ok(m.post(f\"{A}/tasks/{tid}/review\", json={\"approve\": True}))\n    assert next(x for x in ok(m.get(f\"{A}/tasks\")) if x[\"id\"] == tid)[\"status\"] == \"DONE\""
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_task_rules_short_target_and_wrong_assignee",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_task_rules_short_target_and_wrong_assignee(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    roaster = uid_of(o, \"Roaster\")\n    assert m.post(f\"{A}/tasks\", json={\"kind\": \"QC\", \"assigned_to\": roaster, \"target\": 3}).json()[\"error\"] == \"ASSIGNEE_CANNOT_DO_THIS_WORK\"\n    tid = ok(m.post(f\"{A}/tasks\", json={\"kind\": \"COUNTER\", \"assigned_to\": roaster, \"target\": 5}))[\"id\"]\n    assert r.post(f\"{A}/tasks/{tid}/submit\", json={}).json()[\"error\"] == \"EXPLAIN_WHY_TARGET_NOT_REACHED\"\n    # self-assigned work is reviewed by another manager/admin holding tasks.approve\n    me = uid_of(o, \"Manager\")\n    own = ok(m.post(f\"{A}/tasks\", json={\"kind\": \"GENERAL\", \"title\": \"Order packing film\", \"assigned_to\": me}))[\"id\"]\n    ok(m.post(f\"{A}/tasks/{own}/submit\", json={\"note\": \"Ordered\"}))\n    ok(people[\"admin\"].post(f\"{A}/tasks/{own}/review\", json={\"approve\": True}))"
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_masters_live_in_admin_control_and_only_admin_edits",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_masters_live_in_admin_control_and_only_admin_edits(people):\n    o, m = people[\"owner\"], people[\"manager\"]\n    me = ok(m.get(f\"{A}/me\"))\n    assert \"admin\" in me[\"modules\"] and \"masters\" not in me[\"modules\"]\n    draft = ok(m.post(f\"{A}/masters\", json={\"kind\": \"customer\", \"name\": \"New café\"}))\n    assert draft[\"state\"] == \"DRAFT\"\n    assert m.put(f\"{A}/masters/{draft['id']}\", json={\"name\": \"X\"}).status_code == 403\n    pid = ok(o.post(f\"{A}/masters\", json={\"kind\": \"product\", \"name\": \"Arabica A\", \"nominal_kg\": 50, \"category\": \"GREEN_COFFEE\"}))[\"id\"]\n    ok(o.put(f\"{A}/masters/{pid}\", json={\"nominal_kg\": 60, \"name\": \"Arabica Plantation A\"}))\n    ok(o.put(f\"{A}/masters/{pid}\", json={\"active\": False}))\n    assert not any(x[\"id\"] == pid for x in ok(people[\"roaster\"].get(f\"{A}/masters?kind=product\")))\n    assert o.post(f\"{A}/masters\", json={\"kind\": \"product\", \"name\": \"Arabica Plantation A\"}).status_code == 200"
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_counter_others_custom_ratio_price_and_override",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_counter_others_custom_ratio_price_and_override(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    chic = _counter(o, r, m)\n    sale = {\"lines\": [{\"custom\": {\"coffee_pct\": 80}, \"weight_kg\": 1}], \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 78000}]}\n    assert r.post(f\"{A}/counter/sales\", json=sale, headers=key()).json()[\"error\"] == \"CUSTOM_BLEND_NOT_SET_UP\"\n    ok(o.put(f\"{A}/admin/settings\", json={\"custom_coffee_rate_paise\": 90000, \"custom_chicory_rate_paise\": 30000, \"custom_chicory_product_id\": chic}))\n    b = ok(r.post(f\"{A}/counter/sales\", json=sale, headers=key()))\n    assert b[\"lines\"][0][\"rate_paise\"] == 78000 and b[\"lines\"][0][\"item_name\"] == \"Custom 80/20 coffee powder\"\n    over = {\"lines\": [{\"custom\": {\"coffee_pct\": 80, \"override_rate_paise\": 70000, \"override_reason\": \"Regular customer\"}, \"weight_kg\": 1}],\n            \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 70000}]}\n    assert r.post(f\"{A}/counter/sales\", json=over, headers=key()).status_code == 403   # staff can't change price\n    b = ok(m.post(f\"{A}/counter/sales\", json=over, headers=key()))\n    assert b[\"lines\"][0][\"override_reason\"] == \"Regular customer\"\n    # stock: 0.8+0.8 kg coffee and 0.2+0.2 kg chicory gone\n    stock = ok(r.get(f\"{A}/counter/setup\"))[\"stock\"]\n    assert abs(stock[\"coffee_ground\"] - 6.4) < 1e-6 and abs(stock[\"custom_chicory\"] - 4.6) < 1e-6"
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_close_today_locks_counter_saves_register_and_admin_reopens",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_close_today_locks_counter_saves_register_and_admin_reopens(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    _counter(o, r, m)\n    item = ok(o.post(f\"{A}/counter/items\", json={\"name\": \"Pure\", \"kind\": \"coffee_ground\", \"coffee_pct\": 100, \"price_per_kg_paise\": 90000}))[\"id\"]\n    ok(o.put(f\"{A}/admin/settings\", json={\"counter_opening_float_paise\": 100000}))\n    ok(r.post(f\"{A}/counter/sales\", json={\"lines\": [{\"item_id\": item, \"weight_kg\": 1}], \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 90000}]}, headers=key()))\n    k = ok(r.post(f\"{A}/counter/cash-close\", json={\"counted_paise\": 190000}))\n    assert k[\"state\"] == \"BALANCED\"\n    sale = {\"lines\": [{\"item_id\": item, \"weight_kg\": 0.5}], \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 45000}]}\n    assert r.post(f\"{A}/counter/sales\", json=sale, headers=key()).json()[\"error\"] == \"COUNTER_CLOSED_FOR_TODAY\"\n    reg = ok(r.get(f\"{A}/counter/cash-close/{k['id']}/register\"))\n    assert reg[\"register\"][\"bill_count\"] == 1 and reg[\"register\"][\"by_method\"][\"CASH\"] == 90000\n    assert m.post(f\"{A}/counter/cash-close/{k['id']}/reopen\", json={\"reason\": \"Closed too early\"}).status_code == 403\n    ok(o.post(f\"{A}/counter/cash-close/{k['id']}/reopen\", json={\"reason\": \"Closed too early\"}))\n    ok(r.post(f\"{A}/counter/sales\", json=sale, headers=key()))\n    k2 = ok(r.post(f\"{A}/counter/cash-close\", json={\"counted_paise\": 235000}))\n    assert ok(r.get(f\"{A}/counter/cash-close/{k2['id']}/register\"))[\"register\"][\"bill_count\"] == 2"
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_pending_is_per_section_and_staff_see_only_their_jobs",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_pending_is_per_section_and_staff_see_only_their_jobs(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    roaster = uid_of(o, \"Roaster\")\n    pid, _ = raw_stock(o, r, bags=4)\n    ok(m.post(f\"{A}/tasks\", json={\"kind\": \"ROAST\", \"assigned_to\": roaster, \"target\": 2}))\n    ok(m.post(f\"{A}/tasks\", json={\"kind\": \"INWARD\", \"assigned_to\": roaster, \"target\": 5}))\n    mine = ok(r.get(f\"{A}/pending\"))\n    assert [t[\"title\"] for t in mine[\"roasting\"][\"tasks\"]] == [\"Roast 2 batches\"]\n    assert mine[\"inward\"][\"count\"] == 1 and \"orders\" not in mine          # staff: no manager decisions\n    ok(r.post(f\"{A}/inward\", json={\"source\": \"OTHER\", \"source_name\": \"Supplier\", \"product_id\": pid, \"bags\": 5, \"damaged\": 0}, headers=key()))\n    assert ok(r.get(f\"{A}/pending\"))[\"inward\"][\"tasks\"][0][\"progress\"] == 5  # bags counted by themselves\n    lot = next(x[\"id\"] for x in ok(r.get(f\"{A}/inventory\")) if x[\"product_id\"] == pid)\n    ok(r.post(f\"{A}/roasts\", json={\"inputs\": [{\"lot_id\": lot, \"kg\": 10}], \"output_kg\": 8.4, \"duration_min\": 15}, headers=key()))\n    team = ok(m.get(f\"{A}/pending\"))\n    assert team[\"roasting\"][\"tasks\"][0][\"assignee\"] == \"Demo Roaster\"       # managers see everyone's\n    assert any(w[\"label\"].startswith(\"roast batches\") for w in ok(o.get(f\"{A}/pending\"))[\"qc\"][\"waiting\"])"
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_counter_customer_is_remembered_and_masked",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_counter_customer_is_remembered_and_masked(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    _counter(o, r, m)\n    item = ok(o.post(f\"{A}/counter/items\", json={\"name\": \"Pure\", \"kind\": \"coffee_ground\", \"coffee_pct\": 100, \"price_per_kg_paise\": 90000}))[\"id\"]\n    sale = {\"lines\": [{\"item_id\": item, \"weight_kg\": 0.5}], \"payments\": [{\"method\": \"CASH\", \"amount_paise\": 45000}],\n            \"customer_name\": \"Ravi\", \"customer_phone\": \"+91 98480 12345\"}\n    b = ok(r.post(f\"{A}/counter/sales\", json=sale, headers=key()))\n    assert b[\"customer_phone\"] == \"••••••2345\"                         # never the full number on a bill\n    ok(o.put(f\"{A}/counter/items/{item}\", json={\"price_per_kg_paise\": 95000}))\n    card = ok(r.get(f\"{A}/counter/customers/lookup?phone=9848012345\"))\n    assert card[\"found\"] and card[\"name\"] == \"Ravi\" and card[\"visits\"] == 1 and card[\"phone_masked\"].endswith(\"2345\")\n    line = card[\"last_bill\"][\"lines\"][0]\n    assert line[\"rate_paise\"] == 90000 and line[\"price_now\"] == 95000   # cashier sees the price changed\n    assert r.get(f\"{A}/counter/customers\").status_code == 403          # full list is admin-only\n    assert ok(o.get(f\"{A}/counter/customers\"))[0][\"phone\"] == \"9848012345\""
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_cash_today_needs_admin_and_pin",
+   "doc": "",
+   "asserts": 8,
+   "source": "def test_cash_today_needs_admin_and_pin(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    assert m.get(f\"{A}/counter/insights\").status_code == 403\n    assert o.get(f\"{A}/counter/insights\").status_code == 423              # locked until PIN\n    assert o.post(f\"{A}/counter/insights/unlock\", json={\"pin\": \"4826\"}).json()[\"error\"] == \"INSIGHTS_PIN_NOT_SET\"\n    assert o.put(f\"{A}/counter/insights/pin\", json={\"pin\": \"1111\"}).json()[\"error\"] == \"PIN_TOO_SIMPLE\"\n    ok(o.put(f\"{A}/counter/insights/pin\", json={\"pin\": \"4826\"}))\n    assert o.post(f\"{A}/counter/insights/unlock\", json={\"pin\": \"0000\"}).json()[\"error\"] == \"WRONG_PIN\"\n    ok(o.post(f\"{A}/counter/insights/unlock\", json={\"pin\": \"4826\"}))\n    x = ok(o.get(f\"{A}/counter/insights\"))\n    assert len(x[\"trend\"]) == 30 and len(x[\"hours\"]) == 24\n    ok(o.post(f\"{A}/counter/collections\", json={\"method\": \"UPI\", \"amount_paise\": 12000, \"note\": \"PhonePe statement\"}))\n    assert ok(o.get(f\"{A}/counter/insights\"))[\"entered\"][\"UPI\"] == 12000\n    assert people[\"admin\"].get(f\"{A}/counter/insights\").status_code == 423"
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_roast_month_record_meter_and_gas",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_roast_month_record_meter_and_gas(people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    month = ok(r.get(f\"{A}/roasts/month-record\"))[\"month\"]\n    ok(r.put(f\"{A}/roasts/meter\", json={\"month\": month, \"start_reading\": 6605}))\n    assert r.put(f\"{A}/roasts/meter\", json={\"month\": month, \"end_reading\": 6600}).json()[\"error\"] == \"END_READING_BELOW_START\"\n    ok(r.put(f\"{A}/roasts/meter\", json={\"month\": month, \"end_reading\": 6650}))\n    ok(r.post(f\"{A}/roasts/cylinders\", json={\"kg\": 19, \"fitted_on\": month + \"-02\"}))\n    rec = ok(o.get(f\"{A}/roasts/month-record?month=\" + month))\n    assert rec[\"meter_count\"] == 45 and rec[\"gas_kg\"] == 19"
+  },
+  {
+   "file": "test_v11.py",
+   "module_doc": "v1.1 owner changes (26 Oct 2026): work-linked tasks with review, partial bags,\nroast profiles and 2-lot roasts, Admin Control masters/prices, counter Others,\nclose today's bills.",
+   "name": "test_maintenance_ticket_flow",
+   "doc": "",
+   "asserts": 4,
+   "source": "def test_maintenance_ticket_flow(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    tid = ok(r.post(f\"{A}/maintenance\", json={\"title\": \"Roaster drum noise\", \"area\": \"ROASTER\", \"urgency\": \"URGENT\", \"details\": \"Grinding sound at 180C\"}))[\"id\"]\n    assert r.put(f\"{A}/maintenance/{tid}\", json={\"status\": \"RESOLVED\", \"note\": \"x\"}).status_code == 403\n    assert any(w[\"label\"].startswith(\"maintenance\") for w in ok(m.get(f\"{A}/pending\"))[\"maintenance\"][\"waiting\"])\n    assert m.put(f\"{A}/maintenance/{tid}\", json={\"status\": \"RESOLVED\"}).json()[\"error\"] == \"SAY_WHAT_WAS_DONE\"\n    ok(m.put(f\"{A}/maintenance/{tid}\", json={\"status\": \"RESOLVED\", \"note\": \"Bearing greased\"}))\n    assert ok(r.get(f\"{A}/maintenance\"))[0][\"status\"] == \"RESOLVED\""
+  },
+  {
+   "file": "test_v13.py",
+   "module_doc": "v1.3 owner changes (26 Oct 2026): stock cards by bean, hierarchy routing,\nstaff profiles and documents (last 4 only, owner/admin only), delivery-app address.",
+   "name": "test_stock_cards_follow_the_bean_and_only_admins_edit",
+   "doc": "",
+   "asserts": 6,
+   "source": "def test_stock_cards_follow_the_bean_and_only_admins_edit(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    pid, _ = raw_stock(o, r, bags=4)\n    lot = next(x for x in ok(r.get(f\"{A}/inventory\")) if x[\"product_id\"] == pid)\n    roast = ok(r.post(f\"{A}/roasts\", json={\"inputs\": [{\"lot_id\": lot[\"id\"], \"kg\": 50}], \"output_kg\": 42, \"duration_min\": 14}, headers=key()))\n    roasted = next(x for x in ok(o.get(f\"{A}/inventory\")) if x[\"roast_id\"] == roast[\"id\"])\n    assert roasted[\"bean_id\"] == pid and roasted[\"product_id\"] is None   # counter sales still find it as plain coffee\n    assert any(c[\"product_id\"] == pid for c in ok(r.get(f\"{A}/stock-cards\")))\n    ok(m.put(f\"{A}/stock-cards/{pid}\", json={\"label\": \"nope\"}), 403)\n    ok(o.put(f\"{A}/stock-cards/{pid}\", json={\"label\": \"Robusta AB\", \"color\": \"#aa5500\", \"low_kg\": 500}))\n    assert ok(o.put(f\"{A}/stock-cards/{pid}\", json={\"color\": \"red\"}), 400)[\"error\"] == \"INVALID_COLOUR\"\n    card = next(c for c in ok(r.get(f\"{A}/stock-cards\")) if c[\"product_id\"] == pid)\n    assert card[\"label\"] == \"Robusta AB\" and card[\"low_kg\"] == 500\n    s = ok(o.get(f\"{A}/summary\"))\n    assert \"available_kg\" not in s and s[\"beans_in_stock\"] >= 1 and s[\"beans_low\"] >= 1\n    rep = ok(o.get(f\"{A}/reports\"))\n    assert all(\"bean\" in x for x in rep.get(\"stock\", []))"
+  },
+  {
+   "file": "test_v13.py",
+   "module_doc": "v1.3 owner changes (26 Oct 2026): stock cards by bean, hierarchy routing,\nstaff profiles and documents (last 4 only, owner/admin only), delivery-app address.",
+   "name": "test_admin_sets_hierarchy_and_work_routes_to_the_boss",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_admin_sets_hierarchy_and_work_routes_to_the_boss(people):\n    o, a, m, r = people[\"owner\"], people[\"admin\"], people[\"manager\"], people[\"roaster\"]\n    rid, mid = uid_of(o, \"Roaster\"), uid_of(o, \"Demo Manager\")\n    ok(m.put(f\"{A}/team/{rid}/reports-to\", json={\"reports_to\": mid}), 403)\n    ok(a.put(f\"{A}/team/{rid}/reports-to\", json={\"reports_to\": mid}))\n    assert ok(a.put(f\"{A}/team/{mid}/reports-to\", json={\"reports_to\": rid}), 400)[\"error\"] == \"HIERARCHY_LOOP\"\n    assert next(p for p in ok(r.get(f\"{A}/team\")) if p[\"id\"] == rid)[\"reports_to\"] == mid\n    # a maintenance ticket goes to the boss and is assigned to them\n    tid = ok(r.post(f\"{A}/maintenance\", json={\"title\": \"Grinder burr worn\", \"area\": \"GRINDER\"}))[\"id\"]\n    t = next(x for x in ok(m.get(f\"{A}/maintenance\")) if x[\"id\"] == tid)\n    assert t[\"assigned_to\"] == mid\n    assert any(\"Grinder burr worn\" in x[\"title\"] for x in ok(m.get(f\"{A}/alerts\")))\n    assert not any(\"Grinder burr worn\" in x[\"title\"] for x in ok(o.get(f\"{A}/alerts\")))"
+  },
+  {
+   "file": "test_v13.py",
+   "module_doc": "v1.3 owner changes (26 Oct 2026): stock cards by bean, hierarchy routing,\nstaff profiles and documents (last 4 only, owner/admin only), delivery-app address.",
+   "name": "test_staff_profile_keeps_last_four_and_is_admin_only",
+   "doc": "",
+   "asserts": 9,
+   "source": "def test_staff_profile_keeps_last_four_and_is_admin_only(people):\n    o, m = people[\"owner\"], people[\"manager\"]\n    rid = uid_of(o, \"Roaster\")\n    ok(m.get(f\"{A}/team/{rid}/profile\"), 403)\n    ok(o.put(f\"{A}/team/{rid}/profile\", json={\"designation\": \"Head roaster\", \"phone\": \"9000000002\", \"aadhaar\": \"1234 5678 9012\",\n                                              \"pan\": \"ABCDE1234F\", \"bank_account\": \"001122334455\", \"ifsc\": \"sbin0001234\"}))\n    assert ok(o.put(f\"{A}/team/{rid}/profile\", json={\"ifsc\": \"bad\"}), 400)[\"error\"] == \"INVALID_IFSC\"\n    p = ok(o.get(f\"{A}/team/{rid}/profile\"))[\"profile\"]\n    assert (p[\"aadhaar_last4\"], p[\"pan_last4\"], p[\"bank_last4\"], p[\"ifsc\"]) == (\"9012\", \"234F\", \"4455\", \"SBIN0001234\")\n    assert \"123456789012\" not in str(p)\n    data = base64.b64encode(b\"%PDF-1.4 \" + bytes(300)).decode()\n    did = ok(o.post(f\"{A}/team/{rid}/documents\", json={\"kind\": \"AADHAAR\", \"mime\": \"application/pdf\", \"data\": data}))[\"id\"]\n    assert people[\"admin\"].get(f\"{A}/team/documents/{did}\").status_code == 200\n    assert m.get(f\"{A}/team/documents/{did}\").status_code == 403\n    fid = ok(o.get(f\"{A}/team/{rid}/profile\"))[\"documents\"][0][\"id\"]\n    assert fid == did\n    # a staff document is never reachable through the voice-note file link\n    assert o.get(f\"{A}/comms/files/{did}\").status_code in (403, 404)\n    ok(o.delete(f\"{A}/team/documents/{did}\"))\n    assert ok(o.get(f\"{A}/team/{rid}/profile\"))[\"documents\"] == []\n    acts = [x[\"action\"] for x in ok(o.get(f\"{A}/admin/audit?category=access\"))]\n    assert {\"STAFF_PROFILE_VIEWED\", \"STAFF_DOCUMENT_VIEWED\", \"STAFF_DOCUMENT_REMOVED\"} <= set(acts)"
+  },
+  {
+   "file": "test_v13.py",
+   "module_doc": "v1.3 owner changes (26 Oct 2026): stock cards by bean, hierarchy routing,\nstaff profiles and documents (last 4 only, owner/admin only), delivery-app address.",
+   "name": "test_dispatcher_gets_drop_address_others_do_not",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_dispatcher_gets_drop_address_others_do_not(people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    ok(o.post(f\"{A}/masters\", json={\"kind\": \"customer\", \"name\": f\"Cafe {uuid.uuid4().hex[:4]}\", \"address\": \"Road 1, Hyderabad\"}))\n    cid = next(x[\"id\"] for x in ok(o.get(f\"{A}/masters?kind=customer\")) if x.get(\"address\") == \"Road 1, Hyderabad\")\n    ok(r.post(f\"{A}/orders\", json={\"customer_id\": cid, \"item\": \"Roasted beans\", \"quantity_kg\": 2, \"form\": \"ROASTED\"}))\n    order = next(x for x in ok(r.get(f\"{A}/orders\")) if x[\"customer_id\"] == cid)\n    assert order[\"customer_address\"] == \"Road 1, Hyderabad\""
+  },
+  {
+   "file": "test_v14.py",
+   "module_doc": "v1.4 owner changes (27 Oct 2026): unique codes (Stage-Bean-Date-No.), roasted coffee\nrest (ready-from), find-by-code for QR scanning, low-stock alerts and 30-day use,\ncontacts for WhatsApp messages only to people allowed to see them.",
+   "name": "test_codes_follow_stage_bean_date_number",
+   "doc": "",
+   "asserts": 13,
+   "source": "def test_codes_follow_stage_bean_date_number(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    d = ist_day()\n    rob = bean(o, \"Robusta Kaapi AB\", \"RKAB\")\n    ara = bean(o, \"Arabica Estate PB\")\n    assert next(x for x in ok(o.get(f\"{A}/masters?kind=product\")) if x[\"id\"] == ara)[\"code\"] == \"ARAEPB\"\n    assert ok(o.post(f\"{A}/masters\", json={\"kind\": \"product\", \"name\": \"Mixed thing\", \"code\": \"MIX\"}), 400)[\"error\"] == \"BEAN_CODE_TAKEN\"\n    assert ok(o.put(f\"{A}/masters/{ara}\", json={\"code\": \"RKAB\"}), 400)[\"error\"] == \"BEAN_CODE_TAKEN\"\n    assert ok(o.put(f\"{A}/masters/{ara}\", json={\"code\": \"a-b\"}), 400)[\"error\"] == \"INVALID_BEAN_CODE\"\n    first = inward(r, rob, bags=10, damaged=1, partial=2, partial_kg=61.5)\n    n = int(first[\"code\"].rsplit(\"-\", 1)[1])\n    assert first[\"code\"] == f\"IN-{d}-{n:02d}\"\n    lots = {x[\"bag_kind\"]: x[\"code\"] for x in first[\"lots\"]}\n    assert lots == {\"SOUND\": f\"RAW-RKAB-{d}-{n:02d}\", \"DAMAGED\": f\"RAW-RKAB-{d}-{n:02d}D\", \"PARTIAL\": f\"RAW-RKAB-{d}-{n:02d}P\"}\n    assert inward(r, ara)[\"code\"] == f\"IN-{d}-{n + 1:02d}\"\n    raw_r = next(x for x in ok(r.get(f\"{A}/inventory\")) if x[\"code\"] == lots[\"SOUND\"])\n    raw_a = next(x for x in ok(r.get(f\"{A}/inventory\")) if x[\"product_id\"] == ara and x[\"bag_kind\"] == \"SOUND\")\n    one = ok(r.post(f\"{A}/roasts\", json={\"inputs\": [{\"lot_id\": raw_r[\"id\"], \"kg\": 50}], \"output_kg\": 42, \"duration_min\": 15}, headers=key()))\n    two = ok(r.post(f\"{A}/roasts\", json={\"inputs\": [{\"lot_id\": raw_r[\"id\"], \"kg\": 20}, {\"lot_id\": raw_a[\"id\"], \"kg\": 20}],\n                                        \"output_kg\": 34, \"duration_min\": 15}, headers=key()))\n    k = int(one[\"code\"].rsplit(\"-\", 1)[1])\n    assert one[\"code\"] == f\"RST-RKAB-{d}-{k:02d}\" and two[\"code\"] == f\"RST-MIX-{d}-{k + 1:02d}\"\n    ok(o.post(f\"{A}/qc/{one['id']}/decision\", json={\"decision\": \"RELEASED\", \"note\": \"Checked colour\"}))\n    # scanning: lower case, VTC: prefix and a bag number all find the lot\n    found = ok(r.get(f\"{A}/lots/find\", params={\"code\": f\"vtc:{lots['SOUND'].lower()}/3\"}))\n    assert found[\"lot\"][\"code\"] == lots[\"SOUND\"] and found[\"bag\"] == 3 and found[\"lot\"][\"receipt_code\"] == first[\"code\"]\n    assert ok(r.get(f\"{A}/lots/find\", params={\"code\": \"RAW-NOPE-000000-01\"}), 404)[\"error\"] == \"LOT_NOT_FOUND\"\n    # grind keeps the bean; transfer and counter lots share their number\n    roasted = ok(r.get(f\"{A}/lots/find\", params={\"code\": one[\"code\"]}))[\"lot\"]\n    g = ok(r.post(f\"{A}/grinds\", json={\"lot_id\": roasted[\"id\"], \"input_kg\": 10, \"output_kg\": 9.8, \"grind\": \"Fine\"}, headers=key()))\n    ground = next(x for x in ok(r.get(f\"{A}/inventory\")) if x[\"id\"] == g[\"output_lot_id\"])\n    assert ground[\"code\"].startswith(\"GRD-RKAB-\") and ground[\"bean_id\"] == rob and ground[\"roasted_on\"] == roasted[\"roasted_on\"]\n    t = ok(r.post(f\"{A}/transfers\", json={\"lot_id\": ground[\"id\"], \"kg\": 5}, headers=key()))\n    sent = ok(r.get(f\"{A}/lots/find\", params={\"id\": ground[\"id\"]}))\n    trf = sent[\"transfers\"][0][\"transit_code\"]\n    assert trf.startswith(\"TRF-RKAB-\")\n    ok(m.post(f\"{A}/transfers/{t['id']}/receive\", json={\"kg_received\": 5}))\n    ctr = trf.replace(\"TRF-\", \"CTR-\")\n    assert ok(m.get(f\"{A}/lots/find\", params={\"code\": ctr}))[\"lot\"][\"location\"] == \"CTR-01\""
+  },
+  {
+   "file": "test_v14.py",
+   "module_doc": "v1.4 owner changes (27 Oct 2026): unique codes (Stage-Bean-Date-No.), roasted coffee\nrest (ready-from), find-by-code for QR scanning, low-stock alerts and 30-day use,\ncontacts for WhatsApp messages only to people allowed to see them.",
+   "name": "test_roasted_coffee_rests_before_dispatch",
+   "doc": "",
+   "asserts": 6,
+   "source": "def test_roasted_coffee_rests_before_dispatch(people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    ok(o.put(f\"{A}/admin/settings\", json={\"roast_rest_days\": 13}))\n    pid = bean(o, \"Rest test bean\", \"RTB\")\n    inward(r, pid, bags=2)\n    raw = next(x for x in ok(r.get(f\"{A}/inventory\")) if x[\"product_id\"] == pid)\n    ro = ok(r.post(f\"{A}/roasts\", json={\"inputs\": [{\"lot_id\": raw[\"id\"], \"kg\": 30}], \"output_kg\": 25, \"duration_min\": 15}, headers=key()))\n    ok(o.post(f\"{A}/qc/{ro['id']}/decision\", json={\"decision\": \"RELEASED\", \"note\": \"Checked colour\"}))\n    lot = ok(r.get(f\"{A}/lots/find\", params={\"code\": ro[\"code\"]}))[\"lot\"]\n    roasted_on = date.fromisoformat(lot[\"roasted_on\"])\n    assert lot[\"ready_from\"] == (roasted_on + timedelta(days=13)).isoformat() and lot[\"resting\"] is True\n    cid = ok(o.post(f\"{A}/masters\", json={\"kind\": \"customer\", \"name\": \"Rest Café\", \"phone\": \"9000000011\"}))[\"id\"]\n    oid = ok(o.post(f\"{A}/orders\", json={\"customer_id\": cid, \"item\": \"Beans\", \"quantity_kg\": 5, \"form\": \"ROASTED\", \"price_per_kg_paise\": 40000}))[\"id\"]\n    assert ok(o.post(f\"{A}/orders/{oid}/confirm\"))[\"state\"] == \"RESERVED\"\n    ok(o.post(f\"{A}/orders/{oid}/advance\", json={\"amount_paise\": 210000, \"reference\": \"UPI-1\"}))\n    order = next(x for x in ok(r.get(f\"{A}/orders\")) if x[\"id\"] == oid)\n    assert order[\"resting_until\"] == lot[\"ready_from\"]\n    body = {\"kg\": 5, \"mode\": \"VTC_DELIVERY\", \"handover_to\": \"Driver\"}\n    assert ok(r.post(f\"{A}/orders/{oid}/dispatch\", json=body, headers=key()), 400)[\"error\"] == \"COFFEE_STILL_RESTING\"\n    ok(r.post(f\"{A}/orders/{oid}/dispatch\", json={**body, \"rest_ok\": True}, headers=key()))\n    assert any(x[\"action\"] == \"DISPATCHED_BEFORE_REST\" for x in ok(o.get(f\"{A}/admin/audit\")))\n    ok(o.put(f\"{A}/admin/settings\", json={\"roast_rest_days\": 0}))\n    assert ok(r.get(f\"{A}/lots/find\", params={\"code\": ro[\"code\"]}))[\"lot\"][\"resting\"] is False"
+  },
+  {
+   "file": "test_v14.py",
+   "module_doc": "v1.4 owner changes (27 Oct 2026): unique codes (Stage-Bean-Date-No.), roasted coffee\nrest (ready-from), find-by-code for QR scanning, low-stock alerts and 30-day use,\ncontacts for WhatsApp messages only to people allowed to see them.",
+   "name": "test_low_stock_alert_once_and_days_left",
+   "doc": "",
+   "asserts": 5,
+   "source": "def test_low_stock_alert_once_and_days_left(people):\n    o, r, m = people[\"owner\"], people[\"roaster\"], people[\"manager\"]\n    pid = bean(o, \"Low stock bean\", \"LSB\")\n    inward(r, pid, bags=2)                                                   # 100 kg\n    raw = next(x for x in ok(r.get(f\"{A}/inventory\")) if x[\"product_id\"] == pid)\n    ok(r.post(f\"{A}/roasts\", json={\"inputs\": [{\"lot_id\": raw[\"id\"], \"kg\": 40}], \"output_kg\": 33, \"duration_min\": 15}, headers=key()))\n    ok(o.put(f\"{A}/stock-cards/{pid}\", json={\"low_kg\": 70}))                # 60 kg raw usable (roasted is on QC hold)\n    low = [x for x in ok(m.get(f\"{A}/alerts\")) if x[\"title\"].startswith(\"Low stock: Low stock bean\")]\n    assert len(low) == 1 and \"60 kg left\" in low[0][\"title\"]\n    assert any(\"low-stock\" in w[\"label\"] for w in ok(m.get(f\"{A}/pending\"))[\"inventory\"][\"waiting\"])\n    ok(r.post(f\"{A}/roasts\", json={\"inputs\": [{\"lot_id\": raw[\"id\"], \"kg\": 10}], \"output_kg\": 8, \"duration_min\": 15}, headers=key()))\n    assert len([x for x in ok(m.get(f\"{A}/alerts\")) if x[\"title\"].startswith(\"Low stock: Low stock bean\")]) == 1   # no repeat\n    assert not any(x[\"title\"].startswith(\"Low stock\") for x in ok(r.get(f\"{A}/alerts\")))                        # staff aren't told\n    card = next(x for x in ok(r.get(f\"{A}/stock-cards\")) if x[\"product_id\"] == pid)\n    assert card[\"used_30_kg\"] == 9 and card[\"code\"] == \"LSB\""
+  },
+  {
+   "file": "test_v14.py",
+   "module_doc": "v1.4 owner changes (27 Oct 2026): unique codes (Stage-Bean-Date-No.), roasted coffee\nrest (ready-from), find-by-code for QR scanning, low-stock alerts and 30-day use,\ncontacts for WhatsApp messages only to people allowed to see them.",
+   "name": "test_contacts_for_whatsapp_only_where_allowed",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_contacts_for_whatsapp_only_where_allowed(people):\n    o, r = people[\"owner\"], people[\"roaster\"]\n    cid = ok(o.post(f\"{A}/masters\", json={\"kind\": \"customer\", \"name\": \"WA Café\", \"phone\": \"9000000012\"}))[\"id\"]\n    ok(r.post(f\"{A}/orders\", json={\"customer_id\": cid, \"item\": \"Beans\", \"quantity_kg\": 2, \"form\": \"ROASTED\"}))\n    assert next(x for x in ok(o.get(f\"{A}/orders\")) if x[\"customer_id\"] == cid)[\"customer_phone\"] == \"9000000012\"\n    assert \"customer_phone\" not in next(x for x in ok(r.get(f\"{A}/orders\")) if x[\"customer_id\"] == cid)"
+  },
+  {
+   "file": "test_v15.py",
+   "module_doc": "v1.5 owner changes (27 Oct 2026): home screen card sizes, My profile (own contact details,\nread-aloud speed, devices signed in, team and work), sign out other devices, staff details.",
+   "name": "test_dashboard_sizes_and_voice_speed",
+   "doc": "",
+   "asserts": 7,
+   "source": "def test_dashboard_sizes_and_voice_speed(people):\n    m = people[\"manager\"]\n    p = ok(m.get(f\"{A}/me\"))[\"prefs\"]\n    assert p[\"sizes\"] == {} and p[\"voice_rate\"] == 0.95\n    body = {**p, \"widgets\": p[\"widgets\"][::-1], \"sizes\": {p[\"widgets\"][0]: \"l\"}, \"voice_rate\": 0.7}\n    ok(m.put(f\"{A}/me/preferences\", json=body))\n    p2 = ok(m.get(f\"{A}/me\"))[\"prefs\"]\n    assert p2[\"widgets\"] == p[\"widgets\"][::-1] and p2[\"sizes\"] == {p[\"widgets\"][0]: \"l\"} and p2[\"voice_rate\"] == 0.7\n    # sizes only for cards on the screen, only s/m/l; speed only 0.6–1.4\n    assert ok(m.put(f\"{A}/me/preferences\", json={**body, \"sizes\": {\"nope\": \"l\"}}), 400)[\"error\"] == \"INVALID_WIDGET_SELECTION\"\n    assert ok(m.put(f\"{A}/me/preferences\", json={**body, \"sizes\": {p[\"widgets\"][0]: \"xl\"}}), 400)[\"error\"] == \"INVALID_WIDGET_SELECTION\"\n    assert ok(m.put(f\"{A}/me/preferences\", json={**body, \"voice_rate\": 3}), 400)[\"error\"] == \"INVALID_VOICE_SPEED\"\n    assert ok(m.put(f\"{A}/me/preferences\", json={**body, \"voice_rate\": \"fast\"}), 400)[\"error\"] == \"INVALID_VOICE_SPEED\"\n    # a card that is hidden later drops its size\n    ok(m.put(f\"{A}/me/preferences\", json={**body, \"widgets\": p[\"widgets\"][1:], \"sizes\": {}}))\n    assert ok(m.get(f\"{A}/me\"))[\"prefs\"][\"sizes\"] == {}"
+  },
+  {
+   "file": "test_v15.py",
+   "module_doc": "v1.5 owner changes (27 Oct 2026): home screen card sizes, My profile (own contact details,\nread-aloud speed, devices signed in, team and work), sign out other devices, staff details.",
+   "name": "test_my_profile_contact_and_work",
+   "doc": "",
+   "asserts": 12,
+   "source": "def test_my_profile_contact_and_work(people):\n    r, o = people[\"roaster\"], people[\"owner\"]\n    me = ok(r.get(f\"{A}/me/profile\"))\n    assert set(me) >= {\"contact\", \"boss\", \"reports\", \"teams\", \"work\", \"sessions\", \"access\"}\n    assert \"aadhaar_last4\" not in str(me) and \"bank\" not in str(me[\"contact\"])   # ID/bank never on this page\n    assert any(a[\"area\"] == \"Daily Roasting\" for a in me[\"access\"])\n    ok(r.put(f\"{A}/me/profile\", json={\"phone\": \"98765 43210\", \"emergency_name\": \"Demo Relative\", \"emergency_phone\": \"+91 91234 56780\"}))\n    assert ok(r.get(f\"{A}/me/profile\"))[\"contact\"][\"emergency_name\"] == \"Demo Relative\"\n    assert ok(r.put(f\"{A}/me/profile\", json={\"phone\": \"12ab\"}), 400)[\"error\"] == \"INVALID_PHONE\"\n    assert ok(r.put(f\"{A}/me/profile\", json={\"email\": \"not-an-email\"}), 400)[\"error\"] == \"INVALID_EMAIL\"\n    assert ok(r.put(f\"{A}/me/profile\", json={\"aadhaar_last4\": \"1234\", \"designation\": \"Boss\"}), 400)[\"error\"] == \"NOTHING_TO_CHANGE\"\n    # the owner sees what the roaster saved in the staff record; the roaster can't open staff records\n    rid = next(p[\"id\"] for p in ok(o.get(f\"{A}/team\")) if p[\"full_name\"].endswith(\"Roaster\"))\n    assert ok(o.get(f\"{A}/team/{rid}/profile\"))[\"profile\"][\"emergency_phone\"] == \"+91 91234 56780\"\n    assert r.get(f\"{A}/team/{rid}/profile\").status_code == 403\n    # boss and team come from the hierarchy\n    mid = next(p[\"id\"] for p in ok(o.get(f\"{A}/team\")) if p[\"full_name\"].endswith(\"Manager\"))\n    ok(o.put(f\"{A}/team/{rid}/reports-to\", json={\"reports_to\": mid}))\n    assert ok(r.get(f\"{A}/me/profile\"))[\"boss\"][\"id\"] == mid\n    assert any(x[\"id\"] == rid for x in ok(people[\"manager\"].get(f\"{A}/me/profile\"))[\"reports\"])\n    audit = ok(o.get(f\"{A}/admin/audit?category=access\"))\n    assert any(x[\"action\"] == \"OWN_PROFILE_CHANGED\" for x in audit)"
+  },
+  {
+   "file": "test_v15.py",
+   "module_doc": "v1.5 owner changes (27 Oct 2026): home screen card sizes, My profile (own contact details,\nread-aloud speed, devices signed in, team and work), sign out other devices, staff details.",
+   "name": "test_devices_and_sign_out",
+   "doc": "",
+   "asserts": 9,
+   "source": "def test_devices_and_sign_out(portal, people):\n    m = people[\"manager\"]\n    phone = login(portal, \"manager\")\n    tablet = login(portal, \"manager\")\n    s = ok(m.get(f\"{A}/me/profile\"))[\"sessions\"]\n    assert len(s) == 3 and sum(x[\"this\"] for x in s) == 1 and \"token_hash\" not in str(s)\n    # sign out one other device\n    other = next(x for x in s if not x[\"this\"])\n    assert ok(m.post(f\"{A}/me/sessions/revoke\", json={\"id\": other[\"id\"]}))[\"signed_out\"] == 1\n    assert ok(m.post(f\"{A}/me/sessions/revoke\", json={\"id\": other[\"id\"]}), 404)[\"error\"] == \"NOT_FOUND\"\n    # this device can't be signed out from the list, nor can someone else's session\n    this = next(x for x in ok(m.get(f\"{A}/me/profile\"))[\"sessions\"] if x[\"this\"])\n    assert m.post(f\"{A}/me/sessions/revoke\", json={\"id\": this[\"id\"]}).status_code == 404\n    owner_sid = next(x for x in ok(people[\"owner\"].get(f\"{A}/me/profile\"))[\"sessions\"] if x[\"this\"])[\"id\"]\n    assert m.post(f\"{A}/me/sessions/revoke\", json={\"id\": owner_sid}).status_code == 404\n    assert people[\"owner\"].get(f\"{A}/me\").status_code == 200\n    # all others\n    still = [c for c in (phone, tablet) if c.get(f\"{A}/me\").status_code == 200]\n    assert len(still) == 1\n    assert ok(m.post(f\"{A}/me/sessions/revoke\", json={\"all\": True}))[\"signed_out\"] == 1\n    assert m.get(f\"{A}/me\").status_code == 200 and still[0].get(f\"{A}/me\").status_code == 401"
+  },
+  {
+   "file": "test_v15.py",
+   "module_doc": "v1.5 owner changes (27 Oct 2026): home screen card sizes, My profile (own contact details,\nread-aloud speed, devices signed in, team and work), sign out other devices, staff details.",
+   "name": "test_new_password_signs_out_other_devices",
+   "doc": "",
+   "asserts": 2,
+   "source": "def test_new_password_signs_out_other_devices(portal, people):\n    m, other = people[\"manager\"], login(portal, \"manager\")\n    ok(m.post(f\"{A}/me/secret\", json={\"current\": PASSWORDS[\"manager\"], \"new\": \"Another-Pass-2026\"}))\n    assert m.get(f\"{A}/me\").status_code == 200\n    assert other.get(f\"{A}/me\").status_code == 401\n    ok(m.post(f\"{A}/me/secret\", json={\"current\": \"Another-Pass-2026\", \"new\": PASSWORDS[\"manager\"]}))"
+  },
+  {
+   "file": "test_v15.py",
+   "module_doc": "v1.5 owner changes (27 Oct 2026): home screen card sizes, My profile (own contact details,\nread-aloud speed, devices signed in, team and work), sign out other devices, staff details.",
+   "name": "test_empty_staff_document_is_refused",
+   "doc": "",
+   "asserts": 1,
+   "source": "def test_empty_staff_document_is_refused(people):\n    o = people[\"owner\"]\n    rid = next(p[\"id\"] for p in ok(o.get(f\"{A}/team\")) if p[\"full_name\"].endswith(\"Roaster\"))\n    assert ok(o.post(f\"{A}/team/{rid}/documents\", json={\"kind\": \"PHOTO\", \"mime\": \"image/png\", \"data\": \"aGVsbG8=\"}), 400)[\"error\"] == \"FILE_EMPTY\""
+  },
+  {
+   "file": "test_v15.py",
+   "module_doc": "v1.5 owner changes (27 Oct 2026): home screen card sizes, My profile (own contact details,\nread-aloud speed, devices signed in, team and work), sign out other devices, staff details.",
+   "name": "test_owner_staff_record_is_the_owners_own",
+   "doc": "Admins equal the owner except over the owner account: the owner's details and documents stay the owner's.",
+   "asserts": 6,
+   "source": "def test_owner_staff_record_is_the_owners_own(people):\n    \"\"\"Admins equal the owner except over the owner account: the owner's details and documents stay the owner's.\"\"\"\n    import base64\n    o, a = people[\"owner\"], people[\"admin\"]\n    team = ok(o.get(f\"{A}/team\"))\n    oid = next(p[\"id\"] for p in team if p[\"is_owner\"])\n    rid = next(p[\"id\"] for p in team if p[\"full_name\"].endswith(\"Roaster\"))\n    data = base64.b64encode(b\"%PDF-1.4 sample \" * 20).decode()\n    ok(o.put(f\"{A}/team/{oid}/profile\", json={\"phone\": \"9000000009\"}))\n    did = ok(o.post(f\"{A}/team/{oid}/documents\", json={\"kind\": \"PAN\", \"mime\": \"application/pdf\", \"data\": data}))[\"id\"]\n    assert ok(a.get(f\"{A}/team/{oid}/profile\"), 403)[\"error\"] == \"OWNER_IS_PROTECTED\"\n    assert ok(a.put(f\"{A}/team/{oid}/profile\", json={\"phone\": \"9000000010\"}), 403)[\"error\"] == \"OWNER_IS_PROTECTED\"\n    assert ok(a.post(f\"{A}/team/{oid}/documents\", json={\"kind\": \"PAN\", \"mime\": \"application/pdf\", \"data\": data}), 403)[\"error\"] == \"OWNER_IS_PROTECTED\"\n    assert a.get(f\"{A}/team/documents/{did}\").status_code == 403\n    assert a.delete(f\"{A}/team/documents/{did}\").status_code == 403\n    assert ok(o.get(f\"{A}/team/{oid}/profile\"))[\"profile\"][\"phone\"] == \"9000000009\"\n    ok(a.get(f\"{A}/team/{rid}/profile\"))"
+  },
+  {
+   "file": "test_v16.py",
+   "module_doc": "v1.6 go-live setup (27 Oct 2026): Excel template import, opening stock, cash and old dues,\nowner confirms \"We're live\", old dues paid with maker ≠ checker.",
+   "name": "test_template_round_trip",
+   "doc": "",
+   "asserts": 4,
+   "source": "def test_template_round_trip(people):\n    o = people[\"owner\"]\n    r = o.get(f\"{A}/golive/template\")\n    assert r.status_code == 200 and r.content[:2] == b\"PK\"\n    sheets = xlsx.read(r.content)\n    assert list(sheets)[:2] == [\"Clients\", \"Suppliers\"] and sheets[\"Clients\"][1][0].startswith(\"e.g.\")\n    assert xlsx.excel_date(46322) == \"2026-10-27\" and xlsx.excel_date(\"27/10/2026\") == \"2026-10-27\"\n    assert people[\"manager\"].get(f\"{A}/golive/template\").status_code == 403"
+  },
+  {
+   "file": "test_v16.py",
+   "module_doc": "v1.6 go-live setup (27 Oct 2026): Excel template import, opening stock, cash and old dues,\nowner confirms \"We're live\", old dues paid with maker ≠ checker.",
+   "name": "test_import_check_then_save_then_go_live",
+   "doc": "",
+   "asserts": 20,
+   "source": "def test_import_check_then_save_then_go_live(people):\n    o, a, m = people[\"owner\"], people[\"admin\"], people[\"manager\"]\n    data = book(clients=[[\"Hill Café (test)\", \"9000011111\", \"Jubilee Hills\"]], suppliers=[[\"Estate One (test)\", \"\", \"\"]],\n                counter_customers=[[\"+91 90000 22222\", \"Ravi\"], [\"12\", \"bad\"]],\n                beans_products=[[\"Test Arabica PB\", \"Green coffee\", \"50\", \"TAPB\"], [\"Test Chicory\", \"Chicory\", \"\", \"\"]],\n                opening_stock=[[\"Test Arabica PB\", \"Raw\", \"Sound\", \"4\", \"200\", \"Production\", \"\"],\n                               [\"Test Arabica PB\", \"Ground\", \"\", \"\", \"6.5\", \"Counter\", \"2026-10-01\"],\n                               [\"Test Chicory\", \"Raw\", \"Sound\", \"\", \"10\", \"Counter\", \"\"],\n                               [\"Nope bean\", \"Raw\", \"\", \"\", \"5\", \"Production\", \"\"],\n                               [\"Test Arabica PB\", \"Roasted\", \"\", \"\", \"3\", \"Production\", \"\"]],\n                old_dues=[[\"Client owes us\", \"Hill Café (test)\", \"12,500\", \"2026-09-30\", \"2026-11-15\", \"Sept\"],\n                          [\"We owe supplier\", \"Estate One (test)\", \"40000\", \"\", \"\", \"\"],\n                          [\"Staff advance\", \"Demo Packer\", \"2000\", \"\", \"\", \"festival\"],\n                          [\"Client owes us\", \"Unknown Café\", \"100\", \"\", \"\", \"\"]])\n    check = ok(a.post(f\"{A}/golive/import\", json={\"data\": data}))[\"report\"]\n    assert check[\"Opening stock\"][\"ok\"] == 3 and len(check[\"Opening stock\"][\"errors\"]) == 2\n    assert check[\"Old dues\"][\"ok\"] == 3 and \"UNKNOWN_CLIENT\" in check[\"Old dues\"][\"errors\"][0]\n    assert check[\"Counter customers\"][\"ok\"] == 1 and check[\"Counter customers\"][\"errors\"]\n    assert not any(x[\"name\"] == \"Hill Café (test)\" for x in ok(o.get(f\"{A}/masters?kind=customer\")))   # check saves nothing\n    saved = ok(a.post(f\"{A}/golive/import\", json={\"data\": data, \"apply\": True}))[\"report\"]\n    assert saved[\"Clients\"][\"ok\"] == 1 and saved[\"Beans & products\"][\"ok\"] == 2\n    again = ok(a.post(f\"{A}/golive/import\", json={\"data\": book(clients=[[\"Hill Café (test)\", \"\", \"\"]]), \"apply\": True}))[\"report\"]\n    assert again[\"Clients\"][\"ok\"] == 0 and again[\"Clients\"][\"skipped\"]\n    g = ok(a.get(f\"{A}/golive\"))\n    assert g[\"state\"][\"state\"] == \"SETUP\" and len(g[\"stock\"]) == 3 and len(g[\"dues\"]) == 3\n    # nothing is stock until the owner confirms; only the owner may\n    assert ok(a.post(f\"{A}/golive/confirm\", json={\"cash_paise\": 250000}), 403)[\"error\"] == \"ONLY_OWNER_CONFIRMS\"\n    assert ok(m.post(f\"{A}/golive/stock\", json={}), 403)\n    r = ok(o.post(f\"{A}/golive/confirm\", json={\"cash_paise\": 250000}))\n    assert r[\"stock_lots\"] == 3 and r[\"dues\"] == 3\n    inv = [x for x in ok(o.get(f\"{A}/inventory\")) if (x.get(\"bean\") or x.get(\"product\") or \"\").startswith(\"Test\")]\n    assert sorted(round(x[\"kg\"], 3) for x in inv) == [6.5, 10.0, 200.0]\n    assert any(x[\"location\"] == \"CTR-01\" and x[\"stage\"] == \"GROUND\" and x[\"roasted_on\"] == \"2026-10-01\" for x in inv)\n    assert ok(o.get(f\"{A}/counter/setup\"))[\"stock\"][\"coffee_ground\"] >= 6.5\n    # locked after go-live; masters can still be imported\n    assert ok(a.post(f\"{A}/golive/dues\", json={\"side\": \"Staff advance\", \"name\": \"Demo Packer\", \"amount\": \"1\"}), 400)[\"error\"] == \"ALREADY_LIVE\"\n    late = ok(a.post(f\"{A}/golive/import\", json={\"data\": book(clients=[[\"Later Café (test)\", \"\", \"\"]], opening_stock=[[\"Test Chicory\", \"Raw\", \"\", \"\", \"1\", \"Counter\", \"\"]]), \"apply\": True}))[\"report\"]\n    assert late[\"Clients\"][\"ok\"] == 1 and late[\"Opening stock\"][\"errors\"] == [\"ALREADY_LIVE\"]\n    # old dues in Finance: record by one person, verify by another\n    dues = ok(o.get(f\"{A}/opening-dues\"))[\"dues\"]\n    cafe = next(d for d in dues if d[\"side\"] == \"CLIENT\")\n    assert cafe[\"amount_paise\"] == 1250000 and cafe[\"due_paise\"] == 1250000 and cafe[\"party_phone\"] == \"9000011111\"\n    ok(m.post(f\"{A}/opening-dues/{cafe['id']}/payments\", json={\"amount_paise\": 500000, \"method\": \"UPI\", \"reference\": \"UTR1\"}))\n    assert ok(m.post(f\"{A}/opening-dues/{cafe['id']}/payments\", json={\"amount_paise\": 900000, \"method\": \"UPI\"}), 400)[\"error\"] == \"MORE_THAN_DUE\"\n    pid = ok(o.get(f\"{A}/opening-dues\"))[\"pending\"][0][\"id\"]\n    assert ok(m.post(f\"{A}/opening-due-payments/{pid}/verify\", json={\"approve\": True}), 403)[\"error\"] in (\"CANNOT_APPROVE_OWN_REQUEST\", \"ACCESS_DENIED\")\n    ok(o.post(f\"{A}/opening-due-payments/{pid}/verify\", json={\"approve\": True}))\n    assert next(d for d in ok(o.get(f\"{A}/opening-dues\"))[\"dues\"] if d[\"id\"] == cafe[\"id\"])[\"due_paise\"] == 750000\n    assert ok(o.post(f\"{A}/golive/confirm\", json={}), 400)[\"error\"] == \"ALREADY_LIVE\""
+  }
+ ],
+ "flow_names": [
+  "F0 sign-in",
+  "F1 admin masters",
+  "F2 inward",
+  "F3 tasks",
+  "F4 QC + calendar",
+  "F5 grind + transfer",
+  "F6 counter",
+  "F7 day close",
+  "F8 blend + pack",
+  "F9 outside",
+  "F10 orders",
+  "F11 payables + Tally",
+  "F12 messages",
+  "F13 admin",
+  "F14 counts + exceptions",
+  "F15 dashboard",
+  "F16 counter customer",
+  "F17 cash today",
+  "F18 roast month",
+  "F19 maintenance",
+  "F20 stock cards",
+  "F21 team",
+  "F22 roles & dispatch",
+  "F23 codes & scan",
+  "F24 whatsapp",
+  "F25 my profile",
+  "F26 staff details",
+  "F27 go-live"
+ ],
+ "flow_steps": [
+  "sign out",
+  "wrong PIN is refused with a message",
+  "add bean type",
+  "edit bean",
+  "switch bean off",
+  "add client",
+  "add supplier",
+  "add roast profile",
+  "add counter item",
+  "change a price",
+  "manager suggests a client (draft)",
+  "owner approves draft",
+  "open bean page",
+  "verify damaged kg",
+  "assign 1 roasting batch to roaster",
+  "mark completed",
+  "send back",
+  "complete again",
+  "approve",
+  "release held batch",
+  "calendar previous month",
+  "calendar next month",
+  "open today on calendar",
+  "grind roasted coffee",
+  "send ground coffee to counter",
+  "receive short at counter",
+  "add price-list item 500 g",
+  "add Others 80/20",
+  "pay split cash + UPI",
+  "print customer + office copy",
+  "reprint a bill",
+  "ask for a refund",
+  "approve refund",
+  "close today's bills",
+  "selling is locked",
+  "day register prints",
+  "admin reopens",
+  "selling works again",
+  "run confidential blend",
+  "record packing",
+  "QA release packs",
+  "roast customer coffee",
+  "return to customer",
+  "record payment",
+  "create order",
+  "set price",
+  "confirm order",
+  "record customer payment (pay-first order)",
+  "credit decision (dealer order)",
+  "dispatch",
+  "confirm delivery",
+  "open invoice",
+  "record collection",
+  "verify collection",
+  "approve supplier payment",
+  "mark Tally accepted",
+  "open team group and post",
+  "new chat to manager",
+  "discuss a roast",
+  "bell opens alerts",
+  "add staff person",
+  "lands on the new person's page",
+  "give personal access until a date",
+  "preview what they see",
+  "audit has entries",
+  "decide a count difference",
+  "exception opens its screen",
+  "press and hold a card, move it to the end",
+  "make a small card wide",
+  "remove a card",
+  "done, and it is saved",
+  "phone shows last bill",
+  "owner sees full customer list",
+  "lock again",
+  "staff raises ticket",
+  "resolve needs a note",
+  "manager resolves",
+  "fixed list shows it",
+  "no grand total, cards shown",
+  "rename a card",
+  "remove a card",
+  "bring it back",
+  "set who the packer reports to",
+  "open staff details",
+  "edit details, ID kept as last 4",
+  "admin renames a built-in role",
+  "delivery app buttons",
+  "print bag labels",
+  "scan by typing a code",
+  "handheld scanner anywhere",
+  "count from the scan sheet",
+  "payment reminder opens WhatsApp",
+  "order confirmation opens WhatsApp",
+  "initials button opens My profile",
+  "read-aloud speed",
+  "open a person from the staff list",
+  "edit from Admin Control",
+  "People → person shows staff details",
+  "the owner's record stays the owner's",
+  "hierarchy is a tree chart",
+  "zoom the tree",
+  "add an opening stock line",
+  "add an old due",
+  "admin can't go live",
+  "owner goes live",
+  "old due shows in Finance"
+ ]
+}

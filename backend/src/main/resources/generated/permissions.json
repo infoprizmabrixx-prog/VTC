@@ -1,0 +1,1284 @@
+{
+ "modules": [
+  [
+   "dashboard",
+   "Dashboard",
+   "Home",
+   "◫"
+  ],
+  [
+   "tasks",
+   "My Work",
+   "Work",
+   "☷"
+  ],
+  [
+   "inward",
+   "Stock Inward",
+   "Operations",
+   "↙"
+  ],
+  [
+   "inventory",
+   "Inventory",
+   "Operations",
+   "▤"
+  ],
+  [
+   "roasting",
+   "Daily Roasting",
+   "Operations",
+   "◉"
+  ],
+  [
+   "blending",
+   "Blending & Grinding",
+   "Operations",
+   "◈"
+  ],
+  [
+   "qc",
+   "Quality Control",
+   "Operations",
+   "✓"
+  ],
+  [
+   "outside",
+   "Outside Roasting",
+   "Operations",
+   "▧"
+  ],
+  [
+   "packing",
+   "Packing",
+   "Operations",
+   "▣"
+  ],
+  [
+   "counter",
+   "Counter Sales",
+   "Sales",
+   "▦"
+  ],
+  [
+   "orders",
+   "Outgoing Sales",
+   "Sales",
+   "▥"
+  ],
+  [
+   "dispatch",
+   "Dispatch",
+   "Sales",
+   "⇥"
+  ],
+  [
+   "comms",
+   "Messages",
+   "Work",
+   "✉"
+  ],
+  [
+   "maintenance",
+   "Maintenance",
+   "Work",
+   "🔧"
+  ],
+  [
+   "team",
+   "Team & Hierarchy",
+   "Work",
+   "☍"
+  ],
+  [
+   "finance",
+   "Finance & Tally",
+   "Management",
+   "₹"
+  ],
+  [
+   "masters",
+   "Master Data",
+   "Management",
+   "◇"
+  ],
+  [
+   "exceptions",
+   "Exceptions",
+   "Management",
+   "!"
+  ],
+  [
+   "reports",
+   "Reports",
+   "Management",
+   "▥"
+  ],
+  [
+   "admin",
+   "Admin Control",
+   "Admin",
+   "⚙"
+  ]
+ ],
+ "permissions": [
+  {
+   "key": "dashboard.my_view",
+   "module": "dashboard",
+   "kind": "view",
+   "label": "Open own home screen and tasks",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-001"
+  },
+  {
+   "key": "dashboard.team_view",
+   "module": "dashboard",
+   "kind": "view",
+   "label": "See team workload on home screen",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-002"
+  },
+  {
+   "key": "tasks.view_own",
+   "module": "tasks",
+   "kind": "view",
+   "label": "See work assigned to me",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "tasks.update_own",
+   "module": "tasks",
+   "kind": "action",
+   "label": "Update progress on my own work",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "tasks.view_all",
+   "module": "tasks",
+   "kind": "view",
+   "label": "See everyone's work (team workboard)",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "tasks.assign",
+   "module": "tasks",
+   "kind": "action",
+   "label": "Assign work to people",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "tasks.update_any",
+   "module": "tasks",
+   "kind": "action",
+   "label": "Update anyone's work",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "tasks.approve",
+   "module": "tasks",
+   "kind": "action",
+   "label": "Review and approve finished work (when the assigner did the work themselves)",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "goods.view",
+   "module": "inward",
+   "kind": "view",
+   "label": "See received-bag records",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "goods.receive",
+   "module": "inward",
+   "kind": "action",
+   "label": "Record bags received",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-003"
+  },
+  {
+   "key": "goods.reverse",
+   "module": "inward",
+   "kind": "action",
+   "label": "Correct a posted receipt",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-004"
+  },
+  {
+   "key": "invoice.metadata",
+   "module": "inward",
+   "kind": "field",
+   "label": "See supplier invoice number / status",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-005"
+  },
+  {
+   "key": "invoice.reconcile",
+   "module": "inward",
+   "kind": "action",
+   "label": "Match supplier invoice to receipt",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "invoice.file",
+   "module": "inward",
+   "kind": "field",
+   "label": "Open supplier invoice file",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-006"
+  },
+  {
+   "key": "invoice.cost",
+   "module": "inward",
+   "kind": "field",
+   "label": "See purchase rates and costs",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-007"
+  },
+  {
+   "key": "supplier.pay.status",
+   "module": "inward",
+   "kind": "field",
+   "label": "See supplier payment status and date",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-008"
+  },
+  {
+   "key": "supplier.pay.record",
+   "module": "inward",
+   "kind": "action",
+   "label": "Record supplier payment status",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-011"
+  },
+  {
+   "key": "supplier.pay.amount",
+   "module": "finance",
+   "kind": "field",
+   "label": "See supplier paid amounts",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-009"
+  },
+  {
+   "key": "supplier.pay.proof",
+   "module": "finance",
+   "kind": "field",
+   "label": "See payment proof / reference",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-010"
+  },
+  {
+   "key": "supplier.pay.approve",
+   "module": "finance",
+   "kind": "action",
+   "label": "Approve supplier payment",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-012"
+  },
+  {
+   "key": "inventory.view",
+   "module": "inventory",
+   "kind": "view",
+   "label": "See available stock",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-013"
+  },
+  {
+   "key": "inventory.verify_quarantine",
+   "module": "inventory",
+   "kind": "action",
+   "label": "Verify damaged-bag kg (release quarantine)",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "inventory.adjust",
+   "module": "inventory",
+   "kind": "action",
+   "label": "Correct stock",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-014"
+  },
+  {
+   "key": "inventory.approve_adjust",
+   "module": "inventory",
+   "kind": "action",
+   "label": "Approve stock correction",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-015"
+  },
+  {
+   "key": "inventory.transfer",
+   "module": "inventory",
+   "kind": "action",
+   "label": "Move stock production ↔ counter",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-016"
+  },
+  {
+   "key": "stock.cycle_count",
+   "module": "inventory",
+   "kind": "action",
+   "label": "Do physical stock count",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-047"
+  },
+  {
+   "key": "stock.cycle_approve",
+   "module": "inventory",
+   "kind": "action",
+   "label": "Approve count difference",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-048"
+  },
+  {
+   "key": "roast.view",
+   "module": "roasting",
+   "kind": "view",
+   "label": "See roasting register",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "roast.execute",
+   "module": "roasting",
+   "kind": "action",
+   "label": "Record a roast batch",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-017"
+  },
+  {
+   "key": "qc.view",
+   "module": "qc",
+   "kind": "view",
+   "label": "See quality holds and decisions",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "roast.qc_release",
+   "module": "qc",
+   "kind": "action",
+   "label": "Release or reject a held batch",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-018"
+  },
+  {
+   "key": "qc.configure",
+   "module": "qc",
+   "kind": "action",
+   "label": "Set the approved roast-loss QC range",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "recipe.view_public",
+   "module": "blending",
+   "kind": "view",
+   "label": "Open non-confidential recipes",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-019"
+  },
+  {
+   "key": "recipe.view_secret",
+   "module": "blending",
+   "kind": "field",
+   "label": "Read confidential blend formula",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-020"
+  },
+  {
+   "key": "recipe.execute_secret",
+   "module": "blending",
+   "kind": "action",
+   "label": "Run a confidential blend batch",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-021"
+  },
+  {
+   "key": "recipe.edit",
+   "module": "blending",
+   "kind": "action",
+   "label": "Edit approved recipe",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-022"
+  },
+  {
+   "key": "grind.execute",
+   "module": "blending",
+   "kind": "action",
+   "label": "Record grinding",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "outside.view",
+   "module": "outside",
+   "kind": "view",
+   "label": "See customer-owned roasting jobs",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "outside.execute",
+   "module": "outside",
+   "kind": "action",
+   "label": "Record customer-owned roasting",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "pack.view",
+   "module": "packing",
+   "kind": "view",
+   "label": "See packing queue",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "pack.create",
+   "module": "packing",
+   "kind": "action",
+   "label": "Create packing ticket",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "pack.execute",
+   "module": "packing",
+   "kind": "action",
+   "label": "Record packing progress",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-023"
+  },
+  {
+   "key": "pack.qa_approve",
+   "module": "packing",
+   "kind": "action",
+   "label": "Release packed lot",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-024"
+  },
+  {
+   "key": "counter.sell",
+   "module": "counter",
+   "kind": "action",
+   "label": "Create fully paid counter sale",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-025"
+  },
+  {
+   "key": "counter.discount",
+   "module": "counter",
+   "kind": "action",
+   "label": "Give a discount",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-026"
+  },
+  {
+   "key": "counter.refund",
+   "module": "counter",
+   "kind": "action",
+   "label": "Approve refund",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-027"
+  },
+  {
+   "key": "counter.close",
+   "module": "counter",
+   "kind": "action",
+   "label": "Submit cash close",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-028"
+  },
+  {
+   "key": "counter.close_approve",
+   "module": "counter",
+   "kind": "action",
+   "label": "Approve cash difference",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-029"
+  },
+  {
+   "key": "counter.price_override",
+   "module": "counter",
+   "kind": "action",
+   "label": "Change the calculated price of a custom blend on a bill",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "counter.reopen_day",
+   "module": "counter",
+   "kind": "action",
+   "label": "Reopen a closed counter day",
+   "risk": "critical",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  },
+  {
+   "key": "counter.customers",
+   "module": "counter",
+   "kind": "field",
+   "label": "See and search the full counter customer list (phone numbers)",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  },
+  {
+   "key": "counter.insights",
+   "module": "counter",
+   "kind": "view",
+   "label": "Cash today & sales insights (PIN-locked)",
+   "risk": "critical",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  },
+  {
+   "key": "maintenance.raise",
+   "module": "maintenance",
+   "kind": "action",
+   "label": "Raise a maintenance ticket",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "maintenance.manage",
+   "module": "maintenance",
+   "kind": "action",
+   "label": "Review, assign and resolve maintenance tickets",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "team.view",
+   "module": "team",
+   "kind": "view",
+   "label": "See the team hierarchy (who reports to whom)",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "team.hierarchy",
+   "module": "team",
+   "kind": "action",
+   "label": "Change who reports to whom",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  },
+  {
+   "key": "team.profiles",
+   "module": "team",
+   "kind": "field",
+   "label": "See and edit staff personal details and documents",
+   "risk": "critical",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  },
+  {
+   "key": "inventory.cards",
+   "module": "inventory",
+   "kind": "action",
+   "label": "Add, rename, hide and reorder stock cards",
+   "risk": "normal",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  },
+  {
+   "key": "outgoing.view",
+   "module": "orders",
+   "kind": "view",
+   "label": "See outgoing sales orders",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "outgoing.create",
+   "module": "orders",
+   "kind": "action",
+   "label": "Create outgoing order draft",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-030"
+  },
+  {
+   "key": "outgoing.credit.request",
+   "module": "orders",
+   "kind": "action",
+   "label": "Request credit for an order",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-032"
+  },
+  {
+   "key": "outgoing.price_override",
+   "module": "orders",
+   "kind": "action",
+   "label": "Override selling price",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-031"
+  },
+  {
+   "key": "outgoing.credit.approve",
+   "module": "orders",
+   "kind": "action",
+   "label": "Approve credit terms",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-033"
+  },
+  {
+   "key": "customer.contacts",
+   "module": "orders",
+   "kind": "field",
+   "label": "See customer phone / address",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-035"
+  },
+  {
+   "key": "dispatch.handover",
+   "module": "dispatch",
+   "kind": "action",
+   "label": "Record courier / customer handover",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-034"
+  },
+  {
+   "key": "documents.price_hidden",
+   "module": "dispatch",
+   "kind": "view",
+   "label": "Print price-hidden dispatch slip",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-045"
+  },
+  {
+   "key": "documents.commercial",
+   "module": "dispatch",
+   "kind": "view",
+   "label": "Print commercial / tax invoice",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-046"
+  },
+  {
+   "key": "comms.read",
+   "module": "comms",
+   "kind": "view",
+   "label": "Read messages and announcements",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "comms.chat",
+   "module": "comms",
+   "kind": "action",
+   "label": "Send chat messages and voice notes",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "comms.announce",
+   "module": "comms",
+   "kind": "action",
+   "label": "Post announcements to everyone / a team",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "comms.oversight",
+   "module": "comms",
+   "kind": "view",
+   "label": "Read all conversations (oversight)",
+   "risk": "critical",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  },
+  {
+   "key": "finance.view",
+   "module": "finance",
+   "kind": "view",
+   "label": "Open supplier invoice & payment follow-up",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "finance.collection.record",
+   "module": "finance",
+   "kind": "action",
+   "label": "Enter customer collection",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-036"
+  },
+  {
+   "key": "finance.collection.verify",
+   "module": "finance",
+   "kind": "action",
+   "label": "Verify customer collection",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-037"
+  },
+  {
+   "key": "finance.margin",
+   "module": "finance",
+   "kind": "field",
+   "label": "See profits and margins",
+   "risk": "critical",
+   "live": false,
+   "admin_only": false,
+   "dpr": "PERM-038"
+  },
+  {
+   "key": "finance.export",
+   "module": "finance",
+   "kind": "action",
+   "label": "Finance / Tally export",
+   "risk": "critical",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-039"
+  },
+  {
+   "key": "masters.view",
+   "module": "masters",
+   "kind": "view",
+   "label": "See active products, suppliers, customers",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "masters.view_drafts",
+   "module": "masters",
+   "kind": "view",
+   "label": "See draft (not yet approved) records",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "masters.create_draft",
+   "module": "masters",
+   "kind": "action",
+   "label": "Create draft product / supplier / customer",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "masters.approve",
+   "module": "masters",
+   "kind": "action",
+   "label": "Approve & activate master records (O-05)",
+   "risk": "critical",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  },
+  {
+   "key": "exceptions.view",
+   "module": "exceptions",
+   "kind": "view",
+   "label": "Open the exception centre",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": null
+  },
+  {
+   "key": "reports.operational",
+   "module": "reports",
+   "kind": "view",
+   "label": "Operational reports",
+   "risk": "normal",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-040"
+  },
+  {
+   "key": "reports.commercial",
+   "module": "reports",
+   "kind": "view",
+   "label": "Commercial reports",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": false,
+   "dpr": "PERM-041"
+  },
+  {
+   "key": "system.users",
+   "module": "admin",
+   "kind": "action",
+   "label": "Add people, reset PINs / passwords, deactivate",
+   "risk": "critical",
+   "live": true,
+   "admin_only": true,
+   "dpr": "PERM-042"
+  },
+  {
+   "key": "system.roles",
+   "module": "admin",
+   "kind": "action",
+   "label": "Create roles and edit role permissions",
+   "risk": "critical",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  },
+  {
+   "key": "system.grants",
+   "module": "admin",
+   "kind": "action",
+   "label": "Give or remove a person's extra access",
+   "risk": "critical",
+   "live": true,
+   "admin_only": true,
+   "dpr": "PERM-043"
+  },
+  {
+   "key": "system.settings",
+   "module": "admin",
+   "kind": "action",
+   "label": "Branding, languages, auto sign-out, dashboards, rules",
+   "risk": "critical",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  },
+  {
+   "key": "system.audit",
+   "module": "admin",
+   "kind": "view",
+   "label": "Read the audit log",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": true,
+   "dpr": "PERM-044"
+  },
+  {
+   "key": "system.preview_as",
+   "module": "admin",
+   "kind": "view",
+   "label": "Preview what a person can see (read-only)",
+   "risk": "sensitive",
+   "live": true,
+   "admin_only": true,
+   "dpr": null
+  }
+ ],
+ "system_roles": [
+  {
+   "key": "admin",
+   "name": "Admin",
+   "tier": "admin",
+   "description": "Full control of the whole portal. Locked: always has every permission.",
+   "permissions": [
+    "comms.announce",
+    "comms.chat",
+    "comms.oversight",
+    "comms.read",
+    "counter.close",
+    "counter.close_approve",
+    "counter.customers",
+    "counter.discount",
+    "counter.insights",
+    "counter.price_override",
+    "counter.refund",
+    "counter.reopen_day",
+    "counter.sell",
+    "customer.contacts",
+    "dashboard.my_view",
+    "dashboard.team_view",
+    "dispatch.handover",
+    "documents.commercial",
+    "documents.price_hidden",
+    "exceptions.view",
+    "finance.collection.record",
+    "finance.collection.verify",
+    "finance.export",
+    "finance.margin",
+    "finance.view",
+    "goods.receive",
+    "goods.reverse",
+    "goods.view",
+    "grind.execute",
+    "inventory.adjust",
+    "inventory.approve_adjust",
+    "inventory.cards",
+    "inventory.transfer",
+    "inventory.verify_quarantine",
+    "inventory.view",
+    "invoice.cost",
+    "invoice.file",
+    "invoice.metadata",
+    "invoice.reconcile",
+    "maintenance.manage",
+    "maintenance.raise",
+    "masters.approve",
+    "masters.create_draft",
+    "masters.view",
+    "masters.view_drafts",
+    "outgoing.create",
+    "outgoing.credit.approve",
+    "outgoing.credit.request",
+    "outgoing.price_override",
+    "outgoing.view",
+    "outside.execute",
+    "outside.view",
+    "pack.create",
+    "pack.execute",
+    "pack.qa_approve",
+    "pack.view",
+    "qc.configure",
+    "qc.view",
+    "recipe.edit",
+    "recipe.execute_secret",
+    "recipe.view_public",
+    "recipe.view_secret",
+    "reports.commercial",
+    "reports.operational",
+    "roast.execute",
+    "roast.qc_release",
+    "roast.view",
+    "stock.cycle_approve",
+    "stock.cycle_count",
+    "supplier.pay.amount",
+    "supplier.pay.approve",
+    "supplier.pay.proof",
+    "supplier.pay.record",
+    "supplier.pay.status",
+    "system.audit",
+    "system.grants",
+    "system.preview_as",
+    "system.roles",
+    "system.settings",
+    "system.users",
+    "tasks.approve",
+    "tasks.assign",
+    "tasks.update_any",
+    "tasks.update_own",
+    "tasks.view_all",
+    "tasks.view_own",
+    "team.hierarchy",
+    "team.profiles",
+    "team.view"
+   ]
+  },
+  {
+   "key": "manager",
+   "name": "Manager",
+   "tier": "manager",
+   "description": "Runs the team: assigns work, sees team status. No permission changes.",
+   "permissions": [
+    "comms.announce",
+    "comms.chat",
+    "comms.read",
+    "counter.close",
+    "counter.price_override",
+    "counter.refund",
+    "counter.sell",
+    "dashboard.my_view",
+    "dashboard.team_view",
+    "dispatch.handover",
+    "documents.price_hidden",
+    "exceptions.view",
+    "finance.collection.record",
+    "goods.receive",
+    "goods.view",
+    "grind.execute",
+    "inventory.transfer",
+    "inventory.view",
+    "maintenance.manage",
+    "maintenance.raise",
+    "masters.create_draft",
+    "masters.view",
+    "masters.view_drafts",
+    "outgoing.create",
+    "outgoing.credit.request",
+    "outgoing.view",
+    "outside.execute",
+    "outside.view",
+    "pack.create",
+    "pack.execute",
+    "pack.view",
+    "qc.view",
+    "recipe.view_public",
+    "reports.operational",
+    "roast.execute",
+    "roast.view",
+    "stock.cycle_count",
+    "tasks.approve",
+    "tasks.assign",
+    "tasks.update_any",
+    "tasks.update_own",
+    "tasks.view_all",
+    "tasks.view_own",
+    "team.view"
+   ]
+  },
+  {
+   "key": "staff",
+   "name": "Staff",
+   "tier": "staff",
+   "description": "Guided screens for daily floor work.",
+   "permissions": [
+    "comms.chat",
+    "comms.read",
+    "counter.close",
+    "counter.sell",
+    "dashboard.my_view",
+    "dispatch.handover",
+    "documents.price_hidden",
+    "goods.receive",
+    "goods.view",
+    "grind.execute",
+    "inventory.transfer",
+    "inventory.view",
+    "maintenance.raise",
+    "masters.view",
+    "outgoing.create",
+    "outgoing.credit.request",
+    "outgoing.view",
+    "outside.execute",
+    "outside.view",
+    "pack.execute",
+    "pack.view",
+    "recipe.view_public",
+    "roast.execute",
+    "roast.view",
+    "stock.cycle_count",
+    "tasks.update_own",
+    "tasks.view_own",
+    "team.view"
+   ]
+  }
+ ],
+ "widgets": {
+  "my_tasks": [
+   "My tasks",
+   "tasks.view_own"
+  ],
+  "quick_actions": [
+   "Quick actions",
+   "dashboard.my_view"
+  ],
+  "incoming": [
+   "Received bags",
+   "goods.view"
+  ],
+  "stock": [
+   "Available stock",
+   "inventory.view"
+  ],
+  "roasts": [
+   "Roasting batches",
+   "roast.view"
+  ],
+  "packing": [
+   "Packing queue",
+   "pack.view"
+  ],
+  "team": [
+   "Team workboard",
+   "tasks.view_all"
+  ],
+  "holds": [
+   "Quality holds",
+   "qc.view"
+  ],
+  "orders": [
+   "Sales orders",
+   "outgoing.view"
+  ],
+  "pending_invoices": [
+   "Invoice follow-up",
+   "invoice.metadata"
+  ],
+  "audit": [
+   "Recent audit",
+   "system.audit"
+  ]
+ },
+ "default_widgets": {
+  "staff": [
+   "my_tasks",
+   "quick_actions",
+   "incoming",
+   "roasts",
+   "packing",
+   "stock"
+  ],
+  "manager": [
+   "team",
+   "my_tasks",
+   "stock",
+   "holds",
+   "orders",
+   "packing",
+   "roasts",
+   "quick_actions"
+  ],
+  "admin": [
+   "stock",
+   "pending_invoices",
+   "holds",
+   "orders",
+   "team",
+   "roasts",
+   "audit",
+   "quick_actions"
+  ]
+ },
+ "default_shortcuts": [
+  "inward",
+  "roasting",
+  "inventory"
+ ]
+}

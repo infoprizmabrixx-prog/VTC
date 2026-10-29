@@ -1,0 +1,5440 @@
+[
+ {
+  "table": "meta",
+  "column": "key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "meta",
+  "column": "value",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roles",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "roles",
+  "column": "key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roles",
+  "column": "name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roles",
+  "column": "tier",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roles",
+  "column": "description",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "roles",
+  "column": "is_system",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "roles",
+  "column": "active",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "1",
+  "pk": false
+ },
+ {
+  "table": "roles",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "role_permissions",
+  "column": "role_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "role_permissions",
+  "column": "perm_key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "users",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "users",
+  "column": "username",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "full_name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "role_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "login_type",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "secret_hash",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "is_owner",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "active",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "1",
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "failed_attempts",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "locked_until",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "must_change_secret",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "users",
+  "column": "reports_to",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "user_grants",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "user_grants",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "user_grants",
+  "column": "perm_key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "user_grants",
+  "column": "effect",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "user_grants",
+  "column": "reason",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "user_grants",
+  "column": "expires_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "user_grants",
+  "column": "granted_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "user_grants",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "user_grants",
+  "column": "revoked_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "user_grants",
+  "column": "revoked_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "sessions",
+  "column": "token_hash",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "sessions",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "sessions",
+  "column": "device_mode",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "sessions",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "sessions",
+  "column": "last_seen",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "sessions",
+  "column": "expires_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "sessions",
+  "column": "insights_until",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "sessions",
+  "column": "user_agent",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "settings",
+  "column": "key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "settings",
+  "column": "value",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "settings",
+  "column": "changed_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "settings",
+  "column": "changed_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "i18n_overrides",
+  "column": "lang",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "i18n_overrides",
+  "column": "key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "i18n_overrides",
+  "column": "text",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "i18n_overrides",
+  "column": "changed_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "i18n_overrides",
+  "column": "changed_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dashboard_prefs",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "dashboard_prefs",
+  "column": "widgets",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dashboard_prefs",
+  "column": "shortcuts",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dashboard_prefs",
+  "column": "welcome",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "dashboard_prefs",
+  "column": "lang",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'en'",
+  "pk": false
+ },
+ {
+  "table": "dashboard_prefs",
+  "column": "large_text",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "dashboard_prefs",
+  "column": "sizes",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "'{}'",
+  "pk": false
+ },
+ {
+  "table": "dashboard_prefs",
+  "column": "voice_rate",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(4,2)",
+  "notnull": true,
+  "default": "0.95",
+  "pk": false
+ },
+ {
+  "table": "role_dashboard_defaults",
+  "column": "role_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "role_dashboard_defaults",
+  "column": "widgets",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "role_dashboard_defaults",
+  "column": "shortcuts",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "masters",
+  "column": "kind",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "nominal_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "creator_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "approved_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "phone",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "address",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "category",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "masters",
+  "column": "code",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "receipts",
+  "column": "source",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "source_name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "product_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "bags",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "damaged",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "nominal_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "invoice_ref",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "invoice_status",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'PENDING'",
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "payment_status",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'PENDING'",
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "payment_date",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "invoice_amount_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "invoice_file_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "reversed_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "partial",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "partial_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "receipts",
+  "column": "code",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "lots",
+  "column": "product_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "stage",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "owner",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'VTC'",
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "status",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "receipt_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "roast_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "location",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'PROD-01'",
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "customer_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "pack_g",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(10,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "form",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "bag_kind",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "bags",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "bean_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "code",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "lots",
+  "column": "roasted_on",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "movements",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "movements",
+  "column": "lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "movements",
+  "column": "delta_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "movements",
+  "column": "action",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "movements",
+  "column": "source_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "movements",
+  "column": "actor_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "movements",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "roast_batches",
+  "column": "output_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "input_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "output_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "loss_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "duration_min",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "profile",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "notes",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "abnormal",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "qc_status",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "profile_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_batches",
+  "column": "code",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_inputs",
+  "column": "id",
+  "sqlite": "(rowid)",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true,
+  "added_in_v2": true
+ },
+ {
+  "table": "roast_inputs",
+  "column": "roast_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_inputs",
+  "column": "lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_inputs",
+  "column": "kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "qc_events",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "qc_events",
+  "column": "roast_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "qc_events",
+  "column": "decision",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "qc_events",
+  "column": "note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "qc_events",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "qc_events",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "tasks",
+  "column": "title",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "assigned_to",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "target",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "progress",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "status",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'OPEN'",
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "due",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "kind",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'GENERAL'",
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "ref_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "submitted_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "submit_note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "reviewed_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "reviewed_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tasks",
+  "column": "review_note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "pack_jobs",
+  "column": "product_name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "demand_type",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "packs_target",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "pack_g",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(10,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "packs_done",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'DRAFT'",
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "source_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "input_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "rejected_packs",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "output_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "label_ref",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "pack_jobs",
+  "column": "order_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "orders",
+  "column": "customer_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "item",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "quantity_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "credit_requested",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'DRAFT'",
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "form",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'ROASTED'",
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "price_per_kg_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "credit_decided_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "credit_note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "dispatched_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "invoice_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "notes",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "product_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "gst_rate_bp",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "advance_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "orders",
+  "column": "advance_ref",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "config",
+  "column": "key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "config",
+  "column": "value",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "config",
+  "column": "changed_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "config",
+  "column": "changed_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "audit",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "audit",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "audit",
+  "column": "category",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": "'operations'",
+  "pk": false
+ },
+ {
+  "table": "audit",
+  "column": "action",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "audit",
+  "column": "subject",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "audit",
+  "column": "info",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "audit",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "idem",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "idem",
+  "column": "operation",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "idem",
+  "column": "idem_key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "idem",
+  "column": "result",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "reservations",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "reservations",
+  "column": "order_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "reservations",
+  "column": "lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "reservations",
+  "column": "kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "reservations",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": "'ACTIVE'",
+  "pk": false
+ },
+ {
+  "table": "reservations",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "transfers",
+  "column": "from_loc",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "to_loc",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "source_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "transit_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "dest_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "kg_sent",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "kg_received",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "sent_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "received_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "transfers",
+  "column": "received_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "cycle_counts",
+  "column": "lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "book_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "counted_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "variance_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "counted_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "decided_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "decided_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cycle_counts",
+  "column": "kind",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'COUNT'",
+  "pk": false
+ },
+ {
+  "table": "teams",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "teams",
+  "column": "key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "teams",
+  "column": "name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "user_teams",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "user_teams",
+  "column": "team_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "conversations",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "conversations",
+  "column": "kind",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "conversations",
+  "column": "title",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "conversations",
+  "column": "team_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "conversations",
+  "column": "record_type",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "conversations",
+  "column": "record_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "conversations",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "conversations",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "conversation_members",
+  "column": "conversation_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "conversation_members",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "conversation_members",
+  "column": "last_read_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "messages",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "messages",
+  "column": "conversation_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "messages",
+  "column": "author_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "messages",
+  "column": "body",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "messages",
+  "column": "voice_file_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "messages",
+  "column": "audience",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "messages",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "announcement_reads",
+  "column": "message_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "announcement_reads",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "announcement_reads",
+  "column": "read_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "files",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "files",
+  "column": "kind",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "files",
+  "column": "mime",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "files",
+  "column": "bytes",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "files",
+  "column": "sha256",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "files",
+  "column": "path",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "files",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "files",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "files",
+  "column": "expires_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "files",
+  "column": "deleted_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "alerts",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "severity",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "title",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "body",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "view",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "record_type",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "record_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "dedupe_key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "visible_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "alerts",
+  "column": "read_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "counter_items",
+  "column": "name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "kind",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "coffee_pct",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(7,3)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "chicory_product_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "stock_product_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "price_per_kg_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "gst_rate_bp",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "hsn",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "active",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "1",
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "version",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": "1",
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "changed_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_items",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "counter_sales",
+  "column": "bill_no",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "customer_name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "customer_phone",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "subtotal_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "discount_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "discount_reason",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "gst_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "total_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "status",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "reprints",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_sales",
+  "column": "customer_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_lines",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "counter_lines",
+  "column": "sale_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_lines",
+  "column": "item_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_lines",
+  "column": "item_name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_lines",
+  "column": "weight_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_lines",
+  "column": "rate_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_lines",
+  "column": "amount_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_lines",
+  "column": "gst_rate_bp",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_lines",
+  "column": "coffee_pct",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(7,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_lines",
+  "column": "override_reason",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "counter_payments",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "counter_payments",
+  "column": "sale_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_payments",
+  "column": "method",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_payments",
+  "column": "amount_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_payments",
+  "column": "reference",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "counter_payments",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_refunds",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "counter_refunds",
+  "column": "sale_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_refunds",
+  "column": "amount_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_refunds",
+  "column": "method",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_refunds",
+  "column": "reason",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_refunds",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_refunds",
+  "column": "requested_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_refunds",
+  "column": "decided_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_refunds",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_refunds",
+  "column": "decided_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "cash_closes",
+  "column": "shift_date",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "opening_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "cash_sales_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "cash_refunds_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "expected_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "counted_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "difference_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "submitted_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "decided_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "decided_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "bills",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "total_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "register",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "reopened_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "reopened_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "cash_closes",
+  "column": "reopen_reason",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "recipes",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "recipes",
+  "column": "name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "recipes",
+  "column": "confidential",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "recipes",
+  "column": "stage",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "recipes",
+  "column": "active",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "1",
+  "pk": false
+ },
+ {
+  "table": "recipes",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "recipes",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "recipe_versions",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "recipe_versions",
+  "column": "recipe_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "recipe_versions",
+  "column": "version",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "recipe_versions",
+  "column": "components",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "recipe_versions",
+  "column": "notes",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "recipe_versions",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "recipe_versions",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_jobs",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "blend_jobs",
+  "column": "recipe_version_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_jobs",
+  "column": "stage",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_jobs",
+  "column": "input_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_jobs",
+  "column": "output_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_jobs",
+  "column": "loss_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_jobs",
+  "column": "output_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_jobs",
+  "column": "notes",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "blend_jobs",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_jobs",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_inputs",
+  "column": "id",
+  "sqlite": "(rowid)",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true,
+  "added_in_v2": true
+ },
+ {
+  "table": "blend_inputs",
+  "column": "job_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_inputs",
+  "column": "lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "blend_inputs",
+  "column": "kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "grind_jobs",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "grind_jobs",
+  "column": "input_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "grind_jobs",
+  "column": "input_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "grind_jobs",
+  "column": "output_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "grind_jobs",
+  "column": "grind",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "grind_jobs",
+  "column": "output_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "grind_jobs",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "grind_jobs",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "outside_jobs",
+  "column": "customer_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "received_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "raw_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "input_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "output_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "loss_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "roasted_lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "charge_basis",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "rate_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "charge_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "returned_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "return_note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "payment_status",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'PENDING'",
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "outside_jobs",
+  "column": "bean_type",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "customer_terms",
+  "column": "customer_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "customer_terms",
+  "column": "credit_limit_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "customer_terms",
+  "column": "due_days",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "customer_terms",
+  "column": "set_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "customer_terms",
+  "column": "set_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "dispatches",
+  "column": "order_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "mode",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "booking_ref",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "handover_to",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "evidence",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "handed_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "delivered_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "pod_note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "delivered_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "dispatches",
+  "column": "confirmed_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "invoices",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "invoices",
+  "column": "number",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "invoices",
+  "column": "order_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "invoices",
+  "column": "customer_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "invoices",
+  "column": "taxable_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "invoices",
+  "column": "gst_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "invoices",
+  "column": "total_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "invoices",
+  "column": "due_date",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "invoices",
+  "column": "status",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "invoices",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "invoices",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "collections",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "collections",
+  "column": "invoice_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "collections",
+  "column": "amount_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "collections",
+  "column": "method",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "collections",
+  "column": "reference",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "collections",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "collections",
+  "column": "recorded_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "collections",
+  "column": "verified_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "collections",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "collections",
+  "column": "verified_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "supplier_payments",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "supplier_payments",
+  "column": "receipt_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "supplier_payments",
+  "column": "amount_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "supplier_payments",
+  "column": "reference",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "supplier_payments",
+  "column": "paid_on",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "supplier_payments",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "supplier_payments",
+  "column": "recorded_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "supplier_payments",
+  "column": "approved_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "supplier_payments",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "supplier_payments",
+  "column": "decided_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "tally_exports",
+  "column": "batch_no",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "period_from",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "period_to",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "voucher_count",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "control_total_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "checksum",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "content",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "result_note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "decided_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_exports",
+  "column": "decided_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "tally_export_lines",
+  "column": "export_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "tally_export_lines",
+  "column": "source_type",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "tally_export_lines",
+  "column": "source_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "roast_profiles",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "roast_profiles",
+  "column": "name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_profiles",
+  "column": "notes",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "roast_profiles",
+  "column": "active",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "1",
+  "pk": false
+ },
+ {
+  "table": "roast_profiles",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_profiles",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_customers",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "counter_customers",
+  "column": "phone",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_customers",
+  "column": "name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "counter_customers",
+  "column": "visits",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "counter_customers",
+  "column": "first_seen",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_customers",
+  "column": "last_seen",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_collections",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "counter_collections",
+  "column": "day",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_collections",
+  "column": "method",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_collections",
+  "column": "amount_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_collections",
+  "column": "note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "counter_collections",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "counter_collections",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "secrets",
+  "column": "key",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(191)",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "secrets",
+  "column": "value",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "secrets",
+  "column": "changed_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "secrets",
+  "column": "changed_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_meter",
+  "column": "month",
+  "sqlite": "TEXT",
+  "mysql": "CHAR(7)",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "roast_meter",
+  "column": "start_reading",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_meter",
+  "column": "end_reading",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_meter",
+  "column": "updated_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "roast_meter",
+  "column": "updated_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "gas_cylinders",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "gas_cylinders",
+  "column": "fitted_on",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "gas_cylinders",
+  "column": "kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "gas_cylinders",
+  "column": "note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "gas_cylinders",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "gas_cylinders",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "maintenance",
+  "column": "title",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "area",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "details",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "urgency",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "status",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'OPEN'",
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "raised_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "assigned_to",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "resolution",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "resolved_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "maintenance",
+  "column": "updated_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "stock_cards",
+  "column": "product_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "stock_cards",
+  "column": "label",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "stock_cards",
+  "column": "color",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "stock_cards",
+  "column": "sort",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "stock_cards",
+  "column": "hidden",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "stock_cards",
+  "column": "pinned",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "stock_cards",
+  "column": "low_kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "stock_cards",
+  "column": "updated_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "stock_cards",
+  "column": "updated_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "stock_cards",
+  "column": "low_alerted",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "stock_dirty",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "stock_dirty",
+  "column": "dirty",
+  "sqlite": "INTEGER",
+  "mysql": "TINYINT(1)",
+  "notnull": true,
+  "default": "0",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "staff_profiles",
+  "column": "designation",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "phone",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "alt_phone",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "email",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "address",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "dob",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "joined_on",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "emergency_name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "emergency_phone",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "aadhaar_last4",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "pan_last4",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "bank_name",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "bank_last4",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "ifsc",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "notes",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "updated_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "staff_profiles",
+  "column": "updated_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "golive",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "golive",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'SETUP'",
+  "pk": false
+ },
+ {
+  "table": "golive",
+  "column": "cash_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "golive",
+  "column": "confirmed_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "golive",
+  "column": "confirmed_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "opening_stock",
+  "column": "product_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "form",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "bag_kind",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "bags",
+  "sqlite": "INTEGER",
+  "mysql": "INT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "kg",
+  "sqlite": "REAL",
+  "mysql": "DECIMAL(14,3)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "location",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "roasted_on",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "lot_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_stock",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_dues",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "opening_dues",
+  "column": "side",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_dues",
+  "column": "party_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_dues",
+  "column": "amount_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_dues",
+  "column": "since",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_dues",
+  "column": "due_date",
+  "sqlite": "TEXT",
+  "mysql": "DATE",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_dues",
+  "column": "note",
+  "sqlite": "TEXT",
+  "mysql": "TEXT",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "opening_dues",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "'DRAFT'",
+  "pk": false
+ },
+ {
+  "table": "opening_dues",
+  "column": "created_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_dues",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_due_payments",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "opening_due_payments",
+  "column": "due_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_due_payments",
+  "column": "amount_paise",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_due_payments",
+  "column": "method",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_due_payments",
+  "column": "reference",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "opening_due_payments",
+  "column": "state",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_due_payments",
+  "column": "recorded_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_due_payments",
+  "column": "verified_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_due_payments",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "opening_due_payments",
+  "column": "verified_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "staff_documents",
+  "column": "id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": true
+ },
+ {
+  "table": "staff_documents",
+  "column": "user_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "staff_documents",
+  "column": "kind",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "staff_documents",
+  "column": "label",
+  "sqlite": "TEXT",
+  "mysql": "VARCHAR(255)",
+  "notnull": true,
+  "default": "''",
+  "pk": false
+ },
+ {
+  "table": "staff_documents",
+  "column": "file_id",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "staff_documents",
+  "column": "uploaded_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "staff_documents",
+  "column": "created_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": true,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "staff_documents",
+  "column": "removed_at",
+  "sqlite": "TEXT",
+  "mysql": "DATETIME(6)",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ },
+ {
+  "table": "staff_documents",
+  "column": "removed_by",
+  "sqlite": "INTEGER",
+  "mysql": "BIGINT",
+  "notnull": false,
+  "default": null,
+  "pk": false
+ }
+]

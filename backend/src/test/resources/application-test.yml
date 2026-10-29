@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/vtc_test?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&connectionTimeZone=UTC&tinyInt1isBit=false&allowMultiQueries=true
+    username: vtc
+    password: vtc
+  flyway:
+    enabled: true
+    clean-disabled: false
+vtc:
+  https: 0
+  demo: 1
+  files-dir: ./target/test-files

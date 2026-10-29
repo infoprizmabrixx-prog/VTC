@@ -1,0 +1,1590 @@
+{
+ "screen:dashboard": {
+  "i": "layout-dashboard",
+  "en": [
+   "Home",
+   "Your starting point. Coloured tiles show what is pending in each section today.\nTap a tile to open that section.\nCheck 'Your next job' if you are staff.\nTo arrange your cards, press and hold one, then move it. Let go where you want it.\nS, M and L change a card's size; ✕ removes it. Press Done when finished."
+  ],
+  "te": [
+   "హోమ్",
+   "మీ మొదటి పేజీ. ప్రతి విభాగంలో ఈరోజు పెండింగ్ పనులను రంగుల టైల్స్ చూపిస్తాయి.\nఆ విభాగం తెరవడానికి టైల్‌పై నొక్కండి.\nస్టాఫ్ అయితే 'మీ తదుపరి పని' చూడండి.\nకార్డులను మార్చడానికి, ఒక కార్డును నొక్కి పట్టుకుని కదపండి. కావలసిన చోట వదలండి.\nS, M, L కార్డు పరిమాణాన్ని మారుస్తాయి; ✕ దానిని తీసివేస్తుంది. పూర్తయ్యాక Done నొక్కండి."
+  ],
+  "hi": [
+   "होम",
+   "आपका शुरुआती पेज। रंगीन टाइलें बताती हैं कि आज हर सेक्शन में क्या बाकी है।\nसेक्शन खोलने के लिए टाइल दबाएँ।\nस्टाफ हैं तो 'आपका अगला काम' देखें।\nकार्ड की जगह बदलने के लिए कार्ड को दबाकर रखें, फिर खिसकाएँ। जहाँ चाहिए वहाँ छोड़ दें।\nS, M और L कार्ड का आकार बदलते हैं; ✕ उसे हटाता है। हो जाने पर Done दबाएँ।"
+  ]
+ },
+ "screen:profile": {
+  "i": "user-round",
+  "en": [
+   "My profile",
+   "Your own page. Only you see it.\nKeep your phone numbers and emergency contact up to date.\nChoose your language and how fast help is read aloud. Press Test to hear each voice.\nChange your password or PIN here. Your other devices are signed out when you do.\nSee where you are signed in, and sign out a phone you don't use.\nSee who you report to, this month's work and what you can do in the portal."
+  ],
+  "te": [
+   "నా ప్రొఫైల్",
+   "మీ స్వంత పేజీ. ఇది మీకు మాత్రమే కనిపిస్తుంది.\nమీ ఫోన్ నంబర్లు, అత్యవసర సంప్రదింపు వివరాలు సరిగా ఉంచండి.\nమీ భాషను, సహాయం ఎంత వేగంగా చదవాలో ఎంచుకోండి. ప్రతి గొంతు వినడానికి Test నొక్కండి.\nమీ పాస్‌వర్డ్ లేదా PIN ఇక్కడ మార్చండి. మార్చినప్పుడు మీ ఇతర పరికరాలు సైన్ అవుట్ అవుతాయి.\nమీరు ఎక్కడ సైన్ ఇన్ అయ్యారో చూసి, వాడని ఫోన్‌ను సైన్ అవుట్ చేయండి.\nమీరు ఎవరికి రిపోర్ట్ చేస్తారో, ఈ నెల పని, పోర్టల్‌లో మీరు ఏమి చేయగలరో చూడండి."
+  ],
+  "hi": [
+   "मेरी प्रोफ़ाइल",
+   "आपका अपना पेज। इसे सिर्फ़ आप देखते हैं।\nअपने फ़ोन नंबर और आपातकालीन संपर्क सही रखें।\nअपनी भाषा और मदद पढ़कर सुनाने की गति चुनें। हर आवाज़ सुनने के लिए Test दबाएँ।\nअपना पासवर्ड या PIN यहाँ बदलें। बदलने पर आपके दूसरे डिवाइस साइन आउट हो जाते हैं।\nदेखें आप कहाँ-कहाँ साइन इन हैं, और जो फ़ोन इस्तेमाल नहीं करते उसे साइन आउट करें।\nदेखें आप किसे रिपोर्ट करते हैं, इस महीने का काम, और पोर्टल में आप क्या कर सकते हैं।"
+  ]
+ },
+ "screen:tasks": {
+  "i": "list-checks",
+  "en": [
+   "My Work",
+   "All work given to you, and work you must review.\nLinked work (roasting, packing…) counts itself when you record it.\nWhen finished, press Mark completed.\nThe person who gave the work approves it or sends it back.\nStuck? Press I'm stuck and your manager is told."
+  ],
+  "te": [
+   "నా పని",
+   "మీకు ఇచ్చిన పనులు, మీరు సరిచూడాల్సిన పనులు ఇక్కడ ఉంటాయి.\nరోస్టింగ్, ప్యాకింగ్ వంటి పనులు మీరు నమోదు చేసినప్పుడు తనంతట తానే లెక్కపెడతాయి.\nపూర్తయ్యాక Mark completed నొక్కండి.\nపని ఇచ్చినవారు ఆమోదిస్తారు లేదా తిరిగి పంపుతారు.\nఇబ్బంది ఉంటే I'm stuck నొక్కండి, మేనేజర్‌కు తెలుస్తుంది."
+  ],
+  "hi": [
+   "मेरा काम",
+   "आपको दिया गया काम और जिसे आपको जाँचना है, यहाँ है।\nरोस्टिंग, पैकिंग जैसा काम दर्ज करते ही अपने आप गिना जाता है।\nपूरा होने पर Mark completed दबाएँ।\nकाम देने वाला मंज़ूर करेगा या वापस भेजेगा।\nअटक गए? I'm stuck दबाएँ, मैनेजर को पता चलेगा।"
+  ]
+ },
+ "screen:comms": {
+  "i": "message-circle",
+  "en": [
+   "Messages",
+   "The official place for work talk.\nAnnouncements come from the owner or managers.\nTeam groups are for your team.\nUse the 💬 button on any batch or order to talk about that item.\nThe admin can read work messages."
+  ],
+  "te": [
+   "మెసేజ్‌లు",
+   "పని గురించి మాట్లాడే అధికారిక చోటు.\nప్రకటనలు యజమాని లేదా మేనేజర్ నుండి వస్తాయి.\nటీమ్ గ్రూప్‌లు మీ టీమ్ కోసం.\nఏ బ్యాచ్ లేదా ఆర్డర్ మీదైనా 💬 బటన్‌తో దాని గురించి మాట్లాడండి.\nపని మెసేజ్‌లను అడ్మిన్ చదవగలరు."
+  ],
+  "hi": [
+   "मैसेज",
+   "काम की बात करने की आधिकारिक जगह।\nघोषणाएँ मालिक या मैनेजर से आती हैं।\nटीम ग्रुप आपकी टीम के लिए हैं।\nकिसी बैच या ऑर्डर पर 💬 बटन से उसी के बारे में बात करें।\nएडमिन काम के मैसेज पढ़ सकते हैं।"
+  ]
+ },
+ "screen:inward": {
+  "i": "package-plus",
+  "en": [
+   "Stock Inward",
+   "Record coffee bags when they arrive.\nChoose where it came from and which coffee.\nCount sound bags, damaged bags and partial bags.\nWeigh the partial bags together and enter the kg.\nPress Save received bags. Damaged bags wait until someone checks them."
+  ],
+  "te": [
+   "స్టాక్ ఇన్‌వర్డ్",
+   "కాఫీ బస్తాలు వచ్చినప్పుడు ఇక్కడ నమోదు చేయండి.\nఎక్కడి నుండి వచ్చిందో, ఏ కాఫీనో ఎంచుకోండి.\nమంచి బస్తాలు, పాడైన బస్తాలు, సగం బస్తాలు లెక్కించండి.\nసగం బస్తాలను కలిపి తూకం వేసి కిలోలు రాయండి.\nSave received bags నొక్కండి. పాడైన బస్తాలు తనిఖీ వరకు ఆగుతాయి."
+  ],
+  "hi": [
+   "स्टॉक इनवर्ड",
+   "कॉफ़ी की बोरियाँ आने पर यहाँ दर्ज करें।\nकहाँ से आई और कौन सी कॉफ़ी, चुनें।\nठीक बोरियाँ, खराब बोरियाँ और अधूरी बोरियाँ गिनें।\nअधूरी बोरियों को साथ तौलकर किलो लिखें।\nSave received bags दबाएँ। खराब बोरियाँ जाँच तक रुकी रहती हैं।"
+  ]
+ },
+ "screen:inventory": {
+  "i": "warehouse",
+  "en": [
+   "Inventory",
+   "All stock, worked out from every movement.\nRaw coffee is grouped by bean: tap a bean to see sound, damaged and partial bags.\nRoasted, ground and packed stock is listed lot by lot.\nUse Send to counter, Count or Correct on a lot."
+  ],
+  "te": [
+   "ఇన్వెంటరీ",
+   "మొత్తం స్టాక్, ప్రతి కదలిక నుండి లెక్కించబడుతుంది.\nముడి కాఫీ రకాల వారీగా ఉంటుంది: మంచి, పాడైన, సగం బస్తాలు చూడటానికి రకంపై నొక్కండి.\nవేయించిన, పొడి, ప్యాక్ చేసిన స్టాక్ లాట్ వారీగా ఉంటుంది.\nలాట్‌పై Send to counter, Count లేదా Correct వాడండి."
+  ],
+  "hi": [
+   "इन्वेंटरी",
+   "पूरा स्टॉक, हर आवाजाही से गिना हुआ।\nकच्ची कॉफ़ी किस्म के हिसाब से: ठीक, खराब और अधूरी बोरियाँ देखने के लिए किस्म दबाएँ।\nरोस्टेड, पिसी और पैक की हुई कॉफ़ी लॉट के हिसाब से है।\nलॉट पर Send to counter, Count या Correct इस्तेमाल करें।"
+  ]
+ },
+ "screen:roasting": {
+  "i": "flame",
+  "en": [
+   "Daily Roasting",
+   "Record every roast batch.\nChoose one coffee lot (two only if you mix) and its weighed kg.\nEnter roasted output kg and roast time.\nPick the roast profile.\nPress Record finished batch. Loss is worked out for you.\nUse the calendar to see any day's batches."
+  ],
+  "te": [
+   "రోజువారీ రోస్టింగ్",
+   "ప్రతి రోస్ట్ బ్యాచ్ నమోదు చేయండి.\nఒక కాఫీ లాట్ (కలిపితేనే రెండు), తూకం కిలోలు ఎంచుకోండి.\nవేయించిన కిలోలు, రోస్ట్ సమయం రాయండి.\nరోస్ట్ ప్రొఫైల్ ఎంచుకోండి.\nRecord finished batch నొక్కండి. నష్టం తనంతట తానే లెక్కిస్తుంది.\nఏ రోజు బ్యాచ్‌లైనా క్యాలెండర్‌లో చూడండి."
+  ],
+  "hi": [
+   "रोज़ाना रोस्टिंग",
+   "हर रोस्ट बैच दर्ज करें।\nएक कॉफ़ी लॉट (मिलाएँ तभी दो) और तौला हुआ किलो चुनें।\nरोस्टेड किलो और रोस्ट का समय लिखें।\nरोस्ट प्रोफ़ाइल चुनें।\nRecord finished batch दबाएँ। घाटा अपने आप निकलता है।\nकिसी भी दिन के बैच कैलेंडर में देखें।"
+  ]
+ },
+ "screen:blending": {
+  "i": "blend",
+  "en": [
+   "Blending & Grinding",
+   "Mix coffees by recipe and grind roasted coffee.\nBlend jobs: choose a recipe, the lots for each part, weigh, save.\nGrinding: choose the roasted lot, kg in, kg out, grind size.\nSecret recipes show only to people allowed."
+  ],
+  "te": [
+   "బ్లెండింగ్ & గ్రైండింగ్",
+   "రెసిపీ ప్రకారం కాఫీలు కలపండి, వేయించిన కాఫీ పొడి చేయండి.\nబ్లెండ్: రెసిపీ, ప్రతి భాగానికి లాట్ ఎంచుకుని, తూకం వేసి సేవ్ చేయండి.\nగ్రైండింగ్: లాట్, లోపలి కిలోలు, బయటి కిలోలు, పొడి సైజు ఇవ్వండి.\nరహస్య రెసిపీలు అనుమతి ఉన్నవారికే కనిపిస్తాయి."
+  ],
+  "hi": [
+   "ब्लेंडिंग और ग्राइंडिंग",
+   "रेसिपी से कॉफ़ी मिलाएँ और रोस्टेड कॉफ़ी पीसें।\nब्लेंड: रेसिपी, हर हिस्से का लॉट चुनें, तौलें, सेव करें।\nग्राइंडिंग: लॉट, अंदर का किलो, बाहर का किलो, पिसाई साइज़ दें।\nगुप्त रेसिपी केवल अनुमति वालों को दिखती है।"
+  ]
+ },
+ "screen:qc": {
+  "i": "shield-check",
+  "en": [
+   "Quality Control",
+   "Roasted batches wait here until someone checks them.\nCheck colour and smell against the sample.\nPress Release to allow use, or Reject.\nWrite what you checked."
+  ],
+  "te": [
+   "క్వాలిటీ కంట్రోల్",
+   "వేయించిన బ్యాచ్‌లు తనిఖీ వరకు ఇక్కడ ఆగుతాయి.\nనమూనాతో రంగు, వాసన పోల్చండి.\nవాడటానికి Release, కాకపోతే Reject నొక్కండి.\nఏమి తనిఖీ చేశారో రాయండి."
+  ],
+  "hi": [
+   "क्वालिटी कंट्रोल",
+   "रोस्टेड बैच जाँच तक यहाँ रुकते हैं।\nसैंपल से रंग और खुशबू मिलाएँ।\nइस्तेमाल के लिए Release, नहीं तो Reject दबाएँ।\nक्या जाँचा, लिखें।"
+  ]
+ },
+ "screen:outside": {
+  "i": "factory",
+  "en": [
+   "Outside Roasting",
+   "Roasting a customer's own coffee for a fee.\nReceive their green coffee (kept separate from ours).\nRoast it, then hand it back with a note.\nThe service charge is worked out from the agreed rate."
+  ],
+  "te": [
+   "బయటి రోస్టింగ్",
+   "కస్టమర్ సొంత కాఫీని ఫీజుకు వేయించడం.\nవారి పచ్చి కాఫీ తీసుకోండి (మన స్టాక్‌తో కలవదు).\nవేయించి, నోట్‌తో తిరిగి ఇవ్వండి.\nఒప్పుకున్న రేటుతో ఛార్జీ లెక్కిస్తుంది."
+  ],
+  "hi": [
+   "बाहरी रोस्टिंग",
+   "ग्राहक की अपनी कॉफ़ी फीस लेकर भूनना।\nउनकी हरी कॉफ़ी लें (हमारे स्टॉक से अलग रहती है)।\nभूनें, फिर नोट के साथ वापस दें।\nतय रेट से चार्ज अपने आप बनता है।"
+  ]
+ },
+ "screen:packing": {
+  "i": "package",
+  "en": [
+   "Packing",
+   "Packing tickets say what to pack, pack size and how many.\nPress Record packing, choose the coffee lot, weigh coffee used.\nCount good packs and rejected packs, then Save packing.\nPacks wait for QA release before sale."
+  ],
+  "te": [
+   "ప్యాకింగ్",
+   "ఏమి, ఏ సైజులో, ఎన్ని ప్యాక్ చేయాలో టికెట్ చెబుతుంది.\nRecord packing నొక్కి, లాట్ ఎంచుకుని, వాడిన కాఫీ తూకం వేయండి.\nమంచి, తిరస్కరించిన ప్యాకెట్లు లెక్కించి Save packing నొక్కండి.\nఅమ్మకానికి ముందు ప్యాకెట్లు QA release కోసం ఆగుతాయి."
+  ],
+  "hi": [
+   "पैकिंग",
+   "टिकट बताता है क्या, किस साइज़ में, कितने पैक करने हैं।\nRecord packing दबाएँ, लॉट चुनें, इस्तेमाल हुई कॉफ़ी तौलें।\nअच्छे और रिजेक्ट पैक गिनें, फिर Save packing दबाएँ।\nबिक्री से पहले पैक QA release का इंतज़ार करते हैं।"
+  ]
+ },
+ "screen:counter": {
+  "i": "store",
+  "en": [
+   "Counter Sales",
+   "Selling at the shop, paid in full.\nSell: tap an item, weigh, Add to bill. Others… for any mix like 80/20.\nTake payment, Complete sale, print customer or customer + office copy.\nToday's bills: reprint or ask for a refund.\nDay close: Close today's bills at night."
+  ],
+  "te": [
+   "కౌంటర్ అమ్మకాలు",
+   "షాప్‌లో పూర్తి చెల్లింపుతో అమ్మకం.\nSell: వస్తువు నొక్కి, తూకం వేసి, Add to bill. 80/20 వంటి మిశ్రమానికి Others….\nTake payment, Complete sale, కస్టమర్ లేదా కస్టమర్ + ఆఫీస్ కాపీ ప్రింట్.\nToday's bills: మళ్ళీ ప్రింట్ లేదా రీఫండ్ అడగండి.\nరాత్రి Close today's bills."
+  ],
+  "hi": [
+   "काउंटर बिक्री",
+   "दुकान पर पूरा भुगतान लेकर बिक्री।\nSell: आइटम दबाएँ, तौलें, Add to bill. 80/20 जैसे मिश्रण के लिए Others…।\nTake payment, Complete sale, ग्राहक या ग्राहक + ऑफिस कॉपी प्रिंट करें।\nToday's bills: दोबारा प्रिंट या रिफंड माँगें।\nरात को Close today's bills।"
+  ]
+ },
+ "screen:orders": {
+  "i": "shopping-cart",
+  "en": [
+   "Outgoing Sales",
+   "Orders for cafés and dealers.\nNew order, then the owner sets the price.\nConfirm: stock is reserved; credit orders over the limit wait for a decision.\nPay-first orders need payment recorded before dispatch."
+  ],
+  "te": [
+   "అవుట్‌గోయింగ్ సేల్స్",
+   "కేఫ్‌లు, డీలర్ల ఆర్డర్లు.\nకొత్త ఆర్డర్, తర్వాత యజమాని ధర పెడతారు.\nConfirm: స్టాక్ రిజర్వ్ అవుతుంది; పరిమితి దాటిన క్రెడిట్ ఆర్డర్లు నిర్ణయం కోసం ఆగుతాయి.\nముందు చెల్లించే ఆర్డర్లకు పంపే ముందు చెల్లింపు నమోదు కావాలి."
+  ],
+  "hi": [
+   "आउटगोइंग सेल्स",
+   "कैफ़े और डीलरों के ऑर्डर।\nनया ऑर्डर, फिर मालिक दाम लगाते हैं।\nConfirm: स्टॉक रिज़र्व होता है; लिमिट से ऊपर के उधार ऑर्डर फैसले का इंतज़ार करते हैं।\nपहले-भुगतान वाले ऑर्डर में भेजने से पहले भुगतान दर्ज होना चाहिए।"
+  ]
+ },
+ "screen:dispatch": {
+  "i": "truck",
+  "en": [
+   "Dispatch",
+   "Hand over orders that are ready and cleared.\nFor Rapido or Uber, enter the real booking reference.\nWhen the customer receives it, press Confirm delivery and write who received it."
+  ],
+  "te": [
+   "డిస్పాచ్",
+   "సిద్ధంగా ఉన్న, క్లియర్ అయిన ఆర్డర్లు అప్పగించండి.\nRapido, Uber అయితే అసలు బుకింగ్ నంబర్ రాయండి.\nకస్టమర్ అందుకున్నాక Confirm delivery నొక్కి ఎవరు తీసుకున్నారో రాయండి."
+  ],
+  "hi": [
+   "डिस्पैच",
+   "तैयार और क्लियर ऑर्डर सौंपें।\nRapido या Uber के लिए असली बुकिंग नंबर लिखें।\nग्राहक को मिलने पर Confirm delivery दबाएँ और किसने लिया, लिखें।"
+  ]
+ },
+ "screen:finance": {
+  "i": "wallet",
+  "en": [
+   "Finance",
+   "Money in and out.\nCustomer receivables: who owes what and for how long.\nSupplier payables: match supplier invoices and approve payments.\nTally export: a file of entries for your accountant.\nOne person records, another approves."
+  ],
+  "te": [
+   "ఫైనాన్స్",
+   "వచ్చే, పోయే డబ్బు.\nకస్టమర్ బాకీలు: ఎవరు ఎంత, ఎంత కాలంగా.\nసప్లయర్ చెల్లింపులు: ఇన్వాయిస్ సరిపోల్చి చెల్లింపు ఆమోదించండి.\nTally export: అకౌంటెంట్ కోసం ఫైల్.\nఒకరు నమోదు చేస్తారు, మరొకరు ఆమోదిస్తారు."
+  ],
+  "hi": [
+   "फ़ाइनेंस",
+   "आने और जाने वाला पैसा।\nग्राहक बकाया: कौन कितना, कब से।\nसप्लायर भुगतान: इनवॉइस मिलाएँ और भुगतान मंज़ूर करें।\nTally export: अकाउंटेंट के लिए फ़ाइल।\nएक व्यक्ति दर्ज करता है, दूसरा मंज़ूर करता है।"
+  ]
+ },
+ "screen:exceptions": {
+  "i": "triangle-alert",
+  "en": [
+   "Exceptions",
+   "Everything that needs a decision, in one list.\nRed is most urgent.\nTap an item to open the screen where you fix it.\nItems stay until they are solved."
+  ],
+  "te": [
+   "ఎక్సెప్షన్స్",
+   "నిర్ణయం కావాల్సినవన్నీ ఒకే జాబితాలో.\nఎరుపు అత్యవసరం.\nసరిచేయాల్సిన పేజీకి వెళ్ళడానికి అంశంపై నొక్కండి.\nపరిష్కారమయ్యే వరకు ఇక్కడే ఉంటాయి."
+  ],
+  "hi": [
+   "एक्सेप्शन",
+   "जिस पर फैसला चाहिए, सब एक सूची में।\nलाल सबसे ज़रूरी है।\nठीक करने वाली स्क्रीन खोलने के लिए आइटम दबाएँ।\nहल होने तक यहीं रहते हैं।"
+  ]
+ },
+ "screen:reports": {
+  "i": "chart-column",
+  "en": [
+   "Reports",
+   "Totals for any period: roasting, receipts, packing, stock, sales.\nChoose From and To dates, then Show.\nProfit is not shown until all costs are recorded."
+  ],
+  "te": [
+   "రిపోర్ట్స్",
+   "ఏ కాలానికైనా మొత్తాలు: రోస్టింగ్, రసీదులు, ప్యాకింగ్, స్టాక్, అమ్మకాలు.\nFrom, To తేదీలు ఎంచుకుని Show నొక్కండి.\nఅన్ని ఖర్చులు నమోదయ్యే వరకు లాభం చూపదు."
+  ],
+  "hi": [
+   "रिपोर्ट",
+   "किसी भी समय के कुल: रोस्टिंग, रसीदें, पैकिंग, स्टॉक, बिक्री।\nFrom और To तारीख चुनें, फिर Show दबाएँ।\nसारे खर्च दर्ज होने तक मुनाफ़ा नहीं दिखता।"
+  ]
+ },
+ "screen:admin": {
+  "i": "settings",
+  "en": [
+   "Admin Control",
+   "Everything the business sets up.\nPeople and roles: who can open, do and see what.\nClients, beans, roast profiles and prices.\nSettings: business values, languages, messages.\nAudit log: every change, who and when."
+  ],
+  "te": [
+   "అడ్మిన్ కంట్రోల్",
+   "వ్యాపారం సెట్ చేసే ప్రతిదీ.\nవ్యక్తులు, పాత్రలు: ఎవరు ఏమి తెరవాలి, చేయాలి, చూడాలి.\nక్లయింట్లు, కాఫీ రకాలు, రోస్ట్ ప్రొఫైల్స్, ధరలు.\nసెట్టింగ్స్: వ్యాపార విలువలు, భాషలు, మెసేజ్‌లు.\nఆడిట్ లాగ్: ప్రతి మార్పు, ఎవరు, ఎప్పుడు."
+  ],
+  "hi": [
+   "एडमिन कंट्रोल",
+   "बिज़नेस की हर सेटिंग।\nलोग और रोल: कौन क्या खोले, करे, देखे।\nक्लाइंट, कॉफ़ी किस्में, रोस्ट प्रोफ़ाइल और दाम।\nसेटिंग्स: बिज़नेस वैल्यू, भाषाएँ, मैसेज।\nऑडिट लॉग: हर बदलाव, किसने और कब।"
+  ]
+ },
+ "pending": {
+  "i": "hourglass",
+  "en": [
+   "Pending here",
+   "Work waiting in this section.\nStaff see their own jobs. Managers see everyone's.\nIt also lists decisions waiting here, like batches to check.\nThe number on the menu is this same list."
+  ],
+  "te": [
+   "ఇక్కడ పెండింగ్",
+   "ఈ విభాగంలో ఆగిన పని.\nస్టాఫ్ తమ పనులు, మేనేజర్లు అందరి పనులు చూస్తారు.\nతనిఖీ చేయాల్సిన బ్యాచ్‌ల వంటి నిర్ణయాలు కూడా ఉంటాయి.\nమెనూలోని సంఖ్య ఇదే జాబితా."
+  ],
+  "hi": [
+   "यहाँ बाकी",
+   "इस सेक्शन में रुका काम।\nस्टाफ अपना काम देखता है, मैनेजर सबका।\nजाँचने वाले बैच जैसे फैसले भी यहाँ हैं।\nमेन्यू पर दिखी संख्या यही सूची है।"
+  ]
+ },
+ "receiveBags": {
+  "m": {
+   "regex_source": "^Receive bags",
+   "regex_flags": "i"
+  },
+  "i": "package-plus",
+  "en": [
+   "Receive bags",
+   "Fill this when a lorry or auction lot arrives. Count bags; no weighing except partial bags."
+  ],
+  "te": [
+   "బస్తాలు నమోదు",
+   "లారీ లేదా వేలం సరుకు వచ్చినప్పుడు నింపండి. బస్తాలు లెక్కించండి; సగం బస్తాలు మాత్రమే తూకం."
+  ],
+  "hi": [
+   "बोरियाँ दर्ज",
+   "ट्रक या नीलामी का माल आने पर भरें। बोरियाँ गिनें; केवल अधूरी बोरियाँ तौलें।"
+  ]
+ },
+ "recentReceipts": {
+  "m": {
+   "regex_source": "^Recent receipts",
+   "regex_flags": "i"
+  },
+  "i": "receipt",
+  "en": [
+   "Recent receipts",
+   "Every delivery saved so far. A manager can Reverse a wrong one only if its coffee is not used yet."
+  ],
+  "te": [
+   "ఇటీవలి రసీదులు",
+   "ఇప్పటివరకు సేవ్ చేసిన సరుకులు. కాఫీ వాడకపోతేనే మేనేజర్ తప్పుడుది Reverse చేయగలరు."
+  ],
+  "hi": [
+   "हाल की रसीदें",
+   "अब तक सेव हुई डिलीवरी। कॉफ़ी इस्तेमाल न हुई हो तभी मैनेजर गलत वाली Reverse कर सकते हैं।"
+  ]
+ },
+ "rawByBean": {
+  "m": {
+   "regex_source": "^Raw coffee by bean",
+   "regex_flags": "i"
+  },
+  "i": "bean",
+  "en": [
+   "Raw coffee by bean type",
+   "Green coffee per bean, split into sound, damaged and partial bags. Tap the bean name for its own page."
+  ],
+  "te": [
+   "రకం వారీ ముడి కాఫీ",
+   "ప్రతి రకం పచ్చి కాఫీ, మంచి, పాడైన, సగం బస్తాలుగా. ప్రత్యేక పేజీ కోసం రకం పేరుపై నొక్కండి."
+  ],
+  "hi": [
+   "किस्म के हिसाब से कच्ची कॉफ़ी",
+   "हर किस्म की हरी कॉफ़ी, ठीक, खराब और अधूरी बोरियों में। अलग पेज के लिए किस्म का नाम दबाएँ।"
+  ]
+ },
+ "otherStock": {
+  "m": {
+   "regex_source": "^Roasted, ground, packed",
+   "regex_flags": "i"
+  },
+  "i": "boxes",
+  "en": [
+   "Roasted, ground, packed & other stock",
+   "Every lot that is not raw coffee: where it is, its status and kg. Only RELEASED lots can be used."
+  ],
+  "te": [
+   "వేయించిన, పొడి, ప్యాక్ స్టాక్",
+   "ముడి కాఫీ కాని ప్రతి లాట్: ఎక్కడ ఉంది, స్థితి, కిలోలు. RELEASED లాట్‌లే వాడవచ్చు."
+  ],
+  "hi": [
+   "रोस्टेड, पिसा, पैक स्टॉक",
+   "कच्ची कॉफ़ी के अलावा हर लॉट: कहाँ है, हालत और किलो। केवल RELEASED लॉट इस्तेमाल हो सकते हैं।"
+  ]
+ },
+ "counts": {
+  "m": {
+   "regex_source": "^Stock counts",
+   "regex_flags": "i"
+  },
+  "i": "scale",
+  "en": [
+   "Stock counts & corrections",
+   "When counted stock differs from the book, the difference waits here. Someone else applies or rejects it."
+  ],
+  "te": [
+   "స్టాక్ లెక్కలు, సవరణలు",
+   "లెక్కించిన స్టాక్ పుస్తకానికి తేడా ఉంటే ఇక్కడ ఆగుతుంది. వేరొకరు వర్తింపజేస్తారు లేదా తిరస్కరిస్తారు."
+  ],
+  "hi": [
+   "स्टॉक गिनती और सुधार",
+   "गिना स्टॉक किताब से अलग हो तो फ़र्क यहाँ रुकता है। कोई दूसरा लागू या रद्द करता है।"
+  ]
+ },
+ "transfers": {
+  "m": {
+   "regex_source": "^Transfers to the counter",
+   "regex_flags": "i"
+  },
+  "i": "send",
+  "en": [
+   "Transfers to the counter",
+   "Coffee sent from production to the shop. The counter weighs what arrives; any shortage is reported."
+  ],
+  "te": [
+   "కౌంటర్‌కు పంపినవి",
+   "ప్రొడక్షన్ నుండి షాప్‌కు పంపిన కాఫీ. వచ్చినది కౌంటర్ తూకం వేస్తుంది; తక్కువైతే తెలియజేస్తుంది."
+  ],
+  "hi": [
+   "काउंटर को भेजा",
+   "प्रोडक्शन से दुकान भेजी कॉफ़ी। काउंटर आई कॉफ़ी तौलता है; कमी हो तो बताया जाता है।"
+  ]
+ },
+ "recordRoast": {
+  "m": {
+   "regex_source": "^Record roasting",
+   "regex_flags": "i"
+  },
+  "i": "flame",
+  "en": [
+   "Record roasting",
+   "Fill after each batch with today's scale readings. Without an approved range every batch waits for a quality check."
+  ],
+  "te": [
+   "రోస్టింగ్ నమోదు",
+   "ప్రతి బ్యాచ్ తర్వాత ఈరోజు తూకంతో నింపండి. ఆమోదిత పరిధి లేకపోతే ప్రతి బ్యాచ్ నాణ్యత తనిఖీకి ఆగుతుంది."
+  ],
+  "hi": [
+   "रोस्टिंग दर्ज",
+   "हर बैच के बाद आज की तौल से भरें। मंज़ूर रेंज न हो तो हर बैच क्वालिटी जाँच का इंतज़ार करता है।"
+  ]
+ },
+ "calendar": {
+  "m": {
+   "regex_source": "^Roasting calendar",
+   "regex_flags": "i"
+  },
+  "i": "calendar-days",
+  "en": [
+   "Roasting calendar",
+   "Each day shows how many batches were roasted. Tap a day to see its batches below. Use ‹ › for other months."
+  ],
+  "te": [
+   "రోస్టింగ్ క్యాలెండర్",
+   "ప్రతి రోజు ఎన్ని బ్యాచ్‌లు వేయించారో చూపిస్తుంది. కింద ఆ రోజు బ్యాచ్‌ల కోసం రోజుపై నొక్కండి. ఇతర నెలలకు ‹ ›."
+  ],
+  "hi": [
+   "रोस्टिंग कैलेंडर",
+   "हर दिन कितने बैच भुने, दिखाता है। नीचे उस दिन के बैच देखने के लिए दिन दबाएँ। दूसरे महीने के लिए ‹ ›।"
+  ]
+ },
+ "currentBill": {
+  "m": {
+   "regex_source": "^Current bill",
+   "regex_flags": "i"
+  },
+  "i": "receipt",
+  "en": [
+   "Current bill",
+   "Items added for this customer. Remove a line with ✕. Press Take payment when the customer is ready."
+  ],
+  "te": [
+   "ప్రస్తుత బిల్",
+   "ఈ కస్టమర్ కోసం చేర్చిన వస్తువులు. ✕ తో తీసేయండి. కస్టమర్ సిద్ధమైనప్పుడు Take payment నొక్కండి."
+  ],
+  "hi": [
+   "मौजूदा बिल",
+   "इस ग्राहक के लिए जोड़े आइटम। ✕ से हटाएँ। ग्राहक तैयार हो तो Take payment दबाएँ।"
+  ]
+ },
+ "closeDay": {
+  "m": {
+   "regex_source": "^Close today's bills",
+   "regex_flags": "i"
+  },
+  "i": "badge-indian-rupee",
+  "en": [
+   "Close today's bills",
+   "At night: count the cash in the drawer and type it in. The counter locks until tomorrow and today's bill list is saved."
+  ],
+  "te": [
+   "ఈరోజు బిల్లుల ముగింపు",
+   "రాత్రి: డ్రాయర్‌లో నగదు లెక్కించి రాయండి. రేపటి వరకు కౌంటర్ లాక్ అవుతుంది, ఈరోజు బిల్లుల జాబితా సేవ్ అవుతుంది."
+  ],
+  "hi": [
+   "आज के बिल बंद",
+   "रात को: दराज़ का कैश गिनकर लिखें। काउंटर कल तक बंद होता है और आज की बिल सूची सेव होती है।"
+  ]
+ },
+ "dayClosed": {
+  "m": {
+   "regex_source": "^Today is closed",
+   "regex_flags": "i"
+  },
+  "i": "circle-check",
+  "en": [
+   "Today is closed",
+   "Selling is locked until tomorrow. Print the day register and tick each office copy against it."
+  ],
+  "te": [
+   "ఈరోజు ముగిసింది",
+   "రేపటి వరకు అమ్మకం లాక్. డే రిజిస్టర్ ప్రింట్ చేసి ప్రతి ఆఫీస్ కాపీని సరిచూడండి."
+  ],
+  "hi": [
+   "आज बंद",
+   "कल तक बिक्री बंद। डे रजिस्टर प्रिंट करें और हर ऑफिस कॉपी से मिलाएँ।"
+  ]
+ },
+ "closedDays": {
+  "m": {
+   "regex_source": "^Closed days",
+   "regex_flags": "i"
+  },
+  "i": "calendar-days",
+  "en": [
+   "Closed days",
+   "Every closed day with its bills, total and cash difference. Open Register to see or print it."
+  ],
+  "te": [
+   "ముగిసిన రోజులు",
+   "ప్రతి ముగిసిన రోజు బిల్లులు, మొత్తం, నగదు తేడాతో. చూడటానికి Register తెరవండి."
+  ],
+  "hi": [
+   "बंद दिन",
+   "हर बंद दिन के बिल, कुल और कैश फ़र्क। देखने के लिए Register खोलें।"
+  ]
+ },
+ "refundsWaiting": {
+  "m": {
+   "regex_source": "^Refunds waiting",
+   "regex_flags": "i"
+  },
+  "i": "hand-coins",
+  "en": [
+   "Refunds waiting for approval",
+   "Refunds asked by the counter. Approve only if you saw the reason. You cannot approve your own."
+  ],
+  "te": [
+   "ఆమోదం కోసం రీఫండ్‌లు",
+   "కౌంటర్ అడిగిన రీఫండ్‌లు. కారణం చూశాకే ఆమోదించండి. మీది మీరు ఆమోదించలేరు."
+  ],
+  "hi": [
+   "मंज़ूरी के लिए रिफंड",
+   "काउंटर के माँगे रिफंड। कारण देखकर ही मंज़ूर करें। अपना खुद मंज़ूर नहीं कर सकते।"
+  ]
+ },
+ "priceList": {
+  "m": {
+   "regex_source": "^Counter price list",
+   "regex_flags": "i"
+  },
+  "i": "tag",
+  "en": [
+   "Counter price list",
+   "Items and per-kg prices the counter sells. Each change is a new version; old bills keep their old price."
+  ],
+  "te": [
+   "కౌంటర్ ధరల జాబితా",
+   "కౌంటర్ అమ్మే వస్తువులు, కిలో ధరలు. ప్రతి మార్పు కొత్త వెర్షన్; పాత బిల్లులు పాత ధరతోనే."
+  ],
+  "hi": [
+   "काउंटर दाम सूची",
+   "काउंटर पर बिकने वाले आइटम और किलो दाम। हर बदलाव नया वर्शन; पुराने बिल पुराने दाम पर।"
+  ]
+ },
+ "others": {
+  "m": {
+   "regex_source": "Others.*custom coffee",
+   "regex_flags": "i"
+  },
+  "i": "blend",
+  "en": [
+   "Others — custom coffee : chicory",
+   "Set the pure coffee and chicory price per kg once. Any ratio a customer asks for, like 80/20, is priced from these."
+  ],
+  "te": [
+   "ఇతర — కాఫీ : చికోరీ మిశ్రమం",
+   "స్వచ్ఛమైన కాఫీ, చికోరీ కిలో ధర ఒకసారి పెట్టండి. 80/20 వంటి ఏ మిశ్రమానికైనా వీటితో ధర వస్తుంది."
+  ],
+  "hi": [
+   "अन्य — कॉफ़ी : चिकोरी मिश्रण",
+   "शुद्ध कॉफ़ी और चिकोरी का किलो दाम एक बार डालें। 80/20 जैसे किसी भी मिश्रण का दाम इन्हीं से बनता है।"
+  ]
+ },
+ "packingQueue": {
+  "m": {
+   "regex_source": "^Packing queue",
+   "regex_flags": "i"
+  },
+  "i": "package",
+  "en": [
+   "Packing queue",
+   "Open packing tickets. Record packing as you go; finished packs wait for QA release."
+  ],
+  "te": [
+   "ప్యాకింగ్ వరుస",
+   "తెరిచిన ప్యాకింగ్ టికెట్లు. చేసే కొద్దీ Record packing; పూర్తయిన ప్యాకెట్లు QA release కోసం ఆగుతాయి."
+  ],
+  "hi": [
+   "पैकिंग कतार",
+   "खुले पैकिंग टिकट। करते-करते Record packing; तैयार पैक QA release का इंतज़ार करते हैं।"
+  ]
+ },
+ "newTicket": {
+  "m": {
+   "regex_source": "^New packing ticket",
+   "regex_flags": "i"
+  },
+  "i": "package-plus",
+  "en": [
+   "New packing ticket",
+   "Managers create tickets: product name, pack size in grams, how many packs and the label reference."
+  ],
+  "te": [
+   "కొత్త ప్యాకింగ్ టికెట్",
+   "మేనేజర్లు టికెట్ చేస్తారు: పేరు, ప్యాకెట్ గ్రాములు, ఎన్ని ప్యాకెట్లు, లేబుల్."
+  ],
+  "hi": [
+   "नया पैकिंग टिकट",
+   "मैनेजर टिकट बनाते हैं: नाम, पैक के ग्राम, कितने पैक और लेबल।"
+  ]
+ },
+ "readyToGo": {
+  "m": {
+   "regex_source": "^Ready to go",
+   "regex_flags": "i"
+  },
+  "i": "truck",
+  "en": [
+   "Ready to go",
+   "Orders with stock reserved. Hand over only the ones marked cleared (paid or credit approved)."
+  ],
+  "te": [
+   "పంపడానికి సిద్ధం",
+   "స్టాక్ రిజర్వ్ అయిన ఆర్డర్లు. క్లియర్ (చెల్లించిన లేదా క్రెడిట్ ఆమోదం) అయినవే అప్పగించండి."
+  ],
+  "hi": [
+   "भेजने को तैयार",
+   "स्टॉक रिज़र्व वाले ऑर्डर। केवल क्लियर (भुगतान या उधार मंज़ूर) वाले सौंपें।"
+  ]
+ },
+ "onTheWay": {
+  "m": {
+   "regex_source": "^On the way",
+   "regex_flags": "i"
+  },
+  "i": "clock",
+  "en": [
+   "On the way — confirm delivery",
+   "Orders handed over but not confirmed. When the customer receives it, confirm with the delivered kg and who received it."
+  ],
+  "te": [
+   "దారిలో — డెలివరీ నిర్ధారణ",
+   "అప్పగించిన కానీ నిర్ధారించని ఆర్డర్లు. కస్టమర్ అందుకున్నాక కిలోలు, తీసుకున్నవారితో నిర్ధారించండి."
+  ],
+  "hi": [
+   "रास्ते में — डिलीवरी पक्की करें",
+   "सौंपे पर पक्के नहीं हुए ऑर्डर। ग्राहक को मिलने पर किलो और लेने वाले के साथ पक्का करें।"
+  ]
+ },
+ "delivered": {
+  "m": {
+   "regex_source": "^Recently delivered",
+   "regex_flags": "i"
+  },
+  "i": "circle-check",
+  "en": [
+   "Recently delivered",
+   "Orders the customer has received, with the proof of delivery."
+  ],
+  "te": [
+   "ఇటీవల డెలివరీ అయినవి",
+   "కస్టమర్ అందుకున్న ఆర్డర్లు, రుజువుతో."
+  ],
+  "hi": [
+   "हाल में पहुँचे",
+   "ग्राहक को मिले ऑर्डर, सबूत के साथ।"
+  ]
+ },
+ "invoices": {
+  "m": {
+   "regex_source": "^Invoices",
+   "regex_flags": "i"
+  },
+  "i": "receipt",
+  "en": [
+   "Invoices",
+   "One invoice per dispatch. Days late shows how long money is due. Record a payment when the customer pays."
+  ],
+  "te": [
+   "ఇన్వాయిస్‌లు",
+   "ప్రతి డిస్పాచ్‌కు ఒక ఇన్వాయిస్. ఎన్ని రోజులు ఆలస్యమో చూపిస్తుంది. కస్టమర్ చెల్లించినప్పుడు నమోదు చేయండి."
+  ],
+  "hi": [
+   "इनवॉइस",
+   "हर डिस्पैच का एक इनवॉइस। कितने दिन देर, दिखता है। ग्राहक भुगतान करे तो दर्ज करें।"
+  ]
+ },
+ "collections": {
+  "m": {
+   "regex_source": "^Collections to verify",
+   "regex_flags": "i"
+  },
+  "i": "hand-coins",
+  "en": [
+   "Collections to verify",
+   "Payments recorded by someone else. Check your bank or UPI app, then mark Verified."
+  ],
+  "te": [
+   "ధృవీకరించాల్సిన వసూళ్లు",
+   "వేరొకరు నమోదు చేసిన చెల్లింపులు. బ్యాంక్ లేదా UPI చూసి Verified గుర్తించండి."
+  ],
+  "hi": [
+   "जाँचने वाली वसूली",
+   "किसी और ने दर्ज किए भुगतान। बैंक या UPI देखकर Verified करें।"
+  ]
+ },
+ "supplierPayments": {
+  "m": {
+   "regex_source": "^Supplier payments",
+   "regex_flags": "i"
+  },
+  "i": "wallet",
+  "en": [
+   "Supplier payments",
+   "Payments to suppliers. One person records, another approves."
+  ],
+  "te": [
+   "సప్లయర్ చెల్లింపులు",
+   "సప్లయర్లకు చెల్లింపులు. ఒకరు నమోదు, మరొకరు ఆమోదం."
+  ],
+  "hi": [
+   "सप्लायर भुगतान",
+   "सप्लायरों को भुगतान। एक दर्ज करता है, दूसरा मंज़ूर करता है।"
+  ]
+ },
+ "quickActions": {
+  "m": {
+   "regex_source": "^Quick actions",
+   "regex_flags": "i"
+  },
+  "i": "sparkles",
+  "en": [
+   "Quick actions",
+   "Shortcuts to the screens you use most. Change them in Customize."
+  ],
+  "te": [
+   "త్వరిత చర్యలు",
+   "ఎక్కువ వాడే పేజీలకు షార్ట్‌కట్లు. Customize లో మార్చండి."
+  ],
+  "hi": [
+   "तुरंत काम",
+   "सबसे ज़्यादा इस्तेमाल होने वाली स्क्रीन के शॉर्टकट। Customize में बदलें।"
+  ]
+ },
+ "businessValues": {
+  "m": {
+   "regex_source": "^Business values",
+   "regex_flags": "i"
+  },
+  "i": "badge-indian-rupee",
+  "en": [
+   "Business values",
+   "Numbers only the owner decides: opening cash, discount cap, approval limits, bill prefixes. Screens that need a value wait until it is set."
+  ],
+  "te": [
+   "వ్యాపార విలువలు",
+   "యజమాని మాత్రమే నిర్ణయించే సంఖ్యలు: ప్రారంభ నగదు, డిస్కౌంట్ పరిమితి, ఆమోద పరిమితులు. అవసరమైన పేజీలు ఇవి పెట్టే వరకు ఆగుతాయి."
+  ],
+  "hi": [
+   "बिज़नेस वैल्यू",
+   "जो केवल मालिक तय करें: शुरुआती कैश, छूट सीमा, मंज़ूरी सीमा, बिल प्रीफ़िक्स। ज़रूरी स्क्रीन इनके बिना रुकती हैं।"
+  ]
+ },
+ "stockNow": {
+  "m": {
+   "regex_source": "^Stock now by stage",
+   "regex_flags": "i"
+  },
+  "i": "warehouse",
+  "en": [
+   "Stock now by stage and place",
+   "Total kg by stage (raw, roasted, ground, packed) and by place (production, counter)."
+  ],
+  "te": [
+   "దశ, స్థలం వారీ స్టాక్",
+   "దశ (ముడి, వేయించిన, పొడి, ప్యాక్), స్థలం (ప్రొడక్షన్, కౌంటర్) వారీ మొత్తం కిలోలు."
+  ],
+  "hi": [
+   "चरण और जगह के हिसाब से स्टॉक",
+   "चरण (कच्चा, रोस्टेड, पिसा, पैक) और जगह (प्रोडक्शन, काउंटर) के हिसाब से कुल किलो।"
+  ]
+ },
+ "fPartial": {
+  "m": {
+   "regex_source": "^Partial bags \\(count\\)",
+   "regex_flags": "i"
+  },
+  "i": "package",
+  "en": [
+   "Partial bags",
+   "Bags that are opened or not full. Count them here and weigh them together below."
+  ],
+  "te": [
+   "సగం బస్తాలు",
+   "తెరిచిన లేదా నిండని బస్తాలు. ఇక్కడ లెక్కించి, కింద కలిపి తూకం వేయండి."
+  ],
+  "hi": [
+   "अधूरी बोरियाँ",
+   "खुली या कम भरी बोरियाँ। यहाँ गिनें और नीचे साथ तौलें।"
+  ]
+ },
+ "fPartialKg": {
+  "m": {
+   "regex_source": "^Partial bags — weighed kg",
+   "regex_flags": "i"
+  },
+  "i": "scale",
+  "en": [
+   "Partial bags — weighed kg",
+   "Put all partial bags on the scale together and type the total kg."
+  ],
+  "te": [
+   "సగం బస్తాల తూకం",
+   "సగం బస్తాలన్నీ కలిపి తూకం వేసి మొత్తం కిలోలు రాయండి."
+  ],
+  "hi": [
+   "अधूरी बोरियों का वज़न",
+   "सारी अधूरी बोरियाँ साथ तौलकर कुल किलो लिखें।"
+  ]
+ },
+ "fDamaged": {
+  "m": {
+   "regex_source": "damaged",
+   "regex_flags": "i"
+  },
+  "i": "circle-alert",
+  "en": [
+   "Damaged bags",
+   "Torn or wet bags. They go on hold until someone weighs and checks them."
+  ],
+  "te": [
+   "పాడైన బస్తాలు",
+   "చిరిగిన లేదా తడిసిన బస్తాలు. తూకం, తనిఖీ వరకు నిలిపి ఉంచబడతాయి."
+  ],
+  "hi": [
+   "खराब बोरियाँ",
+   "फटी या गीली बोरियाँ। तौल और जाँच तक रोकी जाती हैं।"
+  ]
+ },
+ "fKgPerBag": {
+  "m": {
+   "regex_source": "^Approved kg per bag",
+   "regex_flags": "i"
+  },
+  "i": "scale",
+  "en": [
+   "Approved kg per bag",
+   "The real, confirmed weight of one full bag of this bean. Stock Inward multiplies bags by this."
+  ],
+  "te": [
+   "ఆమోదిత బస్తా కిలోలు",
+   "ఈ రకం ఒక నిండు బస్తా అసలు బరువు. స్టాక్ ఇన్‌వర్డ్ బస్తాలను దీనితో గుణిస్తుంది."
+  ],
+  "hi": [
+   "मंज़ूर किलो प्रति बोरी",
+   "इस किस्म की एक भरी बोरी का असली वज़न। स्टॉक इनवर्ड बोरियों को इससे गुणा करता है।"
+  ]
+ },
+ "fCoffeePct": {
+  "m": {
+   "regex_source": "^Coffee %",
+   "regex_flags": "i"
+  },
+  "i": "blend",
+  "en": [
+   "Coffee %",
+   "How much of the powder is coffee. 80 means 80% coffee and 20% chicory."
+  ],
+  "te": [
+   "కాఫీ %",
+   "పొడిలో కాఫీ ఎంత. 80 అంటే 80% కాఫీ, 20% చికోరీ."
+  ],
+  "hi": [
+   "कॉफ़ी %",
+   "पाउडर में कॉफ़ी कितनी। 80 मतलब 80% कॉफ़ी और 20% चिकोरी।"
+  ]
+ },
+ "fOutput": {
+  "m": {
+   "regex_source": "^Roasted output",
+   "regex_flags": "i"
+  },
+  "i": "scale",
+  "en": [
+   "Roasted output",
+   "Weigh the beans after roasting and cooling. It is always less than what went in."
+  ],
+  "te": [
+   "వేయించిన కిలోలు",
+   "వేయించి చల్లారిన తర్వాత తూకం వేయండి. లోపల వేసిన దానికంటే ఎప్పుడూ తక్కువ."
+  ],
+  "hi": [
+   "रोस्टेड वज़न",
+   "भूनकर ठंडा होने पर तौलें। डाली गई कॉफ़ी से हमेशा कम होता है।"
+  ]
+ },
+ "fRoastTime": {
+  "m": {
+   "regex_source": "^Roast time",
+   "regex_flags": "i"
+  },
+  "i": "clock",
+  "en": [
+   "Roast time",
+   "Minutes from loading the drum to dropping the beans."
+  ],
+  "te": [
+   "రోస్ట్ సమయం",
+   "డ్రమ్‌లో వేసినప్పటి నుండి బయటకు తీసే వరకు నిమిషాలు."
+  ],
+  "hi": [
+   "रोस्ट का समय",
+   "ड्रम में डालने से निकालने तक के मिनट।"
+  ]
+ },
+ "fProfile": {
+  "m": {
+   "regex_source": "^Roast profile",
+   "regex_flags": "i"
+  },
+  "i": "thermometer",
+  "en": [
+   "Roast profile",
+   "The owner's roast recipe: temperature and colour target. Pick the one you roasted with."
+  ],
+  "te": [
+   "రోస్ట్ ప్రొఫైల్",
+   "యజమాని రోస్ట్ పద్ధతి: ఉష్ణోగ్రత, రంగు లక్ష్యం. మీరు వాడినది ఎంచుకోండి."
+  ],
+  "hi": [
+   "रोस्ट प्रोफ़ाइल",
+   "मालिक का रोस्ट तरीका: तापमान और रंग। जिससे भूना वह चुनें।"
+  ]
+ },
+ "fWeight": {
+  "m": {
+   "regex_source": "^Weight on the scale",
+   "regex_flags": "i"
+  },
+  "i": "scale",
+  "en": [
+   "Weight on the scale",
+   "The real weight the scale shows, in grams. Use the buttons for 250 g, 500 g or 1 kg."
+  ],
+  "te": [
+   "తూకం",
+   "త్రాసు చూపే అసలు బరువు గ్రాముల్లో. 250 g, 500 g, 1 kg బటన్లు వాడండి."
+  ],
+  "hi": [
+   "तराज़ू का वज़न",
+   "तराज़ू पर असली वज़न, ग्राम में। 250 g, 500 g, 1 kg बटन इस्तेमाल करें।"
+  ]
+ },
+ "fRupees": {
+  "m": {
+   "regex_source": "customer asks for ₹",
+   "regex_flags": "i"
+  },
+  "i": "badge-indian-rupee",
+  "en": [
+   "Customer asks for ₹",
+   "If the customer says 'give me ₹100 worth', type 100. The screen tells you how many grams to weigh."
+  ],
+  "te": [
+   "కస్టమర్ ₹ అడిగితే",
+   "'₹100 కి ఇవ్వండి' అంటే 100 రాయండి. ఎన్ని గ్రాములు తూకం వేయాలో పేజీ చెబుతుంది."
+  ],
+  "hi": [
+   "ग्राहक ₹ माँगे",
+   "ग्राहक कहे '₹100 का दो' तो 100 लिखें। कितने ग्राम तौलना है, स्क्रीन बताएगी।"
+  ]
+ },
+ "fCash": {
+  "m": {
+   "regex_source": "^Cash counted in drawer",
+   "regex_flags": "i"
+  },
+  "i": "badge-indian-rupee",
+  "en": [
+   "Cash counted in drawer",
+   "Count every note and coin in the drawer, including the opening cash. If it differs, write why."
+  ],
+  "te": [
+   "డ్రాయర్ నగదు",
+   "ప్రారంభ నగదుతో సహా డ్రాయర్‌లోని ప్రతి నోటు, నాణెం లెక్కించండి. తేడా ఉంటే కారణం రాయండి."
+  ],
+  "hi": [
+   "दराज़ का कैश",
+   "शुरुआती कैश समेत हर नोट और सिक्का गिनें। फ़र्क हो तो कारण लिखें।"
+  ]
+ },
+ "fVerified": {
+  "m": {
+   "regex_source": "^Usable kg actually verified",
+   "regex_flags": "i"
+  },
+  "i": "scale",
+  "en": [
+   "Usable kg verified",
+   "Weigh the damaged bags and enter only the coffee that is still good to use."
+  ],
+  "te": [
+   "వాడదగిన కిలోలు",
+   "పాడైన బస్తాలు తూకం వేసి వాడదగిన కాఫీ మాత్రమే రాయండి."
+  ],
+  "hi": [
+   "इस्तेमाल लायक किलो",
+   "खराब बोरियाँ तौलें और केवल इस्तेमाल लायक कॉफ़ी लिखें।"
+  ]
+ },
+ "fChange": {
+  "m": {
+   "regex_source": "^Change \\(kg",
+   "regex_flags": "i"
+  },
+  "i": "scale",
+  "en": [
+   "Stock correction",
+   "How much to add or remove. Use a minus sign for less, e.g. -2.5. Someone else approves it."
+  ],
+  "te": [
+   "స్టాక్ సవరణ",
+   "ఎంత కలపాలి లేదా తీసేయాలి. తక్కువకు మైనస్, ఉదా -2.5. వేరొకరు ఆమోదిస్తారు."
+  ],
+  "hi": [
+   "स्टॉक सुधार",
+   "कितना जोड़ना या घटाना है। कम के लिए माइनस, जैसे -2.5। कोई दूसरा मंज़ूर करता है।"
+  ]
+ },
+ "fGoodPacks": {
+  "m": {
+   "regex_source": "^Good packs made",
+   "regex_flags": "i"
+  },
+  "i": "package",
+  "en": [
+   "Good packs",
+   "Packs that are sealed, labelled and the right weight."
+  ],
+  "te": [
+   "మంచి ప్యాకెట్లు",
+   "సీల్, లేబుల్, సరైన బరువు ఉన్న ప్యాకెట్లు."
+  ],
+  "hi": [
+   "अच्छे पैक",
+   "सील, लेबल और सही वज़न वाले पैक।"
+  ]
+ },
+ "fRejected": {
+  "m": {
+   "regex_source": "^Rejected packs",
+   "regex_flags": "i"
+  },
+  "i": "x",
+  "en": [
+   "Rejected packs",
+   "Torn, badly sealed or wrong-weight packs. Count them honestly."
+  ],
+  "te": [
+   "తిరస్కరించిన ప్యాకెట్లు",
+   "చిరిగిన, సరిగా సీల్ కాని, బరువు తప్పిన ప్యాకెట్లు. నిజాయితీగా లెక్కించండి."
+  ],
+  "hi": [
+   "रिजेक्ट पैक",
+   "फटे, ठीक से सील न हुए या गलत वज़न वाले पैक। ईमानदारी से गिनें।"
+  ]
+ },
+ "fCoffeeUsed": {
+  "m": {
+   "regex_source": "^Coffee used",
+   "regex_flags": "i"
+  },
+  "i": "scale",
+  "en": [
+   "Coffee used",
+   "Weigh the coffee you took from the lot for this packing run."
+  ],
+  "te": [
+   "వాడిన కాఫీ",
+   "ఈ ప్యాకింగ్ కోసం లాట్ నుండి తీసిన కాఫీ తూకం."
+  ],
+  "hi": [
+   "इस्तेमाल हुई कॉफ़ी",
+   "इस पैकिंग के लिए लॉट से ली गई कॉफ़ी तौलें।"
+  ]
+ },
+ "fBooking": {
+  "m": {
+   "regex_source": "^Booking reference",
+   "regex_flags": "i"
+  },
+  "i": "truck",
+  "en": [
+   "Booking reference",
+   "The booking number from Rapido, Uber or the delivery app. Opening the app is not a booking."
+  ],
+  "te": [
+   "బుకింగ్ నంబర్",
+   "Rapido, Uber లేదా డెలివరీ యాప్ బుకింగ్ నంబర్. యాప్ తెరవడం బుకింగ్ కాదు."
+  ],
+  "hi": [
+   "बुकिंग नंबर",
+   "Rapido, Uber या डिलीवरी ऐप का बुकिंग नंबर। ऐप खोलना बुकिंग नहीं है।"
+  ]
+ },
+ "fCreditLimit": {
+  "m": {
+   "regex_source": "^Credit limit",
+   "regex_flags": "i"
+  },
+  "i": "wallet",
+  "en": [
+   "Credit limit",
+   "The most this client may owe at one time. Orders above it wait for the owner's decision."
+  ],
+  "te": [
+   "క్రెడిట్ పరిమితి",
+   "ఈ క్లయింట్ ఒకేసారి గరిష్ఠంగా బాకీ ఉండగల మొత్తం. దాటితే యజమాని నిర్ణయం కోసం ఆగుతుంది."
+  ],
+  "hi": [
+   "उधार सीमा",
+   "यह क्लाइंट एक समय में अधिकतम कितना बकाया रख सकता है। ऊपर के ऑर्डर मालिक के फैसले पर रुकते हैं।"
+  ]
+ },
+ "fGst": {
+  "m": {
+   "regex_source": "^GST %",
+   "regex_flags": "i"
+  },
+  "i": "receipt",
+  "en": [
+   "GST %",
+   "Ask your accountant. Leave empty if not confirmed."
+  ],
+  "te": [
+   "GST %",
+   "మీ అకౌంటెంట్‌ను అడగండి. నిర్ధారించకపోతే ఖాళీగా వదలండి."
+  ],
+  "hi": [
+   "GST %",
+   "अपने अकाउंटेंट से पूछें। पक्का न हो तो खाली छोड़ें।"
+  ]
+ },
+ "fOpening": {
+  "m": {
+   "regex_source": "^Counter opening cash",
+   "regex_flags": "i"
+  },
+  "i": "badge-indian-rupee",
+  "en": [
+   "Counter opening cash",
+   "Cash kept in the drawer at the start of every day, for change."
+  ],
+  "te": [
+   "కౌంటర్ ప్రారంభ నగదు",
+   "చిల్లర కోసం ప్రతిరోజు ప్రారంభంలో డ్రాయర్‌లో ఉంచే నగదు."
+  ],
+  "hi": [
+   "काउंटर शुरुआती कैश",
+   "छुट्टे के लिए हर दिन शुरू में दराज़ में रखा कैश।"
+  ]
+ },
+ "fKind": {
+  "m": {
+   "regex_source": "^Type of work",
+   "regex_flags": "i"
+  },
+  "i": "list-checks",
+  "en": [
+   "Type of work",
+   "Pick the section. Linked work counts itself when the person records it; General work is updated by hand."
+  ],
+  "te": [
+   "పని రకం",
+   "విభాగం ఎంచుకోండి. లింక్ చేసిన పని వ్యక్తి నమోదు చేసినప్పుడు లెక్కిస్తుంది; జనరల్ పని చేతితో అప్‌డేట్."
+  ],
+  "hi": [
+   "काम का प्रकार",
+   "सेक्शन चुनें। जुड़ा काम दर्ज होते ही गिना जाता है; जनरल काम हाथ से अपडेट होता है।"
+  ]
+ },
+ "screen:maintenance": {
+  "i": "wrench",
+  "en": [
+   "Maintenance",
+   "Report anything broken or unsafe: roaster, grinder, scale, gas, power, building.\nPress Raise a ticket, write the problem, choose where and how urgent.\nUrgent tickets ring the manager at once.\nThe manager takes it on, picks who fixes it and writes what was done.\nYou can see the state of your own tickets here."
+  ],
+  "te": [
+   "మెయింటెనెన్స్",
+   "పాడైనది లేదా ప్రమాదకరమైనది ఏదైనా తెలియజేయండి: రోస్టర్, గ్రైండర్, త్రాసు, గ్యాస్, కరెంట్, భవనం.\nటికెట్ రైజ్ చేయండి నొక్కి, సమస్య రాసి, ఎక్కడ, ఎంత అత్యవసరం ఎంచుకోండి.\nఅత్యవసర టికెట్లు వెంటనే మేనేజర్‌కు చేరతాయి.\nమేనేజర్ బాధ్యత తీసుకుని, ఎవరు సరిచేయాలో ఎంచుకుని, ఏమి చేశారో రాస్తారు.\nమీ టికెట్ల స్థితి ఇక్కడ చూడవచ్చు."
+  ],
+  "hi": [
+   "मेंटेनेंस",
+   "जो भी टूटा या खतरनाक हो, बताएँ: रोस्टर, ग्राइंडर, तराज़ू, गैस, बिजली, इमारत।\nटिकट उठाएँ दबाएँ, समस्या लिखें, जगह और कितना ज़रूरी चुनें।\nज़रूरी टिकट तुरंत मैनेजर तक पहुँचते हैं।\nमैनेजर ज़िम्मेदारी लेकर ठीक करने वाले को चुनते हैं और क्या किया लिखते हैं।\nअपने टिकट की हालत यहाँ देखें।"
+  ]
+ },
+ "roasterMeter": {
+  "m": {
+   "regex_source": "^Roaster batch counter",
+   "regex_flags": "i"
+  },
+  "i": "gauge",
+  "en": [
+   "Roaster batch counter",
+   "Write the number on the roaster's batch counter on the 1st of the month and again on the last day.\nEnd minus start = roasts the machine counted.\nIf it differs from batches recorded here, some batches were not entered."
+  ],
+  "te": [
+   "రోస్టర్ బ్యాచ్ కౌంటర్",
+   "నెల 1వ తేదీన, చివరి రోజున రోస్టర్ బ్యాచ్ కౌంటర్ నంబర్ రాయండి.\nచివరి − మొదటి = మెషీన్ లెక్కించిన రోస్ట్‌లు.\nఇక్కడ నమోదైన బ్యాచ్‌లతో తేడా ఉంటే, కొన్ని బ్యాచ్‌లు నమోదు కాలేదు."
+  ],
+  "hi": [
+   "रोस्टर बैच काउंटर",
+   "महीने की 1 तारीख और आखिरी दिन रोस्टर के बैच काउंटर का नंबर लिखें।\nआखिरी − शुरू = मशीन ने गिने रोस्ट।\nयहाँ दर्ज बैच से फ़र्क हो तो कुछ बैच दर्ज नहीं हुए।"
+  ]
+ },
+ "gasCylinders": {
+  "m": {
+   "regex_source": "^Gas cylinders",
+   "regex_flags": "i"
+  },
+  "i": "fuel",
+  "en": [
+   "Gas cylinders",
+   "Add a line each time a new gas cylinder is fitted, with its kg.\nThe portal divides gas used by roasts done to show gas per roast.\nMid-month the figure is rough; it is right once the month is over."
+  ],
+  "te": [
+   "గ్యాస్ సిలిండర్లు",
+   "కొత్త సిలిండర్ బిగించిన ప్రతిసారి దాని కిలోలతో నమోదు చేయండి.\nవాడిన గ్యాస్‌ను రోస్ట్‌లతో భాగించి ఒక్క రోస్ట్‌కు గ్యాస్ చూపిస్తుంది.\nనెల మధ్యలో ఇది అంచనా మాత్రమే; నెల ముగిశాక సరిగ్గా ఉంటుంది."
+  ],
+  "hi": [
+   "गैस सिलेंडर",
+   "हर बार नया सिलेंडर लगने पर उसके किलो के साथ लिखें।\nखर्च गैस को रोस्ट से भाग देकर प्रति रोस्ट गैस दिखती है।\nमहीने के बीच यह अनुमान है; महीना पूरा होने पर सही होता है।"
+  ]
+ },
+ "cashLocked": {
+  "m": {
+   "regex_source": "^Cash today is locked",
+   "regex_flags": "i"
+  },
+  "i": "lock",
+  "en": [
+   "Cash today (locked)",
+   "Only the owner and admin can open this, with the 4-digit cash PIN.\nIt stays open for 15 minutes, then locks itself.\nFive wrong PINs lock it for 10 minutes. Every opening is logged."
+  ],
+  "te": [
+   "ఈరోజు నగదు (లాక్)",
+   "యజమాని, అడ్మిన్ మాత్రమే 4 అంకెల PIN తో తెరవగలరు.\n15 నిమిషాలు తెరిచి ఉంటుంది, తర్వాత లాక్ అవుతుంది.\nఐదు తప్పు PIN లు 10 నిమిషాలు లాక్ చేస్తాయి. ప్రతి ఓపెనింగ్ నమోదవుతుంది."
+  ],
+  "hi": [
+   "आज का कैश (लॉक)",
+   "केवल मालिक और एडमिन 4 अंकों के PIN से खोल सकते हैं।\n15 मिनट खुला रहता है, फिर अपने आप लॉक।\nपाँच गलत PIN पर 10 मिनट लॉक। हर बार खोलना दर्ज होता है।"
+  ]
+ },
+ "salesByHour": {
+  "m": {
+   "regex_source": "^Sales by hour",
+   "regex_flags": "i"
+  },
+  "i": "trending-up",
+  "en": [
+   "Sales by hour",
+   "Each bar is one hour of the day. Taller bar = more sales in that hour. Hover or tap a bar for the amount."
+  ],
+  "te": [
+   "గంటవారీ అమ్మకాలు",
+   "ప్రతి బార్ ఒక గంట. ఎత్తైన బార్ = ఆ గంటలో ఎక్కువ అమ్మకాలు. మొత్తం కోసం బార్‌ను తాకండి."
+  ],
+  "hi": [
+   "घंटे के हिसाब से बिक्री",
+   "हर बार एक घंटा है। ऊँचा बार = उस घंटे ज़्यादा बिक्री। रकम के लिए बार छुएँ।"
+  ]
+ },
+ "whoSold": {
+  "m": {
+   "regex_source": "^Who sold",
+   "regex_flags": "i"
+  },
+  "i": "users",
+  "en": [
+   "Who sold",
+   "Bills and total for each cashier on this day."
+  ],
+  "te": [
+   "ఎవరు అమ్మారు",
+   "ఈరోజు ప్రతి క్యాషియర్ బిల్లులు, మొత్తం."
+  ],
+  "hi": [
+   "किसने बेचा",
+   "इस दिन हर कैशियर के बिल और कुल रकम।"
+  ]
+ },
+ "last30": {
+  "m": {
+   "regex_source": "^Last 30 days",
+   "regex_flags": "i"
+  },
+  "i": "chart-column",
+  "en": [
+   "Last 30 days",
+   "Daily counter sales for the last 30 days. Look for slow days and busy days."
+  ],
+  "te": [
+   "గత 30 రోజులు",
+   "గత 30 రోజుల రోజువారీ కౌంటర్ అమ్మకాలు. నెమ్మది, రద్దీ రోజులు చూడండి."
+  ],
+  "hi": [
+   "पिछले 30 दिन",
+   "पिछले 30 दिनों की रोज़ की काउंटर बिक्री। धीमे और भीड़ वाले दिन देखें।"
+  ]
+ },
+ "collected": {
+  "m": {
+   "regex_source": "^Collected",
+   "regex_flags": "i"
+  },
+  "i": "wallet",
+  "en": [
+   "Collected (entered by you)",
+   "Enter cash you took from the drawer and UPI you saw in the bank app.\nThe portal compares them with the bills. A difference in red means check it."
+  ],
+  "te": [
+   "వసూలు (మీరు నమోదు చేసినది)",
+   "డ్రాయర్ నుండి తీసిన నగదు, బ్యాంక్ యాప్‌లో చూసిన UPI నమోదు చేయండి.\nపోర్టల్ వాటిని బిల్లులతో పోలుస్తుంది. ఎరుపు తేడా ఉంటే సరిచూడండి."
+  ],
+  "hi": [
+   "वसूली (आपने दर्ज की)",
+   "दराज़ से निकाला कैश और बैंक ऐप में दिखा UPI दर्ज करें।\nपोर्टल इन्हें बिलों से मिलाता है। लाल फ़र्क हो तो जाँचें।"
+  ]
+ },
+ "fCustPhone": {
+  "m": {
+   "regex_source": "^Phone \\(optional\\)",
+   "regex_flags": "i"
+  },
+  "i": "phone",
+  "en": [
+   "Customer phone",
+   "Type the customer's 10-digit mobile. If they bought before, their last bill and price show up, with a warning if the price changed.\nYou only see the last 4 digits. The full list is for the owner only."
+  ],
+  "te": [
+   "కస్టమర్ ఫోన్",
+   "కస్టమర్ 10 అంకెల మొబైల్ టైప్ చేయండి. ముందు కొన్నవారైతే చివరి బిల్లు, ధర కనిపిస్తాయి; ధర మారితే హెచ్చరిక.\nమీకు చివరి 4 అంకెలే కనిపిస్తాయి. పూర్తి జాబితా యజమానికి మాత్రమే."
+  ],
+  "hi": [
+   "ग्राहक का फ़ोन",
+   "ग्राहक का 10 अंकों का मोबाइल लिखें। पहले खरीदा हो तो पिछला बिल और दाम दिखेगा; दाम बदला हो तो चेतावनी।\nआपको सिर्फ़ आखिरी 4 अंक दिखते हैं। पूरी सूची केवल मालिक के लिए।"
+  ]
+ },
+ "fBeanType": {
+  "m": {
+   "regex_source": "^Type of beans",
+   "regex_flags": "i"
+  },
+  "i": "bean",
+  "en": [
+   "Type of beans",
+   "Write what the customer brought, e.g. Robusta cherry or Arabica plantation. It is printed on their job and lot."
+  ],
+  "te": [
+   "గింజల రకం",
+   "కస్టమర్ తెచ్చినది రాయండి, ఉదా. రోబస్టా చెర్రీ లేదా అరబికా ప్లాంటేషన్. ఇది వారి జాబ్, లాట్‌పై ఉంటుంది."
+  ],
+  "hi": [
+   "बीन्स का प्रकार",
+   "ग्राहक क्या लाया लिखें, जैसे रोबस्टा चेरी या अरेबिका प्लांटेशन। यह उनके जॉब और लॉट पर छपता है।"
+  ]
+ },
+ "fReading": {
+  "m": {
+   "regex_source": "^Reading at month (start|end)",
+   "regex_flags": "i"
+  },
+  "i": "gauge",
+  "en": [
+   "Batch counter reading",
+   "The whole number shown on the roaster's counter. The end reading cannot be lower than the start."
+  ],
+  "te": [
+   "బ్యాచ్ కౌంటర్ రీడింగ్",
+   "రోస్టర్ కౌంటర్‌పై కనిపించే పూర్తి సంఖ్య. చివరి రీడింగ్ మొదటిదాని కంటే తక్కువ ఉండకూడదు."
+  ],
+  "hi": [
+   "बैच काउंटर रीडिंग",
+   "रोस्टर काउंटर पर दिखा पूरा नंबर। आखिरी रीडिंग शुरू से कम नहीं हो सकती।"
+  ]
+ },
+ "fGasKg": {
+  "m": {
+   "regex_source": "^Gas in cylinder",
+   "regex_flags": "i"
+  },
+  "i": "fuel",
+  "en": [
+   "Gas in cylinder (kg)",
+   "Net gas written on the cylinder, not the empty-cylinder weight."
+  ],
+  "te": [
+   "సిలిండర్‌లో గ్యాస్ (కిలో)",
+   "సిలిండర్‌పై రాసిన నికర గ్యాస్, ఖాళీ సిలిండర్ బరువు కాదు."
+  ],
+  "hi": [
+   "सिलेंडर में गैस (किलो)",
+   "सिलेंडर पर लिखी शुद्ध गैस, खाली सिलेंडर का वज़न नहीं।"
+  ]
+ },
+ "fProblem": {
+  "m": {
+   "regex_source": "^What is the problem",
+   "regex_flags": "i"
+  },
+  "i": "wrench",
+  "en": [
+   "What is the problem?",
+   "A short line anyone can understand, e.g. 'Scale 2 shows wrong weight'. Add details below if needed."
+  ],
+  "te": [
+   "సమస్య ఏమిటి?",
+   "అందరికీ అర్థమయ్యే చిన్న వాక్యం, ఉదా. 'త్రాసు 2 తప్పు బరువు చూపిస్తోంది'. అవసరమైతే కింద వివరాలు."
+  ],
+  "hi": [
+   "समस्या क्या है?",
+   "छोटी लाइन जो सब समझें, जैसे 'तराज़ू 2 गलत वज़न दिखा रहा है'। ज़रूरत हो तो नीचे विवरण।"
+  ]
+ },
+ "screen:team": {
+  "i": "network",
+  "en": [
+   "Team & Hierarchy",
+   "Shows who reports to whom.\nA person's boss gets their approvals, 'stuck' alerts and maintenance tickets first.\nThe owner and admin can change the chart with the network button.\nThe owner and admin also keep each person's details and documents here."
+  ],
+  "te": [
+   "టీమ్ & హోదాలు",
+   "ఎవరు ఎవరికి రిపోర్ట్ చేస్తారో చూపిస్తుంది.\nఒకరి బాస్‌కు వారి ఆమోదాలు, 'స్టక్' అలర్ట్‌లు, మెయింటెనెన్స్ టికెట్లు ముందుగా వెళ్తాయి.\nయజమాని, అడ్మిన్ నెట్‌వర్క్ బటన్‌తో చార్ట్ మార్చవచ్చు.\nప్రతి వ్యక్తి వివరాలు, డాక్యుమెంట్లు కూడా యజమాని, అడ్మిన్ ఇక్కడ ఉంచుతారు."
+  ],
+  "hi": [
+   "टीम और पद",
+   "कौन किसको रिपोर्ट करता है, यह दिखाता है।\nकिसी के बॉस को उसकी मंज़ूरियाँ, 'अटका' अलर्ट और मेंटेनेंस टिकट पहले मिलते हैं।\nमालिक और एडमिन नेटवर्क बटन से चार्ट बदल सकते हैं।\nहर व्यक्ति के विवरण और दस्तावेज़ भी मालिक और एडमिन यहाँ रखते हैं।"
+  ]
+ },
+ "stockCards": {
+  "m": {
+   "regex_source": "^Stock by bean",
+   "regex_flags": "i"
+  },
+  "i": "bean",
+  "en": [
+   "Stock by bean",
+   "One card for each bean or product. 'Usable now' is what you can use today; coffee still resting is shown separately with its ready date.\nRaw coffee is split into sound, partial and damaged bags; roasted, ground and counter stock follow the same bean.\n'Days left' is the stock divided by the last 30 days' use.\nTap a card to see every lot.\nA red 'Low' tag means it is below the level the owner set; managers get one alert when it drops."
+  ],
+  "te": [
+   "గింజల వారీ స్టాక్",
+   "ప్రతి గింజ రకానికి ఒక కార్డ్. 'ఇప్పుడు వాడదగినది' అంటే ఈరోజు వాడగలిగేది.\nముడి కాఫీ మంచి, పాక్షిక, పాడైన బస్తాలుగా; రోస్ట్, పొడి, కౌంటర్ స్టాక్ అదే గింజ కింద.\nప్రతి లాట్ చూడటానికి కార్డ్ తాకండి.\nఎరుపు 'Low' అంటే యజమాని పెట్టిన స్థాయి కంటే తక్కువ."
+  ],
+  "hi": [
+   "बीन के हिसाब से स्टॉक",
+   "हर बीन या उत्पाद का एक कार्ड। 'अभी इस्तेमाल लायक' यानी आज इस्तेमाल हो सकता है।\nकच्ची कॉफ़ी ठीक, आंशिक और खराब बोरियों में; रोस्टेड, पिसी और काउंटर स्टॉक उसी बीन के नीचे।\nहर लॉट देखने के लिए कार्ड छुएँ।\nलाल 'Low' का मतलब मालिक के तय स्तर से कम।"
+  ]
+ },
+ "hierarchy": {
+  "m": {
+   "regex_source": "^Hierarchy",
+   "regex_flags": "i"
+  },
+  "i": "network",
+  "en": [
+   "Hierarchy",
+   "The company chart. Each line goes from a boss to the people who report to them."
+  ],
+  "te": [
+   "హోదాల చార్ట్",
+   "కంపెనీ చార్ట్. ప్రతి గీత బాస్ నుండి వారికి రిపోర్ట్ చేసే వారికి వెళ్తుంది."
+  ],
+  "hi": [
+   "पदानुक्रम",
+   "कंपनी चार्ट। हर लाइन बॉस से उन लोगों तक जाती है जो उन्हें रिपोर्ट करते हैं।"
+  ]
+ },
+ "staffDetails": {
+  "m": {
+   "regex_source": "^Staff details|^Documents$",
+   "regex_flags": "i"
+  },
+  "i": "id-card",
+  "en": [
+   "Staff details & documents",
+   "Private: owner and admin only, and every view is logged.\nAadhaar, PAN and bank numbers are saved as the last 4 only.\nUpload scans as PDF or photo, up to 8 MB."
+  ],
+  "te": [
+   "సిబ్బంది వివరాలు & డాక్యుమెంట్లు",
+   "ప్రైవేట్: యజమాని, అడ్మిన్‌కు మాత్రమే; ప్రతి చూపు నమోదవుతుంది.\nఆధార్, PAN, బ్యాంక్ నంబర్ల చివరి 4 మాత్రమే సేవ్ అవుతాయి.\nస్కాన్‌లు PDF లేదా ఫోటోగా, 8 MB వరకు."
+  ],
+  "hi": [
+   "स्टाफ विवरण और दस्तावेज़",
+   "निजी: केवल मालिक और एडमिन; हर बार देखना दर्ज होता है।\nआधार, PAN और बैंक नंबर के सिर्फ़ आखिरी 4 अंक सेव होते हैं।\nस्कैन PDF या फोटो में, 8 MB तक।"
+  ]
+ },
+ "fCardName": {
+  "m": {
+   "regex_source": "^Name on the card|^Low-stock warning",
+   "regex_flags": "i"
+  },
+  "i": "bean",
+  "en": [
+   "Card settings",
+   "Give the card a short name staff know, pick a colour, and set the kg below which it shows 'Low'."
+  ],
+  "te": [
+   "కార్డ్ సెట్టింగ్‌లు",
+   "సిబ్బందికి తెలిసిన చిన్న పేరు, రంగు ఇవ్వండి; ఎన్ని కిలోల కంటే తక్కువైతే 'Low' చూపాలో పెట్టండి."
+  ],
+  "hi": [
+   "कार्ड सेटिंग",
+   "स्टाफ़ जो नाम जानता है वह छोटा नाम, रंग चुनें, और कितने किलो से कम पर 'Low' दिखे यह तय करें।"
+  ]
+ },
+ "fIdNumber": {
+  "m": {
+   "regex_source": "^(Aadhaar number|PAN|Bank account number)$",
+   "regex_flags": "i"
+  },
+  "i": "lock",
+  "en": [
+   "ID and bank numbers",
+   "Type the full number once. Only the last 4 are kept, so a leak can't expose it. The full number stays on the scanned document."
+  ],
+  "te": [
+   "ID, బ్యాంక్ నంబర్లు",
+   "పూర్తి నంబర్ ఒకసారి టైప్ చేయండి. చివరి 4 మాత్రమే ఉంచబడతాయి. పూర్తి నంబర్ స్కాన్ చేసిన డాక్యుమెంట్‌లో ఉంటుంది."
+  ],
+  "hi": [
+   "ID और बैंक नंबर",
+   "पूरा नंबर एक बार लिखें। सिर्फ़ आखिरी 4 रखे जाते हैं। पूरा नंबर स्कैन किए दस्तावेज़ पर रहता है।"
+  ]
+ },
+ "scanCode": {
+  "m": {
+   "regex_source": "^Or type the code",
+   "regex_flags": "i"
+  },
+  "i": "scan-line",
+  "en": [
+   "Scan or type a code",
+   "Every bag, lot, roast batch and pack has a code like RAW-ROBCAB-261027-01: what it is, which bean, the date (27 Oct 2026) and its number that day.\nTake a photo of the QR, use a handheld scanner, or type the code.\nThe portal then shows the lot and what you can do: count it, send it to the counter, receive it, print a label."
+  ],
+  "te": [
+   "కోడ్ స్కాన్ లేదా టైప్",
+   "ప్రతి బస్తా, లాట్, రోస్ట్ బ్యాచ్, ప్యాక్‌కు RAW-ROBCAB-261027-01 లాంటి కోడ్ ఉంటుంది: ఏమిటి, ఏ గింజ, తేదీ (27 అక్టో 2026), ఆ రోజు దాని నంబర్.\nQR ఫోటో తీయండి, హ్యాండ్‌హెల్డ్ స్కానర్ వాడండి, లేదా కోడ్ టైప్ చేయండి.\nపోర్టల్ లాట్‌ను, మీరు చేయగల పనులను చూపిస్తుంది: లెక్కించడం, కౌంటర్‌కు పంపడం, స్వీకరించడం, లేబుల్ ప్రింట్."
+  ],
+  "hi": [
+   "कोड स्कैन या टाइप करें",
+   "हर बोरी, लॉट, रोस्ट बैच और पैक का RAW-ROBCAB-261027-01 जैसा कोड होता है: क्या है, कौन सी बीन, तारीख (27 अक्टू 2026) और उस दिन का नंबर।\nQR की फोटो लें, हैंडहेल्ड स्कैनर लगाएँ, या कोड टाइप करें।\nपोर्टल लॉट और आप क्या कर सकते हैं दिखाता है: गिनना, काउंटर भेजना, लेना, लेबल छापना।"
+  ]
+ },
+ "fBeanCode": {
+  "m": {
+   "regex_source": "^Short code on labels",
+   "regex_flags": "i"
+  },
+  "i": "qr-code",
+  "en": [
+   "Bean short code",
+   "2–6 letters or numbers that name this bean inside every code, e.g. ROBAB for Robusta AB. Changing it later only affects new lots."
+  ],
+  "te": [
+   "గింజ చిన్న కోడ్",
+   "ప్రతి కోడ్‌లో ఈ గింజను సూచించే 2–6 అక్షరాలు/అంకెలు, ఉదా. Robusta AB కి ROBAB. తర్వాత మారిస్తే కొత్త లాట్‌లకే వర్తిస్తుంది."
+  ],
+  "hi": [
+   "बीन का छोटा कोड",
+   "हर कोड में इस बीन का नाम बताने वाले 2–6 अक्षर/अंक, जैसे Robusta AB के लिए ROBAB। बाद में बदलने पर सिर्फ़ नए लॉट पर असर।"
+  ]
+ },
+ "fRestDays": {
+  "m": {
+   "regex_source": "^Roasted coffee rests",
+   "regex_flags": "i"
+  },
+  "i": "hourglass",
+  "en": [
+   "Rest days",
+   "Roasted coffee rests this many days before cafés use it. Labels show 'Ready from'; the counter is warned and dispatch asks for the customer's agreement before then."
+  ],
+  "te": [
+   "విశ్రాంతి రోజులు",
+   "కేఫ్‌లు వాడే ముందు రోస్ట్ కాఫీ ఇన్ని రోజులు విశ్రాంతి తీసుకుంటుంది. లేబుల్‌పై 'Ready from'; అంతకుముందు కౌంటర్‌కు హెచ్చరిక, డిస్పాచ్‌కు కస్టమర్ అంగీకారం కావాలి."
+  ],
+  "hi": [
+   "आराम के दिन",
+   "कैफ़े इस्तेमाल से पहले रोस्टेड कॉफ़ी इतने दिन आराम करती है। लेबल पर 'Ready from'; उससे पहले काउंटर को चेतावनी और डिस्पैच पर ग्राहक की सहमति चाहिए।"
+  ]
+ }
+}

@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing and coverage
+coverage/
+.pytest_cache/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Production build artifacts
+dist/
+dist-ssr/
+*.local
+tsconfig.tsbuildinfo
+
+# Environment & Virtual Environments
+.env
+.env.local
+.env.*.local
+.venv/
+venv/
+ENV/
+
+# Backend & Java
+backend/target/
+target/
+*.class
+*.jar
+*.war
+
+# SQLite databases & runtime data
+*.sqlite3
+*.db
+VTC_Counter/data/
+data/
+
+# Logs & temp
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+$cookieJar
+
+# Editor directories
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db

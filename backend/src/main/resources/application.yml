@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: vtc-portal
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/vtc?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&serverTimezone=UTC&connectionTimeZone=UTC&tinyInt1isBit=false&allowMultiQueries=true}
+    username: ${SPRING_DATASOURCE_USERNAME:vtc}
+    password: ${SPRING_DATASOURCE_PASSWORD:vtc}
+    hikari:
+      maximum-pool-size: 10
+      transaction-isolation: TRANSACTION_READ_COMMITTED
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+        globally_quoted_identifiers: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    default-property-inclusion: always
+    serialization:
+      write-dates-as-timestamps: false
+  mail:
+    host: ${VTC_MAIL_HOST:localhost}
+    port: ${VTC_MAIL_PORT:1025}
+    username: ${VTC_MAIL_USERNAME:}
+    password: ${VTC_MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+  compression:
+    enabled: true
+    mime-types: application/json,text/css,application/javascript,text/html,image/svg+xml
+  error:
+    whitelabel:
+      enabled: false
+
+springdoc:
+  api-docs:
+    enabled: ${SPRINGDOC_ENABLED:false}
+  swagger-ui:
+    enabled: ${SPRINGDOC_ENABLED:false}
+
+vtc:
+  https: ${VTC_HTTPS:0}
+  demo: ${VTC_DEMO:1}
+  files-dir: ${VTC_FILES_DIR:./data/files}
+  jwt-secret: ${VTC_JWT_SECRET:vtc-inhouse-portal-default-hmac-sha256-secret-key-2026}

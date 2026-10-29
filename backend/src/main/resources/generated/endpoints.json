@@ -1,0 +1,4317 @@
+[
+ {
+  "router": "admin",
+  "method": "GET",
+  "path": "/api/v1/admin/catalog",
+  "handler": "get_catalog",
+  "line": 25,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "system.grants",
+    "system.preview_as",
+    "system.roles",
+    "system.settings",
+    "system.users"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "GET",
+  "path": "/api/v1/admin/users",
+  "handler": "list_users",
+  "line": 54,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "system.grants",
+    "system.preview_as",
+    "system.users"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "POST",
+  "path": "/api/v1/admin/users",
+  "handler": "create_user",
+  "line": 73,
+  "doc": "",
+  "require_all": [
+   "system.users"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "full_name",
+   "login_type",
+   "role_id",
+   "secret",
+   "username"
+  ],
+  "errors": [
+   "INVALID_LOGIN_TYPE (400)",
+   "PIN_ONLY_FOR_STAFF_LEVEL (400)",
+   "ROLE_INACTIVE (400)",
+   "ROLE_NOT_FOUND (404)",
+   "USERNAME_LETTERS_NUMBERS_ONLY (400)",
+   "USERNAME_TAKEN (400)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "PUT",
+  "path": "/api/v1/admin/users/{uid}",
+  "handler": "update_user",
+  "line": 100,
+  "doc": "",
+  "require_all": [
+   "system.users"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "active",
+   "full_name",
+   "role_id"
+  ],
+  "errors": [
+   "INVALID_LOGIN_TYPE (400)",
+   "NOTHING_TO_CHANGE (400)",
+   "PIN_ONLY_FOR_STAFF_LEVEL (400)",
+   "ROLE_INACTIVE (400)",
+   "ROLE_NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "POST",
+  "path": "/api/v1/admin/users/{uid}/secret",
+  "handler": "reset_secret",
+  "line": 131,
+  "doc": "Reset password/PIN (and optionally switch between them). Unlocks the account.",
+  "require_all": [
+   "system.users"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "login_type",
+   "secret"
+  ],
+  "errors": [
+   "INVALID_LOGIN_TYPE (400)",
+   "PIN_ONLY_FOR_STAFF_LEVEL (400)",
+   "ROLE_NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "GET",
+  "path": "/api/v1/admin/users/{uid}/access",
+  "handler": "user_access",
+  "line": 179,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "system.grants",
+    "system.users"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": true,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "POST",
+  "path": "/api/v1/admin/users/{uid}/grants",
+  "handler": "add_grant",
+  "line": 186,
+  "doc": "",
+  "require_all": [
+   "system.grants"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "effect",
+   "expires_at",
+   "perm_key",
+   "reason"
+  ],
+  "errors": [
+   "EXPIRY_MUST_BE_IN_FUTURE (400)",
+   "INVALID_EFFECT (400)",
+   "INVALID_EXPIRY (400)",
+   "UNKNOWN_PERMISSION (400)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "DELETE",
+  "path": "/api/v1/admin/grants/{gid}",
+  "handler": "revoke_grant",
+  "line": 224,
+  "doc": "",
+  "require_all": [
+   "system.grants"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "GET",
+  "path": "/api/v1/admin/users/{uid}/preview",
+  "handler": "preview_as",
+  "line": 237,
+  "doc": "Read-only map of exactly what a person can open, do and see. Logged.\nThis is NOT impersonation: no session is created as that person.",
+  "require_all": [
+   "system.preview_as"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": true,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "GET",
+  "path": "/api/v1/admin/roles",
+  "handler": "list_roles",
+  "line": 250,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "system.grants",
+    "system.roles",
+    "system.users"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "POST",
+  "path": "/api/v1/admin/roles",
+  "handler": "create_role",
+  "line": 272,
+  "doc": "",
+  "require_all": [
+   "system.roles"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "copy_from",
+   "description",
+   "name",
+   "tier"
+  ],
+  "errors": [
+   "INVALID_TIER (400)",
+   "ROLE_NAME_TAKEN (400)",
+   "ROLE_NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "PUT",
+  "path": "/api/v1/admin/roles/{rid}",
+  "handler": "update_role",
+  "line": 303,
+  "doc": "",
+  "require_all": [
+   "system.roles"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": true,
+  "body_fields": [
+   "active",
+   "description",
+   "name",
+   "permissions"
+  ],
+  "errors": [
+   "ADMIN_ROLE_IS_LOCKED (403)",
+   "CANNOT_CHANGE_OWN_ACCESS (403)",
+   "NOTHING_TO_CHANGE (400)",
+   "ROLE_NAME_TAKEN (400)",
+   "ROLE_NOT_FOUND (404)",
+   "ROLE_STILL_HAS_PEOPLE (400)",
+   "SYSTEM_ROLE_CANNOT_BE_DISABLED (400)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "GET",
+  "path": "/api/v1/admin/settings",
+  "handler": "get_settings",
+  "line": 353,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "PUT",
+  "path": "/api/v1/admin/settings",
+  "handler": "put_settings",
+  "line": 392,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "DEFAULT_LANGUAGE_MUST_BE_ENABLED (400)",
+   "ENGLISH_MUST_STAY_ENABLED (400)",
+   "INVALID_ACCENT (400)",
+   "INVALID_LANGUAGE (400)",
+   "UNKNOWN_SETTING (400)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "PUT",
+  "path": "/api/v1/admin/i18n",
+  "handler": "put_wording",
+  "line": 438,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "key",
+   "lang",
+   "text"
+  ],
+  "errors": [
+   "INVALID_LANGUAGE (400)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "PUT",
+  "path": "/api/v1/admin/dashboard-defaults/{rid}",
+  "handler": "put_dashboard_default",
+  "line": 458,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "apply_now",
+   "shortcuts",
+   "widgets"
+  ],
+  "errors": [
+   "INVALID_SHORTCUT (400)",
+   "INVALID_WIDGET_SELECTION (400)",
+   "ROLE_NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "admin",
+  "method": "GET",
+  "path": "/api/v1/admin/audit",
+  "handler": "get_audit",
+  "line": 485,
+  "doc": "",
+  "require_all": [
+   "system.audit"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/admin.py"
+ },
+ {
+  "router": "auth",
+  "method": "POST",
+  "path": "/api/v1/login",
+  "handler": "login",
+  "line": 42,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "password",
+   "shared_device",
+   "username"
+  ],
+  "errors": [
+   "ACCOUNT_LOCKED_TRY_LATER (423)",
+   "INVALID_CREDENTIALS (401)"
+  ],
+  "file": "vtc/routers/auth.py"
+ },
+ {
+  "router": "auth",
+  "method": "GET",
+  "path": "/api/v1/login/pin-people",
+  "handler": "pin_people",
+  "line": 59,
+  "doc": "Names shown on the shared-tablet sign-in screen (PIN accounts only).",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/auth.py"
+ },
+ {
+  "router": "auth",
+  "method": "POST",
+  "path": "/api/v1/login/pin",
+  "handler": "login_pin",
+  "line": 68,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "personal_device",
+   "pin",
+   "user_id"
+  ],
+  "errors": [
+   "ACCOUNT_LOCKED_TRY_LATER (423)",
+   "INVALID_CREDENTIALS (401)"
+  ],
+  "file": "vtc/routers/auth.py"
+ },
+ {
+  "router": "auth",
+  "method": "POST",
+  "path": "/api/v1/logout",
+  "handler": "logout",
+  "line": 85,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/auth.py"
+ },
+ {
+  "router": "auth",
+  "method": "GET",
+  "path": "/api/v1/me",
+  "handler": "me",
+  "line": 110,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": true,
+  "body_fields": [
+   "shortcuts",
+   "widgets"
+  ],
+  "errors": [],
+  "file": "vtc/routers/auth.py"
+ },
+ {
+  "router": "auth",
+  "method": "POST",
+  "path": "/api/v1/me/secret",
+  "handler": "change_own_secret",
+  "line": 131,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "current",
+   "new"
+  ],
+  "errors": [
+   "CURRENT_SECRET_WRONG (400)"
+  ],
+  "file": "vtc/routers/auth.py"
+ },
+ {
+  "router": "auth",
+  "method": "PUT",
+  "path": "/api/v1/me/preferences",
+  "handler": "save_prefs",
+  "line": 147,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "lang",
+   "large_text",
+   "shortcuts",
+   "sizes",
+   "voice_rate",
+   "welcome",
+   "widgets"
+  ],
+  "errors": [
+   "INVALID_LANGUAGE (400)",
+   "INVALID_SHORTCUT (400)",
+   "INVALID_VOICE_SPEED (400)",
+   "INVALID_WIDGET_SELECTION (400)"
+  ],
+  "file": "vtc/routers/auth.py"
+ },
+ {
+  "router": "auth",
+  "method": "GET",
+  "path": "/api/v1/i18n",
+  "handler": "i18n_overrides",
+  "line": 183,
+  "doc": "Admin-edited wording that replaces the built-in translations.",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/auth.py"
+ },
+ {
+  "router": "comms",
+  "method": "GET",
+  "path": "/api/v1/comms/inbox",
+  "handler": "inbox",
+  "line": 118,
+  "doc": "",
+  "require_all": [
+   "comms.read"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "comms.oversight",
+   "comms.read",
+   "tasks.view_all"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "GET",
+  "path": "/api/v1/comms/badge",
+  "handler": "badge",
+  "line": 150,
+  "doc": "Cheap poll for the top-bar bell.",
+  "require_all": [
+   "comms.read"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "comms.oversight",
+   "comms.read",
+   "tasks.view_all"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "GET",
+  "path": "/api/v1/comms/contacts",
+  "handler": "contacts",
+  "line": 162,
+  "doc": "People you may start a direct chat with. Staff reach managers (and admins\nonly if the admin allows it) — owner answer, 26 Oct 2026.",
+  "require_all": [
+   "comms.chat"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "POST",
+  "path": "/api/v1/comms/direct",
+  "handler": "open_direct",
+  "line": 176,
+  "doc": "",
+  "require_all": [
+   "comms.chat"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "user_id"
+  ],
+  "errors": [
+   "CANNOT_MESSAGE_THIS_PERSON (403)",
+   "INVALID_USER (400)"
+  ],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "GET",
+  "path": "/api/v1/comms/record/{rtype}/{rid}",
+  "handler": "record_thread",
+  "line": 199,
+  "doc": "The discussion attached to one batch, lot, receipt, order, task …",
+  "require_all": [
+   "comms.read"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "tasks.view_all"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "ACCESS_DENIED (403)",
+   "INVALID_RECORD_TYPE (400)"
+  ],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "GET",
+  "path": "/api/v1/comms/conversations/{cid}",
+  "handler": "read_conversation",
+  "line": 225,
+  "doc": "",
+  "require_all": [
+   "comms.read"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "comms.announce",
+   "comms.chat",
+   "comms.oversight",
+   "comms.read",
+   "tasks.view_all"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "ACCESS_DENIED (403)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "POST",
+  "path": "/api/v1/comms/conversations/{cid}/messages",
+  "handler": "post_message",
+  "line": 276,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [
+   "comms.announce",
+   "comms.chat"
+  ],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "comms.oversight",
+   "comms.read",
+   "tasks.view_all"
+  ],
+  "owner_check": false,
+  "body_fields": [
+   "audience",
+   "body",
+   "voice_file_id"
+  ],
+  "errors": [
+   "ACCESS_DENIED (403)",
+   "EMPTY_MESSAGE (400)",
+   "INVALID_AUDIENCE (400)",
+   "NOT_FOUND (404)",
+   "VOICE_NOTE_NOT_FOUND (400)"
+  ],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "POST",
+  "path": "/api/v1/comms/voice",
+  "handler": "upload_voice",
+  "line": 342,
+  "doc": "",
+  "require_all": [
+   "comms.chat"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "data",
+   "mime"
+  ],
+  "errors": [
+   "VOICE_DATA_INVALID (400)",
+   "VOICE_FORMAT_NOT_SUPPORTED (400)",
+   "VOICE_NOTE_TOO_LONG (400)"
+  ],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "GET",
+  "path": "/api/v1/comms/files/{fid}",
+  "handler": "get_file",
+  "line": 367,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "comms.oversight",
+   "comms.read",
+   "tasks.view_all"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "ACCESS_DENIED (403)",
+   "FILE_EXPIRED_OR_MISSING (404)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "GET",
+  "path": "/api/v1/alerts",
+  "handler": "my_alerts",
+  "line": 392,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "POST",
+  "path": "/api/v1/alerts/read",
+  "handler": "read_alerts",
+  "line": 399,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "ids"
+  ],
+  "errors": [],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "GET",
+  "path": "/api/v1/comms/oversight",
+  "handler": "oversight_list",
+  "line": 415,
+  "doc": "",
+  "require_all": [
+   "comms.oversight"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "GET",
+  "path": "/api/v1/teams",
+  "handler": "teams",
+  "line": 432,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "PUT",
+  "path": "/api/v1/admin/users/{uid}/teams",
+  "handler": "set_user_teams",
+  "line": 439,
+  "doc": "",
+  "require_all": [
+   "system.users"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "team_ids"
+  ],
+  "errors": [
+   "INVALID_TEAM (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "GET",
+  "path": "/api/v1/admin/users/{uid}/teams",
+  "handler": "get_user_teams",
+  "line": 457,
+  "doc": "",
+  "require_all": [
+   "system.users"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "comms",
+  "method": "POST",
+  "path": "/api/v1/admin/teams",
+  "handler": "create_team",
+  "line": 464,
+  "doc": "",
+  "require_all": [
+   "system.users"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "name"
+  ],
+  "errors": [
+   "INVALID_NAME (400)",
+   "TEAM_EXISTS (400)"
+  ],
+  "file": "vtc/routers/comms.py"
+ },
+ {
+  "router": "counter",
+  "method": "GET",
+  "path": "/api/v1/transfers",
+  "handler": "list_transfers",
+  "line": 57,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "counter.sell",
+    "inventory.transfer",
+    "inventory.view"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "POST",
+  "path": "/api/v1/transfers",
+  "handler": "send_transfer",
+  "line": 67,
+  "doc": "",
+  "require_all": [
+   "inventory.transfer"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "kg",
+   "lot_id",
+   "note"
+  ],
+  "errors": [
+   "LOT_WRONG_LOCATION (400)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "POST",
+  "path": "/api/v1/transfers/{tid}/receive",
+  "handler": "receive_transfer",
+  "line": 98,
+  "doc": "Counter counts what actually arrived. Any shortage is written off visibly.",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "counter.sell",
+    "inventory.transfer"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "kg_received"
+  ],
+  "errors": [
+   "NOT_FOUND (404)",
+   "RECEIVED_MORE_THAN_SENT (400)",
+   "SENDER_CANNOT_RECEIVE (400)",
+   "TRANSFER_ALREADY_RECEIVED (400)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "GET",
+  "path": "/api/v1/counter/setup",
+  "handler": "counter_setup",
+  "line": 164,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "counter.sell",
+    "system.settings"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "POST",
+  "path": "/api/v1/counter/items",
+  "handler": "add_item",
+  "line": 226,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "chicory_product_id",
+   "coffee_pct",
+   "gst_rate_bp",
+   "hsn",
+   "kind",
+   "name",
+   "price_per_kg_paise",
+   "stock_product_id"
+  ],
+  "errors": [
+   "CHICORY_PRODUCT_REQUIRED (400)",
+   "INVALID_COFFEE_PCT (400)",
+   "INVALID_GST_RATE (400)",
+   "INVALID_KIND (400)",
+   "STOCK_PRODUCT_REQUIRED (400)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "PUT",
+  "path": "/api/v1/counter/items/{iid}",
+  "handler": "update_item",
+  "line": 241,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "active",
+   "chicory_product_id",
+   "coffee_pct",
+   "gst_rate_bp",
+   "hsn",
+   "kind",
+   "name",
+   "price_per_kg_paise",
+   "stock_product_id"
+  ],
+  "errors": [
+   "CHICORY_PRODUCT_REQUIRED (400)",
+   "INVALID_COFFEE_PCT (400)",
+   "INVALID_GST_RATE (400)",
+   "INVALID_KIND (400)",
+   "NOT_FOUND (404)",
+   "STOCK_PRODUCT_REQUIRED (400)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "POST",
+  "path": "/api/v1/counter/sales",
+  "handler": "create_sale",
+  "line": 291,
+  "doc": "",
+  "require_all": [
+   "counter.sell"
+  ],
+  "require_all_conditional": [
+   "counter.discount",
+   "counter.price_override"
+  ],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "amount_paise",
+   "coffee_pct",
+   "custom",
+   "customer_name",
+   "customer_phone",
+   "discount_paise",
+   "discount_reason",
+   "item_id",
+   "lines",
+   "override_rate_paise",
+   "payments",
+   "weight_kg"
+  ],
+  "errors": [
+   "BILL_NEEDS_ITEMS (400)",
+   "COUNTER_CLOSED_FOR_TODAY (400)",
+   "CUSTOM_BLEND_NOT_SET_UP (400)",
+   "DISCOUNTS_NOT_SET_UP (400)",
+   "DISCOUNT_ABOVE_CAP (400)",
+   "DISCOUNT_REASON_REQUIRED (400)",
+   "INVALID_COFFEE_PCT (400)",
+   "INVALID_PAYMENT_METHOD (400)",
+   "ITEM_NOT_ON_PRICE_LIST (400)",
+   "NOT_ENOUGH_AT_COUNTER (400)",
+   "NOT_FOUND (404)",
+   "PAYMENT_MUST_EQUAL_TOTAL (400)",
+   "PAYMENT_REQUIRED (400)",
+   "PRICE_CHANGE_REASON_REQUIRED (400)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "GET",
+  "path": "/api/v1/counter/sales",
+  "handler": "list_sales",
+  "line": 429,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "counter.close_approve",
+    "counter.refund",
+    "counter.sell",
+    "reports.commercial"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "INVALID_DATE (400)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "GET",
+  "path": "/api/v1/counter/sales/{sid}",
+  "handler": "get_sale",
+  "line": 448,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "counter.close_approve",
+    "counter.refund",
+    "counter.sell"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "counter.customers"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "POST",
+  "path": "/api/v1/counter/sales/{sid}/reprint",
+  "handler": "reprint",
+  "line": 458,
+  "doc": "Reprints the same bill — never creates a new sale (DPR §9, S16).",
+  "require_all": [
+   "counter.sell"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "POST",
+  "path": "/api/v1/counter/sales/{sid}/refunds",
+  "handler": "request_refund",
+  "line": 471,
+  "doc": "",
+  "require_all": [
+   "counter.sell"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "amount_paise",
+   "method",
+   "reason"
+  ],
+  "errors": [
+   "INVALID_PAYMENT_METHOD (400)",
+   "NOT_FOUND (404)",
+   "REFUND_MORE_THAN_BILL (400)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "POST",
+  "path": "/api/v1/counter/refunds/{rid}/decide",
+  "handler": "decide_refund",
+  "line": 497,
+  "doc": "",
+  "require_all": [
+   "counter.refund"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "approve"
+  ],
+  "errors": [
+   "ABOVE_YOUR_APPROVAL_LIMIT (403)",
+   "ALREADY_DECIDED (400)",
+   "CANNOT_APPROVE_OWN_REQUEST (403)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "GET",
+  "path": "/api/v1/counter/cash-close",
+  "handler": "cash_close_status",
+  "line": 570,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "counter.close",
+    "counter.close_approve",
+    "counter.reopen_day"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "INVALID_DATE (400)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "GET",
+  "path": "/api/v1/counter/cash-close/{kid}/register",
+  "handler": "day_register",
+  "line": 587,
+  "doc": "The saved register of a closed day (what was true at the moment of closing).",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "counter.close",
+    "counter.close_approve",
+    "counter.reopen_day",
+    "reports.commercial"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "POST",
+  "path": "/api/v1/counter/cash-close/{kid}/reopen",
+  "handler": "reopen_day",
+  "line": 601,
+  "doc": "Admin reopens today's counter (e.g. closed too early). The old close and its\nregister stay in history marked REOPENED; the day must be closed again.",
+  "require_all": [
+   "counter.reopen_day"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "reason"
+  ],
+  "errors": [
+   "DAY_IS_NOT_CLOSED (400)",
+   "NOT_FOUND (404)",
+   "ONLY_TODAY_CAN_BE_REOPENED (400)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "POST",
+  "path": "/api/v1/counter/cash-close",
+  "handler": "submit_close",
+  "line": 623,
+  "doc": "",
+  "require_all": [
+   "counter.close"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "counted_paise",
+   "note"
+  ],
+  "errors": [
+   "ALREADY_CLOSED_TODAY (400)",
+   "EXPLAIN_THE_DIFFERENCE (400)",
+   "INVALID_DATE (400)",
+   "OPENING_CASH_NOT_SET (400)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "counter",
+  "method": "POST",
+  "path": "/api/v1/counter/cash-close/{kid}/decide",
+  "handler": "decide_close",
+  "line": 656,
+  "doc": "",
+  "require_all": [
+   "counter.close_approve"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "approve",
+   "note"
+  ],
+  "errors": [
+   "ALREADY_DECIDED (400)",
+   "CANNOT_APPROVE_OWN_REQUEST (403)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/counter.py"
+ },
+ {
+  "router": "finance",
+  "method": "GET",
+  "path": "/api/v1/payables",
+  "handler": "payables",
+  "line": 30,
+  "doc": "",
+  "require_all": [
+   "finance.view"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "invoice.cost",
+   "supplier.pay.amount",
+   "supplier.pay.proof",
+   "supplier.pay.status"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "POST",
+  "path": "/api/v1/receipts/{rid}/payments",
+  "handler": "record_supplier_payment",
+  "line": 56,
+  "doc": "",
+  "require_all": [
+   "supplier.pay.record"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "amount_paise",
+   "paid_on",
+   "reference"
+  ],
+  "errors": [
+   "INVALID_AMOUNT (400)",
+   "NOT_FOUND (404)",
+   "PAYMENT_DATE_REQUIRED (400)"
+  ],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "POST",
+  "path": "/api/v1/supplier-payments/{pid}/decide",
+  "handler": "decide_supplier_payment",
+  "line": 79,
+  "doc": "",
+  "require_all": [
+   "supplier.pay.approve"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "approve"
+  ],
+  "errors": [
+   "ALREADY_DECIDED (400)",
+   "CANNOT_APPROVE_OWN_REQUEST (403)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "GET",
+  "path": "/api/v1/counts",
+  "handler": "counts",
+  "line": 107,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "inventory.adjust",
+    "inventory.approve_adjust",
+    "stock.cycle_approve",
+    "stock.cycle_count"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "POST",
+  "path": "/api/v1/lots/{lid}/count",
+  "handler": "count_lot",
+  "line": 116,
+  "doc": "",
+  "require_all": [
+   "stock.cycle_count"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "counted_kg",
+   "note"
+  ],
+  "errors": [
+   "COUNT_ALREADY_PENDING (400)"
+  ],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "POST",
+  "path": "/api/v1/lots/{lid}/adjust",
+  "handler": "request_adjustment",
+  "line": 139,
+  "doc": "Ask to correct a lot (spillage, moisture, found stock). Someone else approves.",
+  "require_all": [
+   "inventory.adjust"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "delta_kg",
+   "reason"
+  ],
+  "errors": [
+   "CORRECTION_WOULD_GO_NEGATIVE (400)",
+   "INVALID_DELTA_KG (400)",
+   "LOT_CANNOT_BE_CORRECTED (400)"
+  ],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "POST",
+  "path": "/api/v1/counts/{kid}/decide",
+  "handler": "decide_count",
+  "line": 164,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "approve",
+   "note"
+  ],
+  "errors": [
+   "ABOVE_YOUR_APPROVAL_LIMIT (403)",
+   "ALREADY_DECIDED (400)",
+   "CANNOT_APPROVE_OWN_REQUEST (403)",
+   "CORRECTION_WOULD_GO_NEGATIVE (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "GET",
+  "path": "/api/v1/exceptions",
+  "handler": "exceptions",
+  "line": 197,
+  "doc": "",
+  "require_all": [
+   "exceptions.view"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "GET",
+  "path": "/api/v1/reports",
+  "handler": "reports",
+  "line": 246,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "reports.commercial",
+    "reports.operational"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "reports.commercial",
+   "reports.operational"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "INVALID_DATE (400)"
+  ],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "GET",
+  "path": "/api/v1/tally/exports",
+  "handler": "list_exports",
+  "line": 303,
+  "doc": "",
+  "require_all": [
+   "finance.export"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "POST",
+  "path": "/api/v1/tally/exports",
+  "handler": "create_export",
+  "line": 311,
+  "doc": "",
+  "require_all": [
+   "finance.export"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "from",
+   "to"
+  ],
+  "errors": [
+   "INVALID_DATE (400)",
+   "NOTHING_NEW_TO_EXPORT (400)"
+  ],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "GET",
+  "path": "/api/v1/tally/exports/{eid}",
+  "handler": "get_export",
+  "line": 344,
+  "doc": "",
+  "require_all": [
+   "finance.export"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "finance",
+  "method": "POST",
+  "path": "/api/v1/tally/exports/{eid}/result",
+  "handler": "export_result",
+  "line": 354,
+  "doc": "After importing into Tally, record what Tally said. Accepted vouchers are\nlocked; a rejected batch frees its vouchers for a corrected export.",
+  "require_all": [
+   "finance.export"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "accepted",
+   "note"
+  ],
+  "errors": [
+   "ALREADY_DECIDED (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/finance.py"
+ },
+ {
+  "router": "golive",
+  "method": "GET",
+  "path": "/api/v1/golive",
+  "handler": "golive",
+  "line": 154,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/golive.py"
+ },
+ {
+  "router": "golive",
+  "method": "GET",
+  "path": "/api/v1/golive/template",
+  "handler": "template",
+  "line": 172,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/golive.py"
+ },
+ {
+  "router": "golive",
+  "method": "POST",
+  "path": "/api/v1/golive/import",
+  "handler": "import_sheet",
+  "line": 180,
+  "doc": "Check the whole workbook (apply=false) or save it (apply=true). Rows with problems are never saved.",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "apply",
+   "data"
+  ],
+  "errors": [
+   "INVALID_KG (400)",
+   "NAME_REQUIRED (400)",
+   "NOT_AN_EXCEL_FILE (400)",
+   "UNKNOWN_BEAN (400)",
+   "UNKNOWN_STAFF (400)"
+  ],
+  "file": "vtc/routers/golive.py"
+ },
+ {
+  "router": "golive",
+  "method": "POST",
+  "path": "/api/v1/golive/stock",
+  "handler": "add_stock",
+  "line": 267,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "bag_kind",
+   "bags",
+   "form",
+   "kg",
+   "note",
+   "place",
+   "product",
+   "roasted_on"
+  ],
+  "errors": [
+   "ALREADY_LIVE (400)",
+   "INVALID_BAGS (400)",
+   "INVALID_DATE (400)",
+   "INVALID_KG (400)",
+   "ROAST_DATE_REQUIRED (400)",
+   "UNKNOWN_BEAN (400)"
+  ],
+  "file": "vtc/routers/golive.py"
+ },
+ {
+  "router": "golive",
+  "method": "POST",
+  "path": "/api/v1/golive/dues",
+  "handler": "add_due",
+  "line": 277,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "amount",
+   "due_date",
+   "name",
+   "note",
+   "side",
+   "since"
+  ],
+  "errors": [
+   "ALREADY_LIVE (400)",
+   "INVALID_AMOUNT (400)",
+   "INVALID_DATE (400)",
+   "UNKNOWN_STAFF (400)"
+  ],
+  "file": "vtc/routers/golive.py"
+ },
+ {
+  "router": "golive",
+  "method": "DELETE",
+  "path": "/api/v1/golive/{what}/{rid}",
+  "handler": "remove_draft",
+  "line": 287,
+  "doc": "",
+  "require_all": [
+   "system.settings"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "ALREADY_LIVE (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/golive.py"
+ },
+ {
+  "router": "golive",
+  "method": "POST",
+  "path": "/api/v1/golive/confirm",
+  "handler": "confirm",
+  "line": 300,
+  "doc": "The owner checks the figures and presses We're live: stock becomes real lots, dues open in Finance.",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": true,
+  "body_fields": [
+   "cash_paise"
+  ],
+  "errors": [
+   "ALREADY_LIVE (400)",
+   "INVALID_AMOUNT (400)",
+   "ONLY_OWNER_CONFIRMS (403)"
+  ],
+  "file": "vtc/routers/golive.py"
+ },
+ {
+  "router": "golive",
+  "method": "GET",
+  "path": "/api/v1/opening-dues",
+  "handler": "opening_dues",
+  "line": 344,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "customer.contacts",
+   "finance.view"
+  ],
+  "owner_check": false,
+  "body_fields": [
+   "amount_paise",
+   "due_paise",
+   "paid_paise",
+   "side"
+  ],
+  "errors": [
+   "ACCESS_DENIED (403)"
+  ],
+  "file": "vtc/routers/golive.py"
+ },
+ {
+  "router": "golive",
+  "method": "POST",
+  "path": "/api/v1/opening-dues/{did}/payments",
+  "handler": "record_due_payment",
+  "line": 366,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "amount_paise",
+   "method",
+   "reference"
+  ],
+  "errors": [
+   "INVALID_AMOUNT (400)",
+   "INVALID_PAYMENT_METHOD (400)",
+   "MORE_THAN_DUE (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/golive.py"
+ },
+ {
+  "router": "golive",
+  "method": "POST",
+  "path": "/api/v1/opening-due-payments/{pid}/verify",
+  "handler": "verify_due_payment",
+  "line": 390,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "ALREADY_DECIDED (400)",
+   "CANNOT_APPROVE_OWN_REQUEST (403)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/golive.py"
+ },
+ {
+  "router": "insights",
+  "method": "GET",
+  "path": "/api/v1/counter/customers/lookup",
+  "handler": "lookup",
+  "line": 49,
+  "doc": "Returning customer card for the cashier: name, visits, last bill with today's prices.",
+  "require_all": [
+   "counter.sell"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "INVALID_PHONE (400)"
+  ],
+  "file": "vtc/routers/insights.py"
+ },
+ {
+  "router": "insights",
+  "method": "GET",
+  "path": "/api/v1/counter/customers",
+  "handler": "customer_list",
+  "line": 81,
+  "doc": "",
+  "require_all": [
+   "counter.customers"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/insights.py"
+ },
+ {
+  "router": "insights",
+  "method": "PUT",
+  "path": "/api/v1/counter/insights/pin",
+  "handler": "set_pin",
+  "line": 101,
+  "doc": "Owner/admin set the 4-digit view PIN. Changing an existing PIN needs the old one.",
+  "require_all": [
+   "counter.insights"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "current",
+   "pin"
+  ],
+  "errors": [
+   "CURRENT_SECRET_WRONG (400)",
+   "PIN_TOO_SIMPLE (400)"
+  ],
+  "file": "vtc/routers/insights.py"
+ },
+ {
+  "router": "insights",
+  "method": "POST",
+  "path": "/api/v1/counter/insights/unlock",
+  "handler": "unlock",
+  "line": 119,
+  "doc": "",
+  "require_all": [
+   "counter.insights"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "pin"
+  ],
+  "errors": [
+   "ACCOUNT_LOCKED_TRY_LATER (423)",
+   "INSIGHTS_PIN_NOT_SET (400)",
+   "WRONG_PIN (400)"
+  ],
+  "file": "vtc/routers/insights.py"
+ },
+ {
+  "router": "insights",
+  "method": "POST",
+  "path": "/api/v1/counter/insights/lock",
+  "handler": "lock",
+  "line": 144,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/insights.py"
+ },
+ {
+  "router": "insights",
+  "method": "GET",
+  "path": "/api/v1/counter/insights",
+  "handler": "insights",
+  "line": 155,
+  "doc": "",
+  "require_all": [
+   "counter.insights"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "INSIGHTS_LOCKED (423)"
+  ],
+  "file": "vtc/routers/insights.py"
+ },
+ {
+  "router": "insights",
+  "method": "POST",
+  "path": "/api/v1/counter/collections",
+  "handler": "add_collection",
+  "line": 209,
+  "doc": "Owner/admin note what actually came in: cash taken from the drawer, UPI seen in the bank app.",
+  "require_all": [
+   "counter.insights"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "amount_paise",
+   "day",
+   "method",
+   "note"
+  ],
+  "errors": [
+   "INSIGHTS_LOCKED (423)",
+   "INVALID_PAYMENT_METHOD (400)"
+  ],
+  "file": "vtc/routers/insights.py"
+ },
+ {
+  "router": "lots",
+  "method": "GET",
+  "path": "/api/v1/lots/find",
+  "handler": "find_lot",
+  "line": 14,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "counter.sell",
+    "goods.receive",
+    "inventory.view",
+    "pack.execute",
+    "roast.execute"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "LOT_NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/lots.py"
+ },
+ {
+  "router": "maintenance",
+  "method": "GET",
+  "path": "/api/v1/maintenance",
+  "handler": "tickets",
+  "line": 17,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "maintenance.manage",
+    "maintenance.raise"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "maintenance.manage"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/maintenance.py"
+ },
+ {
+  "router": "maintenance",
+  "method": "POST",
+  "path": "/api/v1/maintenance",
+  "handler": "raise_ticket",
+  "line": 29,
+  "doc": "",
+  "require_all": [
+   "maintenance.raise"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "area",
+   "details",
+   "title",
+   "urgency"
+  ],
+  "errors": [
+   "INVALID_TICKET (400)"
+  ],
+  "file": "vtc/routers/maintenance.py"
+ },
+ {
+  "router": "maintenance",
+  "method": "PUT",
+  "path": "/api/v1/maintenance/{tid}",
+  "handler": "update_ticket",
+  "line": 54,
+  "doc": "",
+  "require_all": [
+   "maintenance.manage"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "assigned_to",
+   "note",
+   "status"
+  ],
+  "errors": [
+   "BAD_ASSIGNEE (400)",
+   "INVALID_STATUS (400)",
+   "NOT_FOUND (404)",
+   "SAY_WHAT_WAS_DONE (400)"
+  ],
+  "file": "vtc/routers/maintenance.py"
+ },
+ {
+  "router": "me",
+  "method": "GET",
+  "path": "/api/v1/me/profile",
+  "handler": "my_profile",
+  "line": 59,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/me.py"
+ },
+ {
+  "router": "me",
+  "method": "PUT",
+  "path": "/api/v1/me/profile",
+  "handler": "save_my_profile",
+  "line": 86,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOTHING_TO_CHANGE (400)"
+  ],
+  "file": "vtc/routers/me.py"
+ },
+ {
+  "router": "me",
+  "method": "POST",
+  "path": "/api/v1/me/sessions/revoke",
+  "handler": "sign_out_devices",
+  "line": 99,
+  "doc": "Sign out one other device ({\"id\": n}) or every other device ({\"all\": true}). This device stays signed in.",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "all",
+   "id"
+  ],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/me.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/summary",
+  "handler": "summary",
+  "line": 29,
+  "doc": "",
+  "require_all": [
+   "dashboard.my_view"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "goods.view",
+   "inventory.view",
+   "invoice.metadata",
+   "outgoing.view",
+   "pack.view",
+   "qc.view",
+   "roast.view",
+   "tasks.view_all"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/masters",
+  "handler": "get_masters",
+  "line": 64,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "goods.receive",
+    "masters.view",
+    "outgoing.create"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "customer.contacts",
+   "masters.approve",
+   "masters.view_drafts"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "INVALID_KIND (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/masters",
+  "handler": "create_master",
+  "line": 81,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "masters.approve",
+    "masters.create_draft"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "customer.contacts",
+   "masters.approve"
+  ],
+  "owner_check": false,
+  "body_fields": [
+   "address",
+   "category",
+   "code",
+   "kind",
+   "name",
+   "nominal_kg",
+   "phone"
+  ],
+  "errors": [
+   "ACCESS_DENIED (403)",
+   "BEAN_CODE_TAKEN (400)",
+   "INVALID_BEAN_CODE (400)",
+   "INVALID_CATEGORY (400)",
+   "INVALID_MASTER (400)",
+   "NAME_ALREADY_EXISTS (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/masters/{mid}/approve",
+  "handler": "approve_master",
+  "line": 124,
+  "doc": "",
+  "require_all": [
+   "masters.approve"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_DRAFT (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "PUT",
+  "path": "/api/v1/masters/{mid}",
+  "handler": "edit_master",
+  "line": 138,
+  "doc": "Admin edits a record. Changing kg-per-bag affects only future receipts;\nswitching a record off hides it from new entries but keeps its history.",
+  "require_all": [
+   "masters.approve"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "active",
+   "address",
+   "category",
+   "code",
+   "name",
+   "nominal_kg",
+   "phone"
+  ],
+  "errors": [
+   "APPROVE_THE_DRAFT_FIRST (400)",
+   "BEAN_CODE_TAKEN (400)",
+   "INVALID_BEAN_CODE (400)",
+   "INVALID_CATEGORY (400)",
+   "NOTHING_TO_CHANGE (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/roast-profiles",
+  "handler": "roast_profiles",
+  "line": 175,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "masters.approve",
+    "roast.execute",
+    "roast.view"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "masters.approve"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/roast-profiles",
+  "handler": "add_roast_profile",
+  "line": 183,
+  "doc": "",
+  "require_all": [
+   "masters.approve"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "name",
+   "notes"
+  ],
+  "errors": [
+   "NAME_ALREADY_EXISTS (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "PUT",
+  "path": "/api/v1/roast-profiles/{pid}",
+  "handler": "edit_roast_profile",
+  "line": 198,
+  "doc": "",
+  "require_all": [
+   "masters.approve"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "active",
+   "name",
+   "notes"
+  ],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/inward",
+  "handler": "inward",
+  "line": 216,
+  "doc": "",
+  "require_all": [
+   "goods.view"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/inward",
+  "handler": "post_inward",
+  "line": 228,
+  "doc": "",
+  "require_all": [
+   "goods.receive"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "bags",
+   "damaged",
+   "partial",
+   "partial_kg",
+   "product_id",
+   "source",
+   "source_name"
+  ],
+  "errors": [
+   "DAMAGED_EXCEEDS_BAGS (400)",
+   "INVALID_PRODUCT (400)",
+   "INVALID_SOURCE (400)",
+   "KG_NEEDS_3_DECIMAL_PRECISION (400)",
+   "PARTIAL_KG_MUST_BE_LESS_THAN_FULL_BAGS (400)",
+   "PRODUCT_NOMINAL_KG_NOT_CONFIGURED (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "PUT",
+  "path": "/api/v1/inward/{rid}/finance",
+  "handler": "receipt_finance",
+  "line": 299,
+  "doc": "Match the supplier invoice to a receipt. Invoice facts never change kg\n(DPR §5). Payment status comes from approved supplier payments.",
+  "require_all": [
+   "invoice.reconcile"
+  ],
+  "require_all_conditional": [
+   "invoice.cost"
+  ],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "invoice_amount_paise",
+   "invoice_ref",
+   "invoice_status"
+  ],
+  "errors": [
+   "INVALID_AMOUNT (400)",
+   "INVALID_FINANCE_STATUS (400)",
+   "NOTHING_TO_CHANGE (400)",
+   "NOT_FOUND (404)",
+   "USE_SUPPLIER_PAYMENTS (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/inward/{rid}/reverse",
+  "handler": "reverse_receipt",
+  "line": 332,
+  "doc": "Undo a wrongly entered receipt with compensating movements — only while\nnone of its stock has been used (DPR §18: no deletes, no silent edits).",
+  "require_all": [
+   "goods.reverse"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "reason"
+  ],
+  "errors": [
+   "ALREADY_REVERSED (400)",
+   "NOT_FOUND (404)",
+   "RECEIPT_STOCK_ALREADY_USED (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/inward/{rid}/invoice-file",
+  "handler": "upload_invoice_file",
+  "line": 358,
+  "doc": "",
+  "require_all": [
+   "invoice.reconcile"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "data",
+   "mime"
+  ],
+  "errors": [
+   "FILE_DATA_INVALID (400)",
+   "FILE_TOO_LARGE (400)",
+   "FILE_TYPE_NOT_ALLOWED (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/inward/{rid}/invoice-file",
+  "handler": "get_invoice_file",
+  "line": 387,
+  "doc": "",
+  "require_all": [
+   "invoice.file"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/inventory",
+  "handler": "inventory",
+  "line": 402,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "inventory.view",
+    "roast.execute"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/lots/{lid}/verify",
+  "handler": "verify_quarantined",
+  "line": 409,
+  "doc": "",
+  "require_all": [
+   "inventory.verify_quarantine"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "reason",
+   "verified_kg"
+  ],
+  "errors": [
+   "KG_NEEDS_3_DECIMAL_PRECISION (400)",
+   "NOT_QUARANTINED_OR_ALREADY_VERIFIED (400)",
+   "VERIFIED_EXCEEDS_NOMINAL (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/roasts",
+  "handler": "roasts",
+  "line": 437,
+  "doc": "Roasting register. ?day=YYYY-MM-DD lists one day (IST); ?month=YYYY-MM gives\na per-day summary for the calendar; no filter = latest 100.",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "qc.view",
+    "reports.operational",
+    "roast.view"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "INVALID_DATE (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/roasts",
+  "handler": "post_roast",
+  "line": 473,
+  "doc": "",
+  "require_all": [
+   "roast.execute"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "abnormal",
+   "duration_min",
+   "inputs",
+   "kg",
+   "notes",
+   "output_kg",
+   "profile_id"
+  ],
+  "errors": [
+   "CHOOSE_A_ROAST_PROFILE (400)",
+   "DUPLICATE_INPUT_LOT (400)",
+   "INPUT_KG_NEEDS_3_DECIMAL_PRECISION (400)",
+   "INSUFFICIENT_RAW_STOCK (400)",
+   "INVALID_INPUT_LOT (400)",
+   "LOT_WRONG_LOCATION (400)",
+   "OUTPUT_EXCEEDS_INPUT_OR_ZERO (400)",
+   "RAW_LOT_NOT_ALLOCATABLE (400)",
+   "ROAST_NEEDS_1_OR_2_INPUTS (400)",
+   "ROAST_PROFILE_NOT_FOUND (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/qc",
+  "handler": "qc_list",
+  "line": 561,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "exceptions.view",
+    "qc.view"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/qc/{rid}/decision",
+  "handler": "qc_decide",
+  "line": 570,
+  "doc": "",
+  "require_all": [
+   "roast.qc_release"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "decision",
+   "note"
+  ],
+  "errors": [
+   "NOT_FOUND (404)",
+   "QC_ALREADY_DECIDED (400)",
+   "QC_DECISION_AND_NOTE_REQUIRED (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/qc/config",
+  "handler": "qc_config",
+  "line": 592,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "qc.configure",
+    "system.settings"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "PUT",
+  "path": "/api/v1/qc/config",
+  "handler": "set_qc_config",
+  "line": 599,
+  "doc": "",
+  "require_all": [
+   "qc.configure"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "checks_approved",
+   "clear",
+   "max_pct",
+   "min_pct"
+  ],
+  "errors": [
+   "INVALID_QC_RANGE (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/tasks",
+  "handler": "tasks",
+  "line": 636,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "tasks.view_all",
+    "tasks.view_own"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "tasks.view_all"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/tasks/options",
+  "handler": "task_options",
+  "line": 648,
+  "doc": "What can be linked when assigning work: kinds, people (with what they're allowed\nto do), open packing tickets and open orders.",
+  "require_all": [
+   "tasks.assign"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "GET",
+  "path": "/api/v1/people",
+  "handler": "people_for_assignment",
+  "line": 668,
+  "doc": "",
+  "require_all": [
+   "tasks.assign"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/tasks",
+  "handler": "new_task",
+  "line": 676,
+  "doc": "",
+  "require_all": [
+   "tasks.assign"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "assigned_to",
+   "due",
+   "kind",
+   "ref_id",
+   "target",
+   "title"
+  ],
+  "errors": [
+   "ASSIGNEE_CANNOT_DO_THIS_WORK (400)",
+   "BAD_ASSIGNEE (400)",
+   "CHOOSE_WHO_DOES_IT (400)",
+   "INVALID_LINK (400)",
+   "INVALID_WORK_TYPE (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "PUT",
+  "path": "/api/v1/tasks/{tid}",
+  "handler": "update_task",
+  "line": 731,
+  "doc": "Manual progress is only for general work; linked work counts itself.\nAnyone doing the work can flag it stuck. Completion goes through /submit.",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "tasks.update_any",
+   "tasks.update_own"
+  ],
+  "owner_check": false,
+  "body_fields": [
+   "progress",
+   "status"
+  ],
+  "errors": [
+   "ACCESS_DENIED (403)",
+   "INVALID_STATUS (400)",
+   "NOT_FOUND (404)",
+   "PROGRESS_EXCEEDS_TARGET (400)",
+   "TASK_ALREADY_SUBMITTED (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/tasks/{tid}/submit",
+  "handler": "submit_task",
+  "line": 762,
+  "doc": "The person who did the work marks it completed; it then waits for review.",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "note"
+  ],
+  "errors": [
+   "EXPLAIN_WHY_TARGET_NOT_REACHED (400)",
+   "NOT_FOUND (404)",
+   "NO_ONE_CAN_REVIEW_THIS (400)",
+   "ONLY_THE_ASSIGNED_PERSON_CAN_COMPLETE (403)",
+   "TASK_ALREADY_SUBMITTED (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "operations",
+  "method": "POST",
+  "path": "/api/v1/tasks/{tid}/review",
+  "handler": "review_task",
+  "line": 788,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "approve",
+   "note"
+  ],
+  "errors": [
+   "CANNOT_APPROVE_OWN_REQUEST (403)",
+   "NOT_FOUND (404)",
+   "NOT_WAITING_FOR_REVIEW (400)",
+   "ONLY_THE_ASSIGNER_REVIEWS_THIS (403)",
+   "REASON_REQUIRED (400)"
+  ],
+  "file": "vtc/routers/operations.py"
+ },
+ {
+  "router": "pending",
+  "method": "GET",
+  "path": "/api/v1/pending",
+  "handler": "pending",
+  "line": 76,
+  "doc": "{section: {count, tasks[], waiting[]}} for the sections this person can open.",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "counter.close_approve",
+   "counter.refund",
+   "counter.sell",
+   "dispatch.handover",
+   "exceptions.view",
+   "finance.collection.verify",
+   "inventory.approve_adjust",
+   "inventory.verify_quarantine",
+   "invoice.reconcile",
+   "maintenance.manage",
+   "masters.approve",
+   "outgoing.create",
+   "outgoing.credit.approve",
+   "outgoing.price_override",
+   "outside.execute",
+   "pack.execute",
+   "pack.qa_approve",
+   "roast.qc_release",
+   "stock.cycle_approve",
+   "supplier.pay.approve",
+   "tasks.view_all"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/pending.py"
+ },
+ {
+  "router": "production",
+  "method": "GET",
+  "path": "/api/v1/recipes",
+  "handler": "list_recipes",
+  "line": 41,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "recipe.edit",
+    "recipe.execute_secret",
+    "recipe.view_public",
+    "recipe.view_secret"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "recipe.edit",
+   "recipe.execute_secret",
+   "recipe.view_public",
+   "recipe.view_secret"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "POST",
+  "path": "/api/v1/recipes",
+  "handler": "create_recipe",
+  "line": 65,
+  "doc": "",
+  "require_all": [
+   "recipe.edit"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "components",
+   "confidential",
+   "name",
+   "notes",
+   "pct",
+   "stage"
+  ],
+  "errors": [
+   "COMPONENT_NAME_REQUIRED (400)",
+   "INVALID_STAGE (400)",
+   "RECIPE_MUST_TOTAL_100 (400)",
+   "RECIPE_NEEDS_2_TO_6_COMPONENTS (400)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "PUT",
+  "path": "/api/v1/recipes/{rid}",
+  "handler": "update_recipe",
+  "line": 84,
+  "doc": "Changing the formula makes a new version; old jobs keep the version they used.",
+  "require_all": [
+   "recipe.edit"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "active",
+   "components",
+   "confidential",
+   "name",
+   "notes",
+   "pct"
+  ],
+  "errors": [
+   "COMPONENT_NAME_REQUIRED (400)",
+   "NOTHING_TO_CHANGE (400)",
+   "NOT_FOUND (404)",
+   "RECIPE_MUST_TOTAL_100 (400)",
+   "RECIPE_NEEDS_2_TO_6_COMPONENTS (400)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "GET",
+  "path": "/api/v1/blends",
+  "handler": "list_blends",
+  "line": 114,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "recipe.edit",
+    "recipe.execute_secret",
+    "recipe.view_public",
+    "recipe.view_secret"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "POST",
+  "path": "/api/v1/blends",
+  "handler": "run_blend",
+  "line": 124,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [
+   "recipe.execute_secret"
+  ],
+  "require_any": [],
+  "require_any_conditional": [
+   [
+    "recipe.execute_secret",
+    "recipe.view_public"
+   ]
+  ],
+  "checks_inside": [
+   "recipe.edit",
+   "recipe.view_secret"
+  ],
+  "owner_check": false,
+  "body_fields": [
+   "component",
+   "inputs",
+   "kg",
+   "lot_id",
+   "notes",
+   "output_kg",
+   "recipe_id"
+  ],
+  "errors": [
+   "BLEND_NEEDS_INPUTS (400)",
+   "EVERY_COMPONENT_NEEDS_A_LOT (400)",
+   "INVALID_COMPONENT (400)",
+   "OUTPUT_EXCEEDS_INPUT_OR_ZERO (400)",
+   "RECIPE_NOT_FOUND (400)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "GET",
+  "path": "/api/v1/grinds",
+  "handler": "list_grinds",
+  "line": 181,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "grind.execute",
+    "recipe.view_public"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "POST",
+  "path": "/api/v1/grinds",
+  "handler": "run_grind",
+  "line": 189,
+  "doc": "",
+  "require_all": [
+   "grind.execute"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "grind",
+   "input_kg",
+   "lot_id",
+   "output_kg"
+  ],
+  "errors": [
+   "OUTPUT_EXCEEDS_INPUT_OR_ZERO (400)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "GET",
+  "path": "/api/v1/outside/jobs",
+  "handler": "outside_jobs",
+  "line": 224,
+  "doc": "",
+  "require_all": [
+   "outside.view"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "finance.collection.record",
+   "finance.view"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "POST",
+  "path": "/api/v1/outside/jobs",
+  "handler": "outside_receive",
+  "line": 238,
+  "doc": "",
+  "require_all": [
+   "outside.execute"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "bean_type",
+   "charge_basis",
+   "customer_id",
+   "rate_paise",
+   "received_kg"
+  ],
+  "errors": [
+   "ACTIVE_CUSTOMER_REQUIRED (400)",
+   "INVALID_CHARGE_BASIS (400)",
+   "SERVICE_RATE_REQUIRED (400)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "POST",
+  "path": "/api/v1/outside/jobs/{jid}/roast",
+  "handler": "outside_roast",
+  "line": 264,
+  "doc": "",
+  "require_all": [
+   "outside.execute"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "input_kg",
+   "output_kg"
+  ],
+  "errors": [
+   "ALREADY_ROASTED (400)",
+   "NOT_FOUND (404)",
+   "OUTPUT_EXCEEDS_INPUT_OR_ZERO (400)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "POST",
+  "path": "/api/v1/outside/jobs/{jid}/return",
+  "handler": "outside_return",
+  "line": 291,
+  "doc": "",
+  "require_all": [
+   "outside.execute"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "kg",
+   "note",
+   "what"
+  ],
+  "errors": [
+   "NOTHING_TO_RETURN (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "POST",
+  "path": "/api/v1/outside/jobs/{jid}/payment",
+  "handler": "outside_payment",
+  "line": 313,
+  "doc": "",
+  "require_all": [
+   "finance.collection.record"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "status"
+  ],
+  "errors": [
+   "INVALID_STATUS (400)",
+   "ROAST_FIRST (400)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "GET",
+  "path": "/api/v1/packing",
+  "handler": "packing",
+  "line": 330,
+  "doc": "",
+  "require_all": [
+   "pack.view"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "POST",
+  "path": "/api/v1/packing",
+  "handler": "pack_create",
+  "line": 341,
+  "doc": "",
+  "require_all": [
+   "pack.create"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "demand_type",
+   "label_ref",
+   "order_id",
+   "pack_g",
+   "packs_target",
+   "product_name"
+  ],
+  "errors": [
+   "INVALID_PACK_JOB (400)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "POST",
+  "path": "/api/v1/packing/{pid}/run",
+  "handler": "pack_run",
+  "line": 360,
+  "doc": "One packing session: coffee actually used, good packs, rejected packs.\nFinished packs are created on QA hold — never just because a task is ticked.",
+  "require_all": [
+   "pack.execute"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "good_packs",
+   "input_kg",
+   "rejected_packs",
+   "source_lot_id"
+  ],
+  "errors": [
+   "COUNT_THE_PACKS (400)",
+   "NOT_FOUND (404)",
+   "PACKED_MORE_THAN_COFFEE_USED (400)",
+   "PACK_COUNT_EXCEEDS_TARGET (400)",
+   "USE_THE_SAME_SOURCE_LOT (400)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "production",
+  "method": "POST",
+  "path": "/api/v1/packing/{pid}/release",
+  "handler": "pack_release",
+  "line": 411,
+  "doc": "",
+  "require_all": [
+   "pack.qa_approve"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "approve",
+   "note"
+  ],
+  "errors": [
+   "ALREADY_DECIDED (400)",
+   "NOTHING_PACKED_YET (400)"
+  ],
+  "file": "vtc/routers/production.py"
+ },
+ {
+  "router": "roastlog",
+  "method": "GET",
+  "path": "/api/v1/roasts/month-record",
+  "handler": "month_record",
+  "line": 27,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "roast.execute",
+    "roast.view"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "INVALID_DATE (400)"
+  ],
+  "file": "vtc/routers/roastlog.py"
+ },
+ {
+  "router": "roastlog",
+  "method": "PUT",
+  "path": "/api/v1/roasts/meter",
+  "handler": "set_meter",
+  "line": 54,
+  "doc": "",
+  "require_all": [
+   "roast.execute"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "month"
+  ],
+  "errors": [
+   "END_READING_BELOW_START (400)",
+   "INVALID_DATE (400)",
+   "NOTHING_TO_CHANGE (400)",
+   "READING_MUST_BE_WHOLE (400)"
+  ],
+  "file": "vtc/routers/roastlog.py"
+ },
+ {
+  "router": "roastlog",
+  "method": "POST",
+  "path": "/api/v1/roasts/cylinders",
+  "handler": "add_cylinder",
+  "line": 81,
+  "doc": "",
+  "require_all": [
+   "roast.execute"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "fitted_on",
+   "kg",
+   "note"
+  ],
+  "errors": [
+   "INVALID_KG (400)"
+  ],
+  "file": "vtc/routers/roastlog.py"
+ },
+ {
+  "router": "sales",
+  "method": "GET",
+  "path": "/api/v1/customers/credit",
+  "handler": "customers_credit",
+  "line": 58,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "finance.view",
+    "outgoing.credit.approve"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "PUT",
+  "path": "/api/v1/customers/{cid}/credit",
+  "handler": "set_terms",
+  "line": 70,
+  "doc": "",
+  "require_all": [
+   "outgoing.credit.approve"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "credit_limit_paise",
+   "due_days"
+  ],
+  "errors": [
+   "INVALID_CREDIT_TERMS (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "GET",
+  "path": "/api/v1/orders",
+  "handler": "orders",
+  "line": 100,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "dispatch.handover",
+    "outgoing.view"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "customer.contacts",
+   "dispatch.handover",
+   "documents.commercial",
+   "finance.view",
+   "outgoing.price_override"
+  ],
+  "owner_check": false,
+  "body_fields": [
+   "order_id"
+  ],
+  "errors": [],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "POST",
+  "path": "/api/v1/orders",
+  "handler": "order_create",
+  "line": 125,
+  "doc": "",
+  "require_all": [
+   "outgoing.create"
+  ],
+  "require_all_conditional": [
+   "outgoing.credit.request",
+   "outgoing.price_override"
+  ],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "credit_requested",
+   "customer_id",
+   "form",
+   "gst_rate_bp",
+   "item",
+   "notes",
+   "price_per_kg_paise",
+   "product_id",
+   "quantity_kg"
+  ],
+  "errors": [
+   "ACTIVE_CUSTOMER_REQUIRED (400)",
+   "CHOOSE_THE_RAW_COFFEE (400)",
+   "INVALID_FORM (400)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "PUT",
+  "path": "/api/v1/orders/{oid}/price",
+  "handler": "set_price",
+  "line": 157,
+  "doc": "",
+  "require_all": [
+   "outgoing.price_override"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "gst_rate_bp",
+   "price_per_kg_paise"
+  ],
+  "errors": [
+   "INVALID_PRICE (400)",
+   "NOT_FOUND (404)",
+   "ORDER_ALREADY_DISPATCHED (400)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "POST",
+  "path": "/api/v1/orders/{oid}/confirm",
+  "handler": "confirm",
+  "line": 175,
+  "doc": "",
+  "require_all": [
+   "outgoing.create"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)",
+   "ORDER_NOT_DRAFT (400)",
+   "PRICE_NOT_SET (400)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "POST",
+  "path": "/api/v1/orders/{oid}/credit",
+  "handler": "credit_decision",
+  "line": 209,
+  "doc": "",
+  "require_all": [
+   "outgoing.credit.approve"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "approve",
+   "note"
+  ],
+  "errors": [
+   "CANNOT_APPROVE_OWN_REQUEST (403)",
+   "NOT_FOUND (404)",
+   "NOT_WAITING_FOR_CREDIT (400)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "POST",
+  "path": "/api/v1/orders/{oid}/reserve",
+  "handler": "reserve_again",
+  "line": 263,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "dispatch.handover",
+    "outgoing.create"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_ENOUGH_STOCK_TO_RESERVE (400)",
+   "NOT_FOUND (404)",
+   "ORDER_NOT_WAITING_FOR_STOCK (400)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "POST",
+  "path": "/api/v1/orders/{oid}/cancel",
+  "handler": "cancel",
+  "line": 275,
+  "doc": "",
+  "require_all": [
+   "outgoing.create"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "reason"
+  ],
+  "errors": [
+   "CANNOT_CANCEL_AFTER_DISPATCH (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "POST",
+  "path": "/api/v1/orders/{oid}/advance",
+  "handler": "record_advance",
+  "line": 290,
+  "doc": "Payment received before dispatch for a non-credit order (verified by finance).",
+  "require_all": [
+   "finance.collection.verify"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "amount_paise",
+   "reference"
+  ],
+  "errors": [
+   "INVALID_AMOUNT (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "POST",
+  "path": "/api/v1/orders/{oid}/dispatch",
+  "handler": "dispatch",
+  "line": 315,
+  "doc": "",
+  "require_all": [
+   "dispatch.handover"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "booking_ref",
+   "evidence",
+   "handover_to",
+   "kg",
+   "mode",
+   "rest_ok"
+  ],
+  "errors": [
+   "BOOKING_REFERENCE_REQUIRED (400)",
+   "COFFEE_STILL_RESTING (400)",
+   "INVALID_DELIVERY_MODE (400)",
+   "MORE_THAN_ORDERED (400)",
+   "NOT_FOUND (404)",
+   "ORDER_NOT_READY (400)",
+   "RESERVED_STOCK_SHORT (400)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "POST",
+  "path": "/api/v1/dispatches/{did}/deliver",
+  "handler": "deliver",
+  "line": 388,
+  "doc": "",
+  "require_all": [
+   "dispatch.handover"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "delivered_kg",
+   "pod_note"
+  ],
+  "errors": [
+   "ALREADY_CONFIRMED (400)",
+   "DELIVERED_MORE_THAN_SENT (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "GET",
+  "path": "/api/v1/orders/{oid}/slip",
+  "handler": "dispatch_slip",
+  "line": 414,
+  "doc": "Price-hidden operational slip (O-37, BR-048).",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "dispatch.handover",
+    "documents.price_hidden"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "GET",
+  "path": "/api/v1/invoices/{iid}",
+  "handler": "invoice",
+  "line": 426,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "documents.commercial",
+    "finance.view"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "GET",
+  "path": "/api/v1/receivables",
+  "handler": "receivables",
+  "line": 448,
+  "doc": "",
+  "require_all": [],
+  "require_all_conditional": [],
+  "require_any": [
+   [
+    "finance.collection.record",
+    "finance.collection.verify",
+    "finance.view"
+   ]
+  ],
+  "require_any_conditional": [],
+  "checks_inside": [
+   "customer.contacts"
+  ],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "POST",
+  "path": "/api/v1/invoices/{iid}/collections",
+  "handler": "record_collection",
+  "line": 471,
+  "doc": "",
+  "require_all": [
+   "finance.collection.record"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "amount_paise",
+   "method",
+   "reference"
+  ],
+  "errors": [
+   "INVALID_AMOUNT (400)",
+   "INVALID_PAYMENT_METHOD (400)",
+   "MORE_THAN_DUE (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "sales",
+  "method": "POST",
+  "path": "/api/v1/collections/{kid}/verify",
+  "handler": "verify_collection",
+  "line": 496,
+  "doc": "",
+  "require_all": [
+   "finance.collection.verify"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "approve"
+  ],
+  "errors": [
+   "ALREADY_DECIDED (400)",
+   "CANNOT_APPROVE_OWN_REQUEST (403)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/sales.py"
+ },
+ {
+  "router": "team",
+  "method": "GET",
+  "path": "/api/v1/stock-cards",
+  "handler": "stock_cards",
+  "line": 31,
+  "doc": "",
+  "require_all": [
+   "inventory.view"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/team.py"
+ },
+ {
+  "router": "team",
+  "method": "PUT",
+  "path": "/api/v1/stock-cards/{pid}",
+  "handler": "edit_card",
+  "line": 46,
+  "doc": "",
+  "require_all": [
+   "inventory.cards"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [
+   "color",
+   "label",
+   "low_kg",
+   "sort"
+  ],
+  "errors": [
+   "INVALID_COLOUR (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/team.py"
+ },
+ {
+  "router": "team",
+  "method": "POST",
+  "path": "/api/v1/stock-cards/order",
+  "handler": "order_cards",
+  "line": 80,
+  "doc": "",
+  "require_all": [
+   "inventory.cards"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/team.py"
+ },
+ {
+  "router": "team",
+  "method": "GET",
+  "path": "/api/v1/team",
+  "handler": "team",
+  "line": 95,
+  "doc": "",
+  "require_all": [
+   "team.view"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [],
+  "file": "vtc/routers/team.py"
+ },
+ {
+  "router": "team",
+  "method": "PUT",
+  "path": "/api/v1/team/{uid}/reports-to",
+  "handler": "set_boss",
+  "line": 105,
+  "doc": "",
+  "require_all": [
+   "team.hierarchy"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": false,
+  "body_fields": [],
+  "errors": [
+   "BAD_BOSS (400)",
+   "HIERARCHY_LOOP (400)",
+   "NOT_FOUND (404)"
+  ],
+  "file": "vtc/routers/team.py"
+ },
+ {
+  "router": "team",
+  "method": "GET",
+  "path": "/api/v1/team/{uid}/profile",
+  "handler": "profile",
+  "line": 144,
+  "doc": "",
+  "require_all": [
+   "team.profiles"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": true,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)",
+   "OWNER_IS_PROTECTED (403)"
+  ],
+  "file": "vtc/routers/team.py"
+ },
+ {
+  "router": "team",
+  "method": "PUT",
+  "path": "/api/v1/team/{uid}/profile",
+  "handler": "save_profile",
+  "line": 175,
+  "doc": "",
+  "require_all": [
+   "team.profiles"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": true,
+  "body_fields": [],
+  "errors": [
+   "INVALID_DATE (400)",
+   "INVALID_EMAIL (400)",
+   "INVALID_IFSC (400)",
+   "INVALID_PHONE (400)",
+   "NOTHING_TO_CHANGE (400)",
+   "NOT_FOUND (404)",
+   "OWNER_IS_PROTECTED (403)"
+  ],
+  "file": "vtc/routers/team.py"
+ },
+ {
+  "router": "team",
+  "method": "POST",
+  "path": "/api/v1/team/{uid}/documents",
+  "handler": "add_document",
+  "line": 206,
+  "doc": "",
+  "require_all": [
+   "team.profiles"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": true,
+  "body_fields": [
+   "data",
+   "kind",
+   "label",
+   "mime"
+  ],
+  "errors": [
+   "FILE_DATA_INVALID (400)",
+   "FILE_EMPTY (400)",
+   "FILE_TOO_LARGE (400)",
+   "FILE_TYPE_NOT_ALLOWED (400)",
+   "INVALID_DOCUMENT_KIND (400)",
+   "NOT_FOUND (404)",
+   "OWNER_IS_PROTECTED (403)"
+  ],
+  "file": "vtc/routers/team.py"
+ },
+ {
+  "router": "team",
+  "method": "GET",
+  "path": "/api/v1/team/documents/{did}",
+  "handler": "get_document",
+  "line": 241,
+  "doc": "",
+  "require_all": [
+   "team.profiles"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": true,
+  "body_fields": [],
+  "errors": [
+   "FILE_EXPIRED_OR_MISSING (404)",
+   "NOT_FOUND (404)",
+   "OWNER_IS_PROTECTED (403)"
+  ],
+  "file": "vtc/routers/team.py"
+ },
+ {
+  "router": "team",
+  "method": "DELETE",
+  "path": "/api/v1/team/documents/{did}",
+  "handler": "remove_document",
+  "line": 257,
+  "doc": "",
+  "require_all": [
+   "team.profiles"
+  ],
+  "require_all_conditional": [],
+  "require_any": [],
+  "require_any_conditional": [],
+  "checks_inside": [],
+  "owner_check": true,
+  "body_fields": [],
+  "errors": [
+   "NOT_FOUND (404)",
+   "OWNER_IS_PROTECTED (403)"
+  ],
+  "file": "vtc/routers/team.py"
+ }
+]

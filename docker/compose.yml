@@ -1,0 +1,60 @@
+services:
+  db:
+    image: mysql:8.0
+    command:
+      - "--character-set-server=utf8mb4"
+      - "--collation-server=utf8mb4_0900_ai_ci"
+      - "--default-time-zone=+00:00"
+    environment:
+      MYSQL_DATABASE: vtc
+      MYSQL_USER: vtc
+      MYSQL_PASSWORD: ${DB_PASSWORD:-vtc}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-root}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/vtc?useUnicode=true&characterEncoding=utf8&connectionTimeZone=UTC
+      SPRING_DATASOURCE_USERNAME: vtc
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-vtc}
+      VTC_HTTPS: ${VTC_HTTPS:-0}
+      VTC_DEMO: ${VTC_DEMO:-1}
+      VTC_FILES_DIR: /data/files
+      TZ: UTC
+    ports:
+      - "8080:8080"
+    volumes:
+      - vtc-files:/data/files
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+    depends_on:
+      - app
+    restart: unless-stopped
+
+volumes:
+  mysql-data: {}
+  vtc-files: {}
+  caddy-data: {}

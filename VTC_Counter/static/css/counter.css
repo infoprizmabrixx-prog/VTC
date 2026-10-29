@@ -1,0 +1,80 @@
+/* VTC Counter additions on top of the portal's coffee-brown app.css */
+.loading { padding: 40px; text-align: center; color: var(--dim); }
+.sec-title { font: 800 12px var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--medium); margin: 4px 0 10px; }
+.sec-title + .pos-items { margin-bottom: 18px; }
+.pos-tile { min-height: 118px; gap: 6px; }
+.tile-kind { font-size: 9px; font-weight: 800; letter-spacing: .16em; color: #8a5a3c; }
+.tile-kind.tea { color: var(--green); }
+.line-main { flex: 1; min-width: 0; border: 0; background: none; text-align: left; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.line-main:hover b { text-decoration: underline; }
+.preset.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.preset:disabled { opacity: .35; }
+.ratio-presets { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); }
+.line-calc { background: #faf4ec; border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 14px; margin-top: 4px; }
+.change { font-size: 15px; margin: 0 0 6px; }
+.change-big { font: 800 22px var(--display); background: #e4f2e9; color: var(--green); border-radius: 12px; padding: 12px 16px; margin-bottom: 12px; }
+.icon-btn.xs { width: 22px; height: 22px; font-size: 12px; }
+.ratio-chip { gap: 2px; padding-right: 2px; }
+.pos-bill .bill-lines { max-height: 340px; }
+/* the on-screen bill matches the printed one */
+.receipt .r-copy { text-align: center; border: 1px solid #000; font-weight: 800; margin: 4px 0; }
+.receipt .r-shop { font-size: 14px; }
+.receipt .r-logo { max-width: 170px; max-height: 90px; filter: grayscale(1) contrast(1.4); }
+.receipt hr { border: 0; border-top: 1px dashed #000; margin: 4px 0; }
+.muted td { opacity: .55; }
+@media (max-width: 860px) {
+  .sidebar { position: fixed; z-index: 30; left: 0; top: 0; transform: translateX(-100%); transition: transform .2s; }
+  .sidebar.open { transform: none; }
+  .btn.mobile-menu { display: inline-flex; }
+  .topbar { padding: 0 16px; }
+  .content { padding: 18px 16px 50px; }
+}
+
+/* tablets and phones: the screens stay one tap away across the top */
+.topnav { display: none; }
+@media (max-width: 860px) {
+  .crumb { display: none; }
+  .topnav { display: flex; gap: 4px; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none; }
+  .topnav-btn { border: 0; background: #f3ebe2; color: #6d5647; font-weight: 800; font-size: 13px; border-radius: 10px; padding: 9px 12px; white-space: nowrap; min-height: 40px; }
+  .topnav-btn.active { background: var(--accent); color: #fff; }
+}
+
+/* date pickers sit inline in toolbars */
+.toolbar input[type=date].search { width: auto; min-width: 150px; flex: 0 0 auto; }
+
+/* clients and dues */
+.cx-card.due-bad { border-color: #e7b3a9; background: #fdf1ee; }
+.due-big { font: 800 30px var(--display); color: var(--red); margin-top: 4px; }
+.aging { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 6px; }
+.age-cell { border-radius: 12px; padding: 10px 12px; background: #f6efe7; display: flex; flex-direction: column; gap: 4px; }
+.age-cell span { font-size: 11px; color: var(--dim); font-weight: 700; }
+.age-cell b { font: 800 17px var(--display); }
+.age-cell.a2 { background: #fff0de; } .age-cell.a3 { background: #fbe5e0; } .age-cell.a3 b { color: var(--red); }
+@media (max-width: 640px) { .aging { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* search on Sell / Bill a client, and the client picker */
+[hidden] { display: none !important; }
+.item-search { width: 100%; margin-bottom: 12px; font-size: 1.05rem; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--cream); }
+.client-pick { display: grid; gap: 6px; max-height: 260px; overflow: auto; margin-top: 8px; }
+.pick-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; text-align: left; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--cream); }
+.pick-row:hover, .pick-row:focus-visible { border-color: var(--accent, #a6744f); }
+
+/* Receipt layout customizations */
+.receipt .r-logo-sm { max-height: 45px; }
+.receipt .r-logo-md { max-height: 75px; }
+.receipt .r-logo-lg { max-height: 110px; }
+.receipt .r-sec-title { font-weight: 800; font-size: 11px; letter-spacing: 0.05em; text-align: center; margin: 6px 0 2px; border-bottom: 1px dotted #333; }
+.receipt .r-hl { font-weight: 800; font-size: 12px; background: #fff3cd; padding: 2px 4px; border-radius: 4px; }
+.receipt .r-sm { font-size: 11px; opacity: 0.9; }
+.receipt .r-muted { color: #666; font-size: 10px; }
+
+/* Item badges & Kg buttons */
+.item-tag-badge { display: inline-block; padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; color: #fff; text-transform: uppercase; margin-bottom: 3px; }
+.kg-preset-grid { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.kg-btn { border: 1px solid var(--line); background: #fbf7f2; border-radius: 8px; padding: 6px 10px; font-weight: 700; font-size: 12px; cursor: pointer; }
+.kg-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.kg-btn.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.seg-tabs { display: flex; gap: 6px; margin-bottom: 14px; border-bottom: 2px solid var(--line); padding-bottom: 6px; }
+.seg-tab-btn { background: none; border: 0; padding: 8px 16px; font-weight: 800; font-size: 14px; color: var(--dim); cursor: pointer; border-radius: 8px; }
+.seg-tab-btn.active { background: var(--accent); color: #fff; }
+
